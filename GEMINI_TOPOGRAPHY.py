@@ -25,7 +25,7 @@ REPOSITORY_INFO = {
     "full_name": "Rapid Response Team Advocate",
     "description": "Specialized AI agent for crisis intervention and immediate ADHD support within the NeuroLift ecosystem",
     "github_url": "https://github.com/JDUB1216/rrt-advocate",
-    "notion_project": None,  # To be created in Phase 4
+    "notion_project": "https://www.notion.so/27a555e42dea8153b5eddae9b4c85ef3",  # To be created in Phase 4
     "created_date": "2025-09-26",
     "current_date": "2025-09-26",
     "age_days": 0,
