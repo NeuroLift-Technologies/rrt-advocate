@@ -1,0 +1,359 @@
+# Crisis Detection Thresholds Configuration
+# RRT Advocate - Crisis intervention parameters for ADHD support
+
+# ============================================================================
+# CRISIS LEVEL DEFINITIONS
+# ============================================================================
+
+crisis_levels:
+  green:
+    name: "Stable"
+    description: "Normal functioning, no intervention required"
+    threshold_range: [0.0, 0.2]
+    monitoring_interval: 5  # seconds
+    
+  yellow:
+    name: "Elevated"
+    description: "Mild stress indicators, preventive measures recommended"
+    threshold_range: [0.2, 0.4]
+    monitoring_interval: 3
+    
+  orange:
+    name: "High"
+    description: "Significant stress, active intervention required"
+    threshold_range: [0.4, 0.7]
+    monitoring_interval: 1
+    
+  red:
+    name: "Critical"
+    description: "Crisis state, immediate intensive intervention"
+    threshold_range: [0.7, 0.9]
+    monitoring_interval: 0.5
+    
+  black:
+    name: "Emergency"
+    description: "Severe crisis, emergency protocols activated"
+    threshold_range: [0.9, 1.0]
+    monitoring_interval: 0.1
+
+# ============================================================================
+# INDICATOR WEIGHTS AND THRESHOLDS
+# ============================================================================
+
+physiological_indicators:
+  heart_rate_variability:
+    weight: 0.25
+    thresholds:
+      normal: [50, 100]  # bpm
+      elevated: [100, 130]
+      critical: [130, 180]
+      emergency: [180, 220]
+    
+  stress_hormones:
+    weight: 0.20
+    # Cortisol levels (hypothetical units)
+    thresholds:
+      normal: [0, 15]
+      elevated: [15, 25]
+      critical: [25, 40]
+      emergency: [40, 100]
+    
+  sleep_disruption:
+    weight: 0.15
+    # Hours of sleep deficit
+    thresholds:
+      normal: [0, 1]
+      elevated: [1, 3]
+      critical: [3, 6]
+      emergency: [6, 24]
+
+behavioral_indicators:
+  task_abandonment_rate:
+    weight: 0.30
+    # Percentage of tasks abandoned in last hour
+    thresholds:
+      normal: [0, 20]
+      elevated: [20, 40]
+      critical: [40, 70]
+      emergency: [70, 100]
+    
+  communication_changes:
+    weight: 0.25
+    # Deviation from normal communication patterns (0-100 scale)
+    thresholds:
+      normal: [0, 20]
+      elevated: [20, 40]
+      critical: [40, 70]
+      emergency: [70, 100]
+    
+  social_withdrawal:
+    weight: 0.20
+    # Hours since last social interaction
+    thresholds:
+      normal: [0, 4]
+      elevated: [4, 12]
+      critical: [12, 24]
+      emergency: [24, 72]
+    
+  routine_disruption:
+    weight: 0.25
+    # Percentage of routine activities missed
+    thresholds:
+      normal: [0, 10]
+      elevated: [10, 30]
+      critical: [30, 60]
+      emergency: [60, 100]
+
+cognitive_indicators:
+  decision_making_delays:
+    weight: 0.35
+    # Average time to make simple decisions (minutes)
+    thresholds:
+      normal: [0, 2]
+      elevated: [2, 10]
+      critical: [10, 30]
+      emergency: [30, 120]
+    
+  memory_lapses:
+    weight: 0.25
+    # Number of memory failures per hour
+    thresholds:
+      normal: [0, 1]
+      elevated: [1, 3]
+      critical: [3, 6]
+      emergency: [6, 20]
+    
+  attention_fragmentation:
+    weight: 0.25
+    # Task switches per hour
+    thresholds:
+      normal: [0, 10]
+      elevated: [10, 25]
+      critical: [25, 50]
+      emergency: [50, 100]
+    
+  executive_function_failures:
+    weight: 0.15
+    # Planning/organization failures per hour
+    thresholds:
+      normal: [0, 1]
+      elevated: [1, 3]
+      critical: [3, 6]
+      emergency: [6, 15]
+
+emotional_indicators:
+  mood_volatility:
+    weight: 0.30
+    # Mood changes per hour (0-10 scale)
+    thresholds:
+      normal: [0, 2]
+      elevated: [2, 4]
+      critical: [4, 7]
+      emergency: [7, 10]
+    
+  rejection_sensitivity:
+    weight: 0.25
+    # RSD episode intensity (0-10 scale)
+    thresholds:
+      normal: [0, 3]
+      elevated: [3, 5]
+      critical: [5, 8]
+      emergency: [8, 10]
+    
+  overwhelm_expressions:
+    weight: 0.25
+    # Verbal/written overwhelm indicators per hour
+    thresholds:
+      normal: [0, 1]
+      elevated: [1, 3]
+      critical: [3, 6]
+      emergency: [6, 15]
+    
+  emotional_dysregulation:
+    weight: 0.20
+    # Emotional control loss incidents per day
+    thresholds:
+      normal: [0, 1]
+      elevated: [1, 2]
+      critical: [2, 4]
+      emergency: [4, 10]
+
+# ============================================================================
+# CONTEXTUAL MODIFIERS
+# ============================================================================
+
+time_of_day_modifiers:
+  # Adjust thresholds based on time of day (ADHD circadian patterns)
+  morning: 1.0      # 6 AM - 12 PM
+  afternoon: 0.8    # 12 PM - 6 PM  
+  evening: 0.9      # 6 PM - 10 PM
+  night: 1.2        # 10 PM - 6 AM (higher sensitivity)
+
+day_of_week_modifiers:
+  monday: 1.1       # Monday stress
+  tuesday: 1.0
+  wednesday: 1.0
+  thursday: 1.0
+  friday: 0.9       # End of week relief
+  saturday: 0.8     # Weekend relaxation
+  sunday: 1.1       # Sunday scaries
+
+seasonal_modifiers:
+  spring: 1.0
+  summer: 0.9       # Generally better mood
+  fall: 1.0
+  winter: 1.2       # SAD considerations
+
+# ============================================================================
+# CRISIS PATTERN RECOGNITION
+# ============================================================================
+
+crisis_patterns:
+  executive_function_collapse:
+    primary_indicators:
+      - task_abandonment_rate
+      - decision_making_delays
+      - executive_function_failures
+    secondary_indicators:
+      - overwhelm_expressions
+      - routine_disruption
+    confidence_threshold: 0.7
+    
+  emotional_dysregulation_event:
+    primary_indicators:
+      - mood_volatility
+      - rejection_sensitivity
+      - emotional_dysregulation
+    secondary_indicators:
+      - social_withdrawal
+      - communication_changes
+    confidence_threshold: 0.6
+    
+  attention_system_failure:
+    primary_indicators:
+      - attention_fragmentation
+      - memory_lapses
+      - task_abandonment_rate
+    secondary_indicators:
+      - decision_making_delays
+      - routine_disruption
+    confidence_threshold: 0.65
+    
+  time_blindness_emergency:
+    primary_indicators:
+      - routine_disruption
+      - decision_making_delays
+      - task_abandonment_rate
+    secondary_indicators:
+      - overwhelm_expressions
+      - executive_function_failures
+    confidence_threshold: 0.6
+    
+  decision_paralysis:
+    primary_indicators:
+      - decision_making_delays
+      - task_abandonment_rate
+      - executive_function_failures
+    secondary_indicators:
+      - overwhelm_expressions
+      - mood_volatility
+    confidence_threshold: 0.7
+
+# ============================================================================
+# ESCALATION RULES
+# ============================================================================
+
+escalation_rules:
+  automatic_escalation:
+    # Conditions that trigger automatic escalation
+    safety_score_threshold: 0.3
+    crisis_duration_threshold: 30  # minutes
+    intervention_failure_count: 3
+    
+  supervisor_notification:
+    # When to notify Supervisor AI
+    crisis_levels: ["orange", "red", "black"]
+    pattern_confidence_threshold: 0.8
+    user_request: true
+    
+  external_resource_activation:
+    # When to activate external crisis resources
+    crisis_levels: ["red", "black"]
+    safety_score_threshold: 0.2
+    user_consent_required: true
+    
+  emergency_contacts:
+    # When to contact emergency contacts
+    crisis_levels: ["black"]
+    safety_score_threshold: 0.1
+    user_override_allowed: false
+
+# ============================================================================
+# INTERVENTION MAPPING
+# ============================================================================
+
+intervention_mapping:
+  yellow:
+    recommended_interventions:
+      - "breathing_exercise"
+      - "grounding_technique"
+      - "task_simplification"
+    max_concurrent: 2
+    
+  orange:
+    recommended_interventions:
+      - "guided_meditation"
+      - "cognitive_restructuring"
+      - "environmental_modification"
+      - "break_scheduling"
+    max_concurrent: 3
+    
+  red:
+    recommended_interventions:
+      - "intensive_grounding"
+      - "crisis_counseling"
+      - "advocate_coordination"
+      - "safety_planning"
+    max_concurrent: 4
+    
+  black:
+    recommended_interventions:
+      - "emergency_stabilization"
+      - "professional_contact"
+      - "crisis_hotline"
+      - "immediate_safety_measures"
+    max_concurrent: 5
+
+# ============================================================================
+# PRIVACY AND SECURITY SETTINGS
+# ============================================================================
+
+privacy_settings:
+  local_processing_only: true
+  encrypted_storage: true
+  data_retention_days: 30
+  anonymous_reporting: true
+  user_consent_required: true
+  
+security_settings:
+  crisis_log_encryption: "AES-256"
+  communication_encryption: "end-to-end"
+  access_control: "user-only"
+  audit_logging: true
+
+# ============================================================================
+# PERFORMANCE PARAMETERS
+# ============================================================================
+
+performance_parameters:
+  max_response_time: 5.0  # seconds
+  assessment_accuracy_target: 0.85
+  intervention_success_target: 0.75
+  false_positive_tolerance: 0.1
+  false_negative_tolerance: 0.05
+  
+monitoring_parameters:
+  health_check_interval: 60  # seconds
+  performance_log_interval: 300  # seconds
+  pattern_analysis_interval: 3600  # seconds
+  system_backup_interval: 86400  # seconds
