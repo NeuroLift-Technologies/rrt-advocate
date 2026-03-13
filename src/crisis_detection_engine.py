@@ -59,12 +59,13 @@ class CrisisDetectionEngine:
         layer2 = self._analyze_layer2(message_history)
         layer3 = self._analyze_layer3(message_history, response_latency_seconds)
 
-        overall = (
+        weighted_average = (
             layer1.score * float(self.layer_weights.get("layer1", 0.4))
             + layer2.score * float(self.layer_weights.get("layer2", 0.3))
             + layer3.score * float(self.layer_weights.get("layer3", 0.3))
         )
-        overall = max(0.0, min(overall, 1.0))
+        peak_signal = max(layer1.score, layer2.score, layer3.score)
+        overall = max(0.0, min(weighted_average + 0.2 * peak_signal, 1.0))
 
         flags: List[str] = []
         if layer1.score >= 0.6:
