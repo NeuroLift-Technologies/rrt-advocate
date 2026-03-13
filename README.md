@@ -1,10 +1,10 @@
 # RRT Advocate
 
-**Rapid Response Team Advocate - Crisis Intervention & Immediate ADHD Support**
+**Rapid Response Team Advocate - Protective Layer (RRT AIdvocAIte)**
 
 ## Mission
 
-The RRT (Rapid Response Team) Advocate is a specialized AI agent within the NeuroLift Technologies ecosystem, designed to provide immediate, crisis-level support for individuals experiencing acute ADHD-related challenges. This Advocate represents the fusion of Avatar and Aide intelligences specifically trained for rapid response scenarios.
+The RRT (Rapid Response Team) Advocate is the Protective Layer implementation of the HAIEF Solidarity Framework, designed for immediate support during neurodivergent distress while preserving user agency and privacy.
 
 ## Core Purpose
 
@@ -75,39 +75,18 @@ Crisis Avatar + Emergency Aide → RRT Advocate
 
 ```
 src/
-├── crisis/              # Crisis detection and assessment
-│   ├── detectors/       # Real-time crisis pattern recognition
-│   ├── assessors/       # Crisis severity and type classification
-│   └── triggers/        # ADHD-specific trigger identification
-├── response/            # Immediate response protocols
-│   ├── interventions/   # Crisis intervention strategies
-│   ├── de_escalation/   # De-escalation techniques
-│   └── stabilization/   # Immediate stabilization protocols
-├── coordination/        # System integration and escalation
-│   ├── supervisor/      # Supervisor AI communication
-│   ├── advocates/       # Multi-Advocate coordination
-│   └── external/        # External resource integration
-└── learning/            # Continuous improvement
-    ├── patterns/        # Crisis pattern analysis
-    ├── effectiveness/   # Response effectiveness tracking
-    └── adaptation/      # Personalized response optimization
+├── rrt_advocate.py            # Main TOI-governed orchestration entrypoint
+├── toi_otoi.py                # TOI parser + OTOI persona coordination
+├── persona_fusion.py          # Dynamic 5-persona weighting engine
+├── tone_profiles.py           # Configurable tone profile prompt shaping
+├── crisis_detection_engine.py # Local-first 3-layer CDE pipeline
+└── dialogue_tree.py           # Tiered activation stages 0-5
 
 config/
-├── crisis_thresholds.yaml    # Crisis detection parameters
-├── response_protocols.yaml   # Standard response procedures
-├── escalation_rules.yaml     # Escalation decision trees
-└── privacy_settings.yaml     # Privacy and security configuration
-
-docs/
-├── crisis_protocols.md       # Crisis response documentation
-├── integration_guide.md      # NeuroLift ecosystem integration
-├── training_methodology.md   # Avatar-Aide fusion process
-└── privacy_security.md       # Privacy and security specifications
+└── crisis_thresholds.yaml     # TOI defaults, stage mapping, CDE, tones
 
 tests/
-├── crisis_simulation/        # Crisis scenario testing
-├── response_validation/      # Response effectiveness testing
-└── integration_tests/        # Ecosystem integration testing
+└── test_protective_layer.py   # Coverage for consent, mapping, tones, CDE
 ```
 
 ## Development Philosophy
@@ -158,9 +137,9 @@ The RRT Advocate coordinates with other specialized Advocates:
 
 ## Development Status
 
-**Current Phase**: Initial Development (Testing TOI-OTOI Integration Strategy)
+**Current Phase**: Protective Layer Transformation (TOI/OTOI Compliant)
 
-This repository serves as a testing ground for integrating the TOI-OTOI framework with existing NeuroLift systems, following the user's strategy of building initial AI agents with different development structures before full framework integration.
+This repository now includes TOI-first consent gating, OTOI persona arbitration, dynamic persona fusion (Ash/Sol/Echo/Kai/Myra), configurable tone profiles, and a local-first three-layer Crisis Detection Engine.
 
 ## Getting Started
 
@@ -191,19 +170,23 @@ python setup.py install
 ```python
 from rrt_advocate import RRTAdvocate
 
-# Initialize RRT Advocate
-rrt = RRTAdvocate(
-    user_profile="path/to/user/profile.json",
-    crisis_config="config/crisis_thresholds.yaml"
+rrt = RRTAdvocate(user_id="demo", config_path="config/crisis_thresholds.yaml")
+rrt.ingest_toi({
+    "tone_profile": "supportive_default",
+    "pacing": "steady",
+    "cognitive_scaffolding": "moderate",
+    "safety_boundaries": ["No shaming language"],
+})
+
+# Stage 1: consent
+rrt.handle_stage1_consent(True)
+
+# Stage 2/3: distress routing + persona fusion + CDE analysis
+response = rrt.handle_stage2_distress(
+    distress_input="can't do basic tasks",
+    user_message="I can't start anything",
 )
-
-# Start crisis monitoring
-rrt.start_monitoring()
-
-# Manual crisis assessment
-crisis_level = rrt.assess_current_state()
-if crisis_level.requires_intervention:
-    response = rrt.deploy_intervention(crisis_level)
+print(response["message"])
 ```
 
 ## Contributing
