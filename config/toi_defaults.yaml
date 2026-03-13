@@ -1,0 +1,22 @@
+# Default Terms of Interaction (TOI) configuration
+# Users may override any of these values in their personal TOI file.
+
+tone: supportive          # supportive | minimal | directive | therapeutic
+pacing: adaptive          # adaptive | slow | fast
+
+cognitive_scaffolding: true
+
+safety_boundaries:
+  allow_external_escalation: true
+  allow_emergency_contacts: true
+  silent_mode_available: true
+  max_prompt_length: medium   # short | medium | long
+
+# Optional: override the distress-based persona weights.
+# Uncomment and adjust to lock specific blends.
+# persona_overrides:
+#   ash: 0.2
+#   sol: 0.2
+#   echo: 0.2
+#   kai: 0.2
+#   myra: 0.2

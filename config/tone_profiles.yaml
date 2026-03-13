@@ -1,0 +1,23 @@
+# Tone Profile reference (canonical definitions are in src/tone/profiles.py).
+# This YAML serves as a human-readable summary and override surface.
+
+profiles:
+  supportive:
+    label: "Supportive Default"
+    description: "Warm, validating. Ideal for Ash and Myra."
+    max_sentences: 6
+
+  minimal:
+    label: "Minimal"
+    description: "Extremely concise, lowest cognitive load."
+    max_sentences: 2
+
+  directive:
+    label: "Directive"
+    description: "Clear, action-oriented. Ideal for Sol and Kai."
+    max_sentences: 4
+
+  therapeutic:
+    label: "Therapeutic / Reflective"
+    description: "Empathetic mirroring, soft Socratic questioning. Ideal for Ash and Echo."
+    max_sentences: 5

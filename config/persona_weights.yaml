@@ -1,0 +1,41 @@
+# Persona weight mappings for the Fusion Engine.
+#
+# Each distress input maps to a weight vector for the five Original Guides.
+# Weights are 0.0 – 1.0 per persona.  These defaults are used when the
+# user's TOI does not include persona_overrides.
+
+distress_weights:
+  meltdown:
+    ash: 0.80
+    sol: 0.05
+    echo: 0.05
+    kai: 0.00
+    myra: 0.80
+
+  task_paralysis:
+    ash: 0.10
+    sol: 0.85
+    echo: 0.10
+    kai: 0.10
+    myra: 0.10
+
+  self_blame:
+    ash: 0.15
+    sol: 0.05
+    echo: 0.85
+    kai: 0.00
+    myra: 0.15
+
+  hyperfocus_loop:
+    ash: 0.05
+    sol: 0.10
+    echo: 0.05
+    kai: 0.85
+    myra: 0.05
+
+  shutdown:
+    ash: 0.10
+    sol: 0.00
+    echo: 0.00
+    kai: 0.00
+    myra: 1.00
