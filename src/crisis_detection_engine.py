@@ -114,7 +114,7 @@ class CrisisDetectionEngine:
         positive = [str(token).lower() for token in lexicon.get("positive", [])]
         drop_threshold = float(self.layer2_cfg.get("polarity_drop_threshold", 0.25))
 
-        latest = message_history[-1].lower()
+        latest = " ".join(message_history[-2:]).lower()
         recent = " ".join(message_history[-3:]).lower()
 
         latest_neg = sum(1 for token in negative if token in latest)
@@ -129,8 +129,9 @@ class CrisisDetectionEngine:
 
         drop = max(0.0, recent_polarity - latest_polarity)
         polarity_risk = max(0.0, -latest_polarity)
+        negativity_density = latest_neg / latest_total
         drop_risk = min(1.0, drop / max(0.01, drop_threshold))
-        score = min(1.0, 0.6 * polarity_risk + 0.4 * drop_risk)
+        score = min(1.0, 0.5 * polarity_risk + 0.3 * drop_risk + 0.2 * negativity_density)
 
         return CDELayerResult(
             score=score,
@@ -138,6 +139,7 @@ class CrisisDetectionEngine:
                 "latest_polarity": latest_polarity,
                 "recent_polarity": recent_polarity,
                 "polarity_drop": drop,
+                "negativity_density": negativity_density,
             },
         )
 
