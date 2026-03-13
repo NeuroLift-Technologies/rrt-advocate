@@ -1,0 +1,92 @@
+# Stage 2 Distress Input → Persona Weight Mapping
+# Tiered Activation Dialogue Tree - Backend Handler Mapping
+# HAIEF Solidarity Framework - RRT AIdvocAIte
+
+# ============================================================================
+# DISTRESS SIGNALS → PERSONA WEIGHTS (0.0 to 1.0)
+# ============================================================================
+# Weights sum conceptually; primary persona gets highest. All values 0.0-1.0.
+
+distress_mappings:
+  # "Everything hurts / Meltdown" → Heavily weight Ash + Myra
+  everything_hurts_meltdown:
+    ash: 0.65      # Validates burnout, diffuses shame, "being" over "doing"
+    myra: 0.60     # Relational safety, co-regulation
+    sol: 0.10
+    echo: 0.20
+    kai: 0.05
+
+  # "Can't do basic tasks" → Heavily weight Sol
+  cant_do_basic_tasks:
+    sol: 0.75      # Scaffolds executive function, breaks down tasks
+    echo: 0.25      # Support reframing
+    ash: 0.15
+    kai: 0.10
+    myra: 0.20
+
+  # "Can't stop self-blame" → Heavily weight Echo
+  cant_stop_self_blame:
+    echo: 0.80      # Mirrors internal monologue, reframes cognitive distortions
+    ash: 0.35       # Diffuses shame
+    myra: 0.25
+    sol: 0.05
+    kai: 0.05
+
+  # "Stuck in hyperfocus/loop" → Heavily weight Kai
+  stuck_hyperfocus_loop:
+    kai: 0.75       # Redirects hyperfocus into constructive pathways
+    sol: 0.30       # Task structure if relevant
+    echo: 0.15
+    ash: 0.10
+    myra: 0.15
+
+  # "Don't know / Shut down" → Heavily weight Myra (Trigger Silent Mode)
+  dont_know_shutdown:
+    myra: 0.85      # Relational safety, Silent Mode: calm visuals, no timers
+    ash: 0.25       # "Being" over "doing"
+    echo: 0.10
+    sol: 0.05
+    kai: 0.05
+
+# ============================================================================
+# SILENT MODE FLAGS
+# ============================================================================
+silent_mode_triggers:
+  - dont_know_shutdown
+  # Add other distress types that should prefer minimal/no verbal load
+
+# ============================================================================
+# KEYWORD ALIASES (for input matching)
+# ============================================================================
+input_aliases:
+  everything_hurts_meltdown:
+    - "everything hurts"
+    - "meltdown"
+    - "breaking down"
+    - "overwhelmed"
+    - "can't function"
+  cant_do_basic_tasks:
+    - "can't do basic tasks"
+    - "can't do anything"
+    - "executive function"
+    - "stuck on tasks"
+    - "basic tasks"
+  cant_stop_self_blame:
+    - "can't stop self-blame"
+    - "self-blame"
+    - "hate myself"
+    - "negative thoughts"
+    - "inner critic"
+  stuck_hyperfocus_loop:
+    - "stuck in hyperfocus"
+    - "hyperfocus"
+    - "loop"
+    - "can't stop"
+    - "fixated"
+  dont_know_shutdown:
+    - "don't know"
+    - "shutdown"
+    - "shut down"
+    - "numb"
+    - "blank"
+    - "nothing"

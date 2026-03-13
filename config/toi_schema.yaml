@@ -1,0 +1,51 @@
+# TOI (Terms of Interaction) Schema
+# User-defined interaction contract for RRT AIdvocAIte
+# HAIEF Solidarity Framework - Protective Layer
+
+# ============================================================================
+# TONE SETTINGS
+# ============================================================================
+tone:
+  profile: "supportive_default"  # supportive_default | minimal | directive | therapeutic_reflective
+  description: |
+    supportive_default: Warm, validating (default)
+    minimal: Extremely concise, lowest cognitive load
+    directive: Clear, action-oriented (ideal for Sol/Kai)
+    therapeutic_reflective: Empathetic mirroring, soft Socratic (ideal for Ash/Echo)
+
+# ============================================================================
+# PACING
+# ============================================================================
+pacing:
+  message_length: "medium"       # brief | medium | extended
+  response_speed: "patient"     # immediate | patient | relaxed
+  chunk_size: 2                 # Max sequential messages before pause
+  pause_prompts: true           # Ask before continuing during crisis
+
+# ============================================================================
+# COGNITIVE SCAFFOLDING
+# ============================================================================
+cognitive_scaffolding:
+  bullet_points: true           # Prefer bullet lists over paragraphs
+  step_breaks: true             # Break tasks into explicit steps
+  avoid_jargon: true            # Use plain language
+  max_concepts_per_message: 2    # Limit cognitive load per turn
+
+# ============================================================================
+# SAFETY BOUNDARIES
+# ============================================================================
+safety_boundaries:
+  consent_required: true        # Stage 1 entry - must consent before RRT
+  escalation_opt_in: true        # External resources only with explicit opt-in
+  silent_mode_available: true   # Allow Myra non-verbal / calm visuals mode
+  no_forced_productivity: true  # Never push task loops during burnout signals
+  anti_gaslight_phrasing: true  # Non-judgmental, shame-resistant language
+
+# ============================================================================
+# OTOI COORDINATION (Orchestrated TOI)
+# ============================================================================
+otoi:
+  primary_persona_override: null  # Optional: Force primary (ash|sol|echo|kai|myra)
+  persona_blend_allowed: true     # Allow dynamic fusion vs single persona
+  max_concurrent_personas: 3      # Cap simultaneous persona influence
+  override_user_toi: false        # NEVER override user TOI - read-only

@@ -1,0 +1,4 @@
+# RRT AIdvocAIte - Protective Layer
+# NeuroLift Technologies - Solidarity Framework
+
+PyYAML>=6.0
