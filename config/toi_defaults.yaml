@@ -1,0 +1,59 @@
+# TOI (Terms of Interaction) Default Configuration
+# The Solidarity Framework — Constitutional Layer
+# Every RRT AIdvocAIte interaction passes through this middleware filter.
+# Individual users override these defaults via their personal TOI contract.
+
+default_toi:
+  tone_profile: "supportive_default"   # supportive_default | minimal | directive | therapeutic_reflective
+  pacing: "standard"                   # standard | slow | very_slow
+  cognitive_scaffolding_level: 2       # 0=none, 1=light, 2=moderate, 3=full
+  safety_boundaries: []
+  silent_mode_preferred: false
+  allow_timers: true
+  allow_task_loops: false              # Anti-forced-productivity: never push task loops during burnout
+  preferred_personas: []
+  excluded_personas: []
+  max_response_length: null            # null = auto (derived from tone_profile)
+  consent_given: false                 # Must be explicitly set true before full RRT deployment
+
+# Stage 1: Consent entry prompt (Agency First principle)
+consent_prompt:
+  text: >
+    Hey. I noticed something feels heavy right now.
+    I'm here — no pressure, no timers, just presence.
+    Can I check in with you for a moment?
+  options:
+    yes: "Yes, I'd like support"
+    not_now: "Not right now"
+    silent: "Just be here with me (Silent Mode)"
+  silent_mode_response: >
+    I'm here. No words needed.
+
+# Pacing intervals (seconds between follow-up prompts)
+pacing_intervals:
+  standard: 0
+  slow: 5
+  very_slow: 15
+
+# Cognitive scaffolding display rules
+scaffolding_rules:
+  level_0:
+    bullet_points: false
+    numbered_lists: false
+    headers: false
+    max_sentences: 2
+  level_1:
+    bullet_points: false
+    numbered_lists: false
+    headers: false
+    max_sentences: 4
+  level_2:
+    bullet_points: true
+    numbered_lists: false
+    headers: false
+    max_sentences: 8
+  level_3:
+    bullet_points: true
+    numbered_lists: true
+    headers: true
+    max_sentences: null
