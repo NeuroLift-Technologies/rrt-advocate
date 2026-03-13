@@ -10,25 +10,46 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Union
 
-from protective_layer.engines import (
-    DEFAULT_RRT_CONFIG_PATH,
-    DEFAULT_TOI_CONFIG_PATH,
-    LocalFirstCrisisDetectionEngine,
-    PersonaFusionEngine,
-    TOIParser,
-    TieredActivationDialogueTree,
-    load_yaml_config,
-)
-from protective_layer.models import (
-    CrisisAssessment,
-    CrisisLevel,
-    DistressSignal,
-    InterventionResponse,
-    PersonaBlend,
-    ResponsePlan,
-    ResponseStatus,
-    TOIConfig,
-)
+try:
+    from .protective_layer.engines import (
+        DEFAULT_RRT_CONFIG_PATH,
+        DEFAULT_TOI_CONFIG_PATH,
+        LocalFirstCrisisDetectionEngine,
+        PersonaFusionEngine,
+        TOIParser,
+        TieredActivationDialogueTree,
+        load_yaml_config,
+    )
+    from .protective_layer.models import (
+        CrisisAssessment,
+        CrisisLevel,
+        DistressSignal,
+        InterventionResponse,
+        PersonaBlend,
+        ResponsePlan,
+        ResponseStatus,
+        TOIConfig,
+    )
+except ImportError:  # pragma: no cover - enables `python3 src/rrt_advocate.py`
+    from protective_layer.engines import (
+        DEFAULT_RRT_CONFIG_PATH,
+        DEFAULT_TOI_CONFIG_PATH,
+        LocalFirstCrisisDetectionEngine,
+        PersonaFusionEngine,
+        TOIParser,
+        TieredActivationDialogueTree,
+        load_yaml_config,
+    )
+    from protective_layer.models import (
+        CrisisAssessment,
+        CrisisLevel,
+        DistressSignal,
+        InterventionResponse,
+        PersonaBlend,
+        ResponsePlan,
+        ResponseStatus,
+        TOIConfig,
+    )
 
 
 class RRTAdvocate:
