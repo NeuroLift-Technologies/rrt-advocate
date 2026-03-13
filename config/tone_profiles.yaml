@@ -1,0 +1,59 @@
+# =============================================================================
+# Tone Profiles — communication style presets for the RRT AIdvocAIte.
+# =============================================================================
+#
+# Each profile governs how the system communicates with the user.
+# The active profile is selected by the user's TOI.
+
+profiles:
+  supportive:
+    label: "Supportive Default"
+    description: "Warm, validating, emotionally present"
+    max_sentence_length: 30
+    vocabulary_level: everyday
+    emotional_register: warm_validating
+    persona_affinity:
+      ash: 1.0
+      myra: 1.0
+      echo: 0.9
+      sol: 0.7
+      kai: 0.6
+
+  minimal:
+    label: "Minimal Tone"
+    description: "Extremely concise, lowest possible cognitive load"
+    max_sentence_length: 10
+    vocabulary_level: simple
+    emotional_register: neutral_calm
+    persona_affinity:
+      sol: 0.9
+      kai: 0.8
+      myra: 0.6
+      ash: 0.5
+      echo: 0.4
+
+  directive:
+    label: "Directive Tone"
+    description: "Clear, action-oriented (ideal for Sol/Kai)"
+    max_sentence_length: 20
+    vocabulary_level: clear
+    emotional_register: calm_confident
+    persona_affinity:
+      sol: 1.0
+      kai: 1.0
+      echo: 0.5
+      ash: 0.4
+      myra: 0.3
+
+  therapeutic:
+    label: "Therapeutic / Reflective"
+    description: "Empathetic mirroring, soft Socratic questioning (ideal for Ash/Echo)"
+    max_sentence_length: 25
+    vocabulary_level: reflective
+    emotional_register: empathetic_curious
+    persona_affinity:
+      ash: 1.0
+      echo: 1.0
+      myra: 0.8
+      sol: 0.5
+      kai: 0.4

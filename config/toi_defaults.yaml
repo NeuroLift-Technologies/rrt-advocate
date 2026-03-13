@@ -1,0 +1,35 @@
+# =============================================================================
+# TOI Defaults — Terms of Interaction default configuration
+# RRT AIdvocAIte — Protective Layer of the Solidarity Framework
+# =============================================================================
+#
+# This file defines the *default* TOI contract applied when no user-specific
+# TOI has been loaded.  It prioritises safety, warmth, and user agency.
+
+tone: supportive
+pacing: user_led
+cognitive_scaffolding: moderate
+
+# Hard boundaries the system must respect.
+# Uncomment any line to activate that boundary by default.
+safety_boundaries: []
+  # - no_external_contacts
+  # - no_timers
+  # - no_task_lists
+  # - no_productivity_framing
+  # - no_unsolicited_advice
+  # - silent_mode_only
+
+# All 5 OG personas are enabled by default.
+allowed_personas:
+  - ash
+  - sol
+  - echo
+  - kai
+  - myra
+
+# Optional message length cap (null = no limit).
+max_message_length: null
+
+# Free-form user preferences that persona prompts can reference.
+custom_preferences: {}

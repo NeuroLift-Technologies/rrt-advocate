@@ -1,0 +1,57 @@
+# =============================================================================
+# Persona Weight Profiles — default mappings from distress type to persona
+# blend for the RRT AIdvocAIte Fusion Engine.
+# =============================================================================
+#
+# Each key under "distress_profiles" is a canonical distress type produced
+# by the Stage 2 dialogue handler or the CDE pipeline.
+# Weights are 0.0–1.0; the Fusion Engine normalises before blending.
+
+distress_profiles:
+  meltdown:
+    description: "Everything hurts / Meltdown — heavily weight Ash + Myra"
+    ash: 0.9
+    sol: 0.1
+    echo: 0.2
+    kai: 0.0
+    myra: 0.8
+
+  cant_do_tasks:
+    description: "Can't do basic tasks — heavily weight Sol"
+    ash: 0.2
+    sol: 0.9
+    echo: 0.1
+    kai: 0.2
+    myra: 0.1
+
+  self_blame:
+    description: "Can't stop self-blame — heavily weight Echo"
+    ash: 0.3
+    sol: 0.1
+    echo: 0.9
+    kai: 0.0
+    myra: 0.2
+
+  hyperfocus_loop:
+    description: "Stuck in hyperfocus / loop — heavily weight Kai"
+    ash: 0.1
+    sol: 0.2
+    echo: 0.1
+    kai: 0.9
+    myra: 0.1
+
+  shutdown:
+    description: "Don't know / Shut down — heavily weight Myra (Silent Mode)"
+    ash: 0.2
+    sol: 0.0
+    echo: 0.0
+    kai: 0.0
+    myra: 1.0
+
+# CDE-derived mapping: dominant semantic field → persona emphasis
+cde_field_mapping:
+  overwhelm:      { ash: 0.8, myra: 0.7, echo: 0.3, sol: 0.1, kai: 0.1 }
+  negative_self_talk: { echo: 0.9, ash: 0.5, myra: 0.3, sol: 0.1, kai: 0.1 }
+  task_avoidance:  { sol: 0.9, ash: 0.3, echo: 0.2, kai: 0.2, myra: 0.1 }
+  hyperfocus_loop: { kai: 0.9, sol: 0.3, echo: 0.2, ash: 0.1, myra: 0.1 }
+  relational_distress: { myra: 0.9, ash: 0.4, echo: 0.4, sol: 0.1, kai: 0.1 }

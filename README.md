@@ -1,248 +1,180 @@
-# RRT Advocate
+# RRT AIdvocAIte
 
-**Rapid Response Team Advocate - Crisis Intervention & Immediate ADHD Support**
+**Protective Layer of the Solidarity Framework — NeuroLift Technologies**
 
 ## Mission
 
-The RRT (Rapid Response Team) Advocate is a specialized AI agent within the NeuroLift Technologies ecosystem, designed to provide immediate, crisis-level support for individuals experiencing acute ADHD-related challenges. This Advocate represents the fusion of Avatar and Aide intelligences specifically trained for rapid response scenarios.
+The RRT AIdvocAIte is the **Protective Layer** of the Human-AI ElevAItion Foundation (HAIEF) Solidarity Framework.  It replaces the former generic Green-to-Black severity system with a **TOI-compliant, dynamically weighted, multi-persona orchestration engine** designed for neurodivergent crisis support.
 
-## Core Purpose
+**"When ADHD overwhelms, the AIdvocAIte responds — on your terms."**
 
-**"When ADHD overwhelms, RRT responds"**
+## The Solidarity Framework
 
-The RRT Advocate serves as the first-line digital responder for:
-- **Executive Function Crises**: Sudden inability to organize, prioritize, or initiate tasks
-- **Emotional Dysregulation Events**: Intense overwhelm, rejection sensitivity, or emotional flooding
-- **Attention Collapse**: Complete loss of focus or hyperfocus breaking unexpectedly
-- **Time Blindness Emergencies**: Critical deadline awareness or time management failures
-- **Decision Paralysis**: Inability to make choices leading to functional shutdown
+The Solidarity Framework is the unified standard for all NeuroLift Technologies agents:
 
-## Architecture Overview
+| Layer | Components |
+|---|---|
+| **Constitutional** | TOI (Terms of Interaction) · OTOI (Orchestrated TOI) |
+| **Protective** | **RRT AIdvocAIte** · Sleepwalker Protocol |
 
-### AI-Fusion Framework Integration
-
-The RRT Advocate follows the proprietary NeuroLift AI-fusion methodology:
+## Architecture
 
 ```
-Crisis Avatar + Emergency Aide → RRT Advocate
+┌──────────────────────────────────────────────────┐
+│                 RRT AIdvocAIte                    │
+│                                                  │
+│  ┌────────────────────────────────────────────┐  │
+│  │         TOI-OTOI Governance Wrapper         │  │
+│  │  (Tone · Pacing · Scaffolding · Boundaries) │  │
+│  └─────────────────┬──────────────────────────┘  │
+│                    │                             │
+│  ┌─────────────────▼──────────────────────────┐  │
+│  │     Tiered Activation Dialogue Tree         │  │
+│  │  Stage 0 → 1 → 2 → 3 → 4 → 5 (exit)      │  │
+│  │  (Agency-first consent at every gate)       │  │
+│  └─────────────────┬──────────────────────────┘  │
+│                    │                             │
+│  ┌─────────────────▼──────────────────────────┐  │
+│  │         Persona Fusion Engine               │  │
+│  │  ASH · SOL · ECHO · KAI · MYRA             │  │
+│  │  (Dynamic weights 0.0–1.0 per persona)      │  │
+│  └─────────────────┬──────────────────────────┘  │
+│                    │                             │
+│  ┌─────────────────▼──────────────────────────┐  │
+│  │    Crisis Detection Engine (CDE)            │  │
+│  │  L1: Keyword/Semantic · L2: Sentiment ·     │  │
+│  │  L3: Behavioral Pattern (all local-first)   │  │
+│  └────────────────────────────────────────────┘  │
+│                                                  │
+│  ┌────────────────────────────────────────────┐  │
+│  │       Configurable Tone Profiles            │  │
+│  │  Supportive · Minimal · Directive ·         │  │
+│  │  Therapeutic/Reflective                     │  │
+│  └────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────┘
 ```
 
-**Crisis Avatar Training Environment:**
-- Simulated high-stress ADHD scenarios in virtual environments
-- Rapid decision-making under pressure
-- Pattern recognition for crisis indicators
-- Self-advocacy and immediate coping strategies
+## The 5 Original Guides (OG Personas)
 
-**Emergency Aide Development:**
-- Empathetic crisis response protocols
-- De-escalation techniques for ADHD-specific triggers
-- Resource mobilization and support coordination
-- Real-time environmental adaptation
+| Persona | Core Role | Activates When |
+|---|---|---|
+| **ASH** | Validates burnout, diffuses shame, prioritises *being* over *doing* | Meltdown, burnout |
+| **SOL** | Scaffolds executive function, breaks down tasks, manages attention fatigue | Can't do basic tasks |
+| **ECHO** | Mirrors internal monologue, reframes cognitive distortions | Self-blame, negative self-talk |
+| **KAI** | Redirects hyperfocus and fixation into constructive pathways | Stuck in a loop |
+| **MYRA** | Provides relational safety, co-regulation, anchors Silent Mode | Shutdown, don't know |
 
-**Fused RRT Advocate Capabilities:**
-- Immediate crisis assessment and triage
-- Rapid deployment of coping strategies
-- Escalation protocols for severe situations
-- Integration with broader NeuroLift ecosystem
+## Tiered Activation Dialogue (Stages 0–5)
 
-## Key Features
-
-### 🚨 Crisis Detection & Response
-- **Real-time Monitoring**: Continuous assessment of user stress indicators
-- **Trigger Recognition**: Pattern matching for ADHD crisis precursors
-- **Immediate Intervention**: Sub-second response time for critical situations
-- **Escalation Protocols**: Seamless handoff to appropriate support systems
-
-### 🧠 ADHD-Specific Crisis Management
-- **Executive Function Rescue**: Emergency task breakdown and prioritization
-- **Emotional Regulation Support**: Immediate grounding and regulation techniques
-- **Attention Restoration**: Rapid focus recovery strategies
-- **Time Crisis Management**: Emergency time awareness and deadline support
-
-### 🔒 Privacy-First Crisis Support
-- **Local Processing**: Crisis detection without data transmission
-- **Encrypted Communications**: Secure crisis reporting and escalation
-- **User Agency**: Complete control over crisis response preferences
-- **Confidential Logging**: Private crisis pattern analysis for improvement
-
-### 🤝 Ecosystem Integration
-- **Supervisor AI Coordination**: Seamless integration with NeuroLift command structure
-- **Multi-Advocate Collaboration**: Coordination with specialized Advocates
-- **External Resource Access**: Connection to crisis hotlines and professional support
-- **Family/Caregiver Alerts**: Configurable emergency contact protocols
+| Stage | Name | Description |
+|---|---|---|
+| 0 | Passive Observation | CDE running; no user-facing output |
+| 1 | Entry Prompt | Consent request — "Would you like support?" |
+| 2 | Distress Assessment | User selects flavour of distress |
+| 3 | Persona Fusion | System generates blended persona response |
+| 4 | Ongoing Support | Iterative loop until user exits |
+| 5 | Graceful Exit | System returns to Stage 0 |
 
 ## Repository Structure
 
 ```
 src/
-├── crisis/              # Crisis detection and assessment
-│   ├── detectors/       # Real-time crisis pattern recognition
-│   ├── assessors/       # Crisis severity and type classification
-│   └── triggers/        # ADHD-specific trigger identification
-├── response/            # Immediate response protocols
-│   ├── interventions/   # Crisis intervention strategies
-│   ├── de_escalation/   # De-escalation techniques
-│   └── stabilization/   # Immediate stabilization protocols
-├── coordination/        # System integration and escalation
-│   ├── supervisor/      # Supervisor AI communication
-│   ├── advocates/       # Multi-Advocate coordination
-│   └── external/        # External resource integration
-└── learning/            # Continuous improvement
-    ├── patterns/        # Crisis pattern analysis
-    ├── effectiveness/   # Response effectiveness tracking
-    └── adaptation/      # Personalized response optimization
+├── rrt_advocate.py          # Main orchestrator
+├── toi/                     # TOI-OTOI Governance Wrapper
+│   ├── toi_config.py        # TOI data models
+│   ├── toi_parser.py        # TOI enforcement middleware
+│   └── otoi_coordinator.py  # OTOI persona coordination
+├── personas/                # Persona Fusion Engine
+│   ├── persona_base.py      # Abstract persona contract
+│   ├── ash.py               # Burnout validation
+│   ├── sol.py               # Executive function scaffolding
+│   ├── echo.py              # Cognitive reframing
+│   ├── kai.py               # Hyperfocus redirection
+│   ├── myra.py              # Relational safety / Silent Mode
+│   └── fusion_engine.py     # Dynamic weighting algorithm
+├── dialogue/                # Tiered Activation Dialogue Tree
+│   ├── dialogue_tree.py     # Stage state machine
+│   ├── stage_handlers.py    # Distress → weight mapping
+│   └── consent_manager.py   # Agency-first consent tracking
+├── detection/               # Crisis Detection Engine (CDE)
+│   ├── cde_pipeline.py      # 3-layer pipeline orchestrator
+│   ├── keyword_analyzer.py  # Layer 1: Keyword/Semantic fields
+│   ├── sentiment_analyzer.py # Layer 2: Sentiment/Emotional tone
+│   └── behavioral_analyzer.py # Layer 3: Behavioral patterns
+└── tones/                   # Configurable Tone Profiles
+    └── tone_profiles.py     # 4 tone mode definitions
 
 config/
-├── crisis_thresholds.yaml    # Crisis detection parameters
-├── response_protocols.yaml   # Standard response procedures
-├── escalation_rules.yaml     # Escalation decision trees
-└── privacy_settings.yaml     # Privacy and security configuration
-
-docs/
-├── crisis_protocols.md       # Crisis response documentation
-├── integration_guide.md      # NeuroLift ecosystem integration
-├── training_methodology.md   # Avatar-Aide fusion process
-└── privacy_security.md       # Privacy and security specifications
+├── crisis_thresholds.yaml   # CDE pipeline configuration
+├── toi_defaults.yaml        # Default TOI contract
+├── persona_weights.yaml     # Distress-to-persona weight maps
+└── tone_profiles.yaml       # Tone profile specifications
 
 tests/
-├── crisis_simulation/        # Crisis scenario testing
-├── response_validation/      # Response effectiveness testing
-└── integration_tests/        # Ecosystem integration testing
+├── test_toi.py              # TOI-OTOI tests
+├── test_fusion_engine.py    # Persona & fusion tests
+├── test_cde.py              # CDE pipeline tests
+├── test_dialogue_tree.py    # Dialogue tree tests
+├── test_tone_profiles.py    # Tone profile tests
+└── test_rrt_advocate.py     # Integration tests
 ```
 
-## Development Philosophy
+## Core Design Principles
 
-### Crisis-First Design
-Every component is designed with crisis response as the primary consideration:
-- **Speed Over Perfection**: Rapid response prioritized over comprehensive analysis
-- **Fail-Safe Defaults**: Conservative escalation when uncertain
-- **User Safety Priority**: All decisions prioritize user wellbeing
-- **Continuous Availability**: 24/7 crisis monitoring and response capability
-
-### ADHD-Informed Crisis Understanding
-The RRT Advocate is built with deep understanding of ADHD-specific crisis patterns:
-- **Rejection Sensitive Dysphoria**: Specialized protocols for RSD episodes
-- **Executive Function Collapse**: Targeted support for cognitive overwhelm
-- **Hyperfocus Interruption**: Gentle transition strategies
-- **Time Blindness Crises**: Emergency time awareness restoration
-
-### Privacy-First Crisis Support
-Crisis situations require maximum privacy protection:
-- **Local Crisis Detection**: No external data transmission for assessment
-- **Encrypted Crisis Logs**: Secure storage of crisis patterns
-- **User-Controlled Escalation**: Complete control over external contact
-- **Anonymous Crisis Reporting**: Optional anonymous data for system improvement
-
-## Integration with NeuroLift Ecosystem
-
-### Supervisor AI Coordination
-```python
-# Example integration with Supervisor AI
-class RRTAdvocate:
-    def report_crisis(self, crisis_assessment):
-        """Report crisis to Supervisor AI for ecosystem coordination"""
-        return self.supervisor.handle_crisis(
-            advocate_id="rrt",
-            crisis_level=crisis_assessment.severity,
-            required_advocates=crisis_assessment.support_needed,
-            user_preferences=self.user.crisis_preferences
-        )
-```
-
-### Multi-Advocate Collaboration
-The RRT Advocate coordinates with other specialized Advocates:
-- **StayAlert Advocate**: For attention-related crises
-- **ImpulseGuard Advocate**: For decision-making emergencies
-- **FocusFlow Advocate**: For hyperfocus management crises
-- **Timely Advocate**: For time blindness emergencies
-
-## Development Status
-
-**Current Phase**: Initial Development (Testing TOI-OTOI Integration Strategy)
-
-This repository serves as a testing ground for integrating the TOI-OTOI framework with existing NeuroLift systems, following the user's strategy of building initial AI agents with different development structures before full framework integration.
+- **Local-First & Privacy-Centric** — The CDE never transmits user data externally.
+- **Agency First** — The system pauses and asks for consent before engaging.
+- **Anti-Gaslight / Shame-Resistant** — No judgmental framing in code or responses.
+- **No Forced Productivity** — Burnout is met with rest, never with task pressure.
+- **TOI-Compliant** — Every response passes through the user's interaction contract.
 
 ## Getting Started
 
 ### Prerequisites
+
 - Python 3.9+
-- NeuroLift Supervisor AI (for ecosystem integration)
-- Crisis response training data
-- ADHD-specific crisis pattern datasets
 
 ### Installation
+
 ```bash
-# Clone the repository
-git clone https://github.com/JDUB1216/rrt-advocate.git
+git clone https://github.com/NeuroLift-Technologies/rrt-advocate.git
 cd rrt-advocate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Configure crisis detection parameters
-cp config/crisis_thresholds.example.yaml config/crisis_thresholds.yaml
-# Edit configuration files as needed
-
-# Run initial setup
-python setup.py install
 ```
 
 ### Quick Start
+
 ```python
-from rrt_advocate import RRTAdvocate
+from src.rrt_advocate import RRTAdvocate
 
-# Initialize RRT Advocate
-rrt = RRTAdvocate(
-    user_profile="path/to/user/profile.json",
-    crisis_config="config/crisis_thresholds.yaml"
-)
+advocate = RRTAdvocate("user_001", toi_dict={
+    "tone": "supportive",
+    "safety_boundaries": ["no_productivity_framing"],
+})
 
-# Start crisis monitoring
-rrt.start_monitoring()
+result = advocate.process_message("I can't do anything right, everything hurts")
+# → Triggers Entry Prompt (consent request)
 
-# Manual crisis assessment
-crisis_level = rrt.assess_current_state()
-if crisis_level.requires_intervention:
-    response = rrt.deploy_intervention(crisis_level)
+result = advocate.process_selection("Yes, I'd like support")
+# → Moves to Distress Assessment
+
+result = advocate.process_selection("Everything hurts / Meltdown")
+# → Persona Fusion: Ash + Myra weighted response
 ```
 
-## Contributing
+### Running Tests
 
-The RRT Advocate is part of the proprietary NeuroLift Technologies AI-fusion framework. Development follows established protocols for specialized Advocate creation.
-
-### Development Guidelines
-1. **Crisis-First Thinking**: Every feature must consider crisis response impact
-2. **ADHD-Informed Design**: All development informed by ADHD research and lived experience
-3. **Privacy by Design**: Privacy considerations integrated from initial design
-4. **Fail-Safe Implementation**: Conservative defaults that prioritize user safety
-
-## Privacy & Security
-
-The RRT Advocate handles sensitive crisis data and implements comprehensive privacy protections:
-- **Local Processing**: Crisis detection and initial response processed locally
-- **Encrypted Storage**: All crisis logs encrypted with user-controlled keys
-- **Minimal Data Collection**: Only essential data collected for crisis response
-- **User-Controlled Sharing**: Complete user control over crisis data sharing
-
-## License
-
-This repository contains proprietary NeuroLift Technologies intellectual property. The AI-fusion framework and specialized Advocate development methodology are protected under applicable intellectual property laws.
+```bash
+python3 -m pytest tests/ -v
+```
 
 ## Support & Crisis Resources
 
-### Immediate Crisis Support
 If you are experiencing a mental health crisis:
-- **US**: National Suicide Prevention Lifeline: 988
-- **Crisis Text Line**: Text HOME to 741741
-- **Emergency Services**: 911
-
-### ADHD-Specific Resources
-- **CHADD**: Children and Adults with ADHD - chadd.org
-- **ADDitude Magazine**: additudemag.com
-- **ADHD Online Community**: reddit.com/r/ADHD
+- **US**: National Suicide Prevention Lifeline: **988**
+- **Crisis Text Line**: Text HOME to **741741**
+- **Emergency Services**: **911**
 
 ---
 
-**NeuroLift Technologies**  
-*Tech That Gets You • Nothing About Us Without Us • ElevAIte Your Mind*  
-*Elevating Mind, Changing Lives*
+**NeuroLift Technologies**
+*Tech That Gets You · Nothing About Us Without Us · ElevAIte Your Mind*
