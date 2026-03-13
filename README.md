@@ -75,28 +75,21 @@ Crisis Avatar + Emergency Aide → RRT Advocate
 
 ```
 src/
-├── crisis/              # Crisis detection and assessment
-│   ├── detectors/       # Real-time crisis pattern recognition
-│   ├── assessors/       # Crisis severity and type classification
-│   └── triggers/        # ADHD-specific trigger identification
-├── response/            # Immediate response protocols
-│   ├── interventions/   # Crisis intervention strategies
-│   ├── de_escalation/   # De-escalation techniques
-│   └── stabilization/   # Immediate stabilization protocols
-├── coordination/        # System integration and escalation
-│   ├── supervisor/      # Supervisor AI communication
-│   ├── advocates/       # Multi-Advocate coordination
-│   └── external/        # External resource integration
-└── learning/            # Continuous improvement
-    ├── patterns/        # Crisis pattern analysis
-    ├── effectiveness/   # Response effectiveness tracking
-    └── adaptation/      # Personalized response optimization
+├── rrt_advocate.py      # Main RRT Advocate (Solidarity Framework integrated)
+├── governance/          # TOI-OTOI layer
+├── persona/             # Persona Fusion Engine (5 OGs)
+├── dialogue/            # Tiered Activation Dialogue Tree
+├── prompts/             # Tone profiles for LLM prompts
+├── crisis/              # Crisis Detection Engine (3-layer CDE)
+├── response/            # Interventions, de-escalation
+├── coordination/        # Supervisor interface
+└── learning/            # Pattern analyzer
 
 config/
-├── crisis_thresholds.yaml    # Crisis detection parameters
-├── response_protocols.yaml   # Standard response procedures
-├── escalation_rules.yaml     # Escalation decision trees
-└── privacy_settings.yaml     # Privacy and security configuration
+├── crisis_thresholds.yaml   # Crisis detection parameters
+├── toi_schema.yaml         # TOI configuration schema
+├── persona_weights.yaml    # Distress input → persona weights
+└── tone_profiles.yaml     # Tone profile instructions
 
 docs/
 ├── crisis_protocols.md       # Crisis response documentation
@@ -158,9 +151,15 @@ The RRT Advocate coordinates with other specialized Advocates:
 
 ## Development Status
 
-**Current Phase**: Initial Development (Testing TOI-OTOI Integration Strategy)
+**Current Phase**: Solidarity Framework Integration (Protective Layer)
 
-This repository serves as a testing ground for integrating the TOI-OTOI framework with existing NeuroLift systems, following the user's strategy of building initial AI agents with different development structures before full framework integration.
+The RRT Advocate has been upgraded as the **RRT AIdvocAIte** — the Protective Layer of the HAIEF Solidarity Framework. Key components:
+
+- **TOI-OTOI Governance Wrapper**: User's Terms of Interaction as strict middleware
+- **Persona Fusion Engine**: Dynamic blending of Ash, Sol, Echo, Kai, Myra (5 OGs)
+- **Tiered Activation Dialogue Tree**: Stage 0–5 user-led journey with consent gate
+- **Configurable Tone Profiles**: Supportive Default, Minimal, Directive, Therapeutic/Reflective
+- **3-Layer Crisis Detection Engine (CDE)**: Local-first keyword/semantic, sentiment, behavioral analysis
 
 ## Getting Started
 
@@ -188,22 +187,28 @@ python setup.py install
 ```
 
 ### Quick Start
+```bash
+# From project root
+PYTHONPATH=src python3 run_rrt.py
+```
+
 ```python
-from rrt_advocate import RRTAdvocate
+from rrt_advocate import RRTAdvocate, create_rrt_advocate
 
-# Initialize RRT Advocate
-rrt = RRTAdvocate(
-    user_profile="path/to/user/profile.json",
-    crisis_config="config/crisis_thresholds.yaml"
-)
+# Initialize RRT Advocate (Solidarity Framework integrated)
+advocate = await create_rrt_advocate("user_001")
 
-# Start crisis monitoring
-rrt.start_monitoring()
+# Stage 1: Agency-first consent prompt
+prompt = advocate.get_stage_1_consent_prompt()
 
-# Manual crisis assessment
-crisis_level = rrt.assess_current_state()
-if crisis_level.requires_intervention:
-    response = rrt.deploy_intervention(crisis_level)
+# Stage 2: Process distress input → Persona blend
+blend = advocate.process_stage_2_input("Everything hurts / Meltdown")
+
+# 3-layer CDE: Local-first crisis detection from text
+cde_result = advocate.detect_crisis_from_text("I can't do anything. Everything hurts.")
+
+# Tone instructions for LLM prompt construction
+tone = advocate.get_tone_instructions()
 ```
 
 ## Contributing

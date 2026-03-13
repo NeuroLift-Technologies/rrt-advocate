@@ -1,0 +1,70 @@
+# TOI (Terms of Interaction) Schema
+# RRT AIdvocAIte - Solidarity Framework Protective Layer
+# User-defined interaction contract ingested by the RRT before any crisis response
+
+toi_version: "1.0"
+description: "User's Terms of Interaction - governs tone, pacing, scaffolding, and safety boundaries"
+
+# ============================================================================
+# TONE CONFIGURATION
+# ============================================================================
+# Dictates how the RRT Advocate speaks. Must align with OTOI persona selection.
+
+tone:
+  profile: "supportive_default"  # supportive_default | minimal | directive | therapeutic_reflective
+  warmth_level: 0.8              # 0.0 (neutral) to 1.0 (very warm)
+  validation_frequency: "balanced"  # minimal | balanced | high
+
+# ============================================================================
+# PACING CONFIGURATION
+# ============================================================================
+# Controls response speed and cognitive load delivery.
+
+pacing:
+  response_speed: "moderate"     # slow | moderate | fast
+  chunk_size: "medium"           # small | medium | large (info per message)
+  pause_between_messages: 1.5    # seconds (0 = no pause)
+
+# ============================================================================
+# COGNITIVE SCAFFOLDING
+# ============================================================================
+# Adjusts complexity and structure of support.
+
+cognitive_scaffolding:
+  breakdown_granularity: "medium"  # low | medium | high
+  explicit_instructions: true
+  offer_alternatives: true
+  avoid_assumptions: true
+
+# ============================================================================
+# SAFETY BOUNDARIES
+# ============================================================================
+# Hard limits that must never be overridden by any persona.
+
+safety_boundaries:
+  no_forced_productivity: true    # Never push tasks during burnout signals
+  consent_required_escalation: true
+  silent_mode_available: true    # Myra-anchored non-verbal mode
+  max_intervention_intensity: 0.8  # 0.0-1.0 cap on intervention assertiveness
+
+# ============================================================================
+# PERSONA PREFERENCES (Optional Overrides)
+# ============================================================================
+# User can bias toward/away from specific OGs. Weights 0.0-1.0.
+# If omitted, Fusion Engine uses distress-type mapping only.
+
+persona_overrides:
+  ash: null    # null = use Fusion Engine; 0.0-1.0 = fixed bias
+  sol: null
+  echo: null
+  kai: null
+  myra: null
+
+# ============================================================================
+# STAGE 1 ENTRY (Agency-First)
+# ============================================================================
+# The RRT must pause and request consent before full activation.
+
+stage1_entry:
+  prompt_before_activation: true
+  explicit_consent_required: true

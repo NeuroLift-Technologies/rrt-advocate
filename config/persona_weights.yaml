@@ -1,0 +1,70 @@
+# Persona Fusion Engine - Distress Input → Persona Weight Mappings
+# Stage 2 Tiered Activation Dialogue Tree → Fusion Engine
+# Weights are 0.0 to 1.0 per persona. Normalized to sum to 1.0 at runtime.
+
+distress_inputs:
+  # "Everything hurts / Meltdown" → Ash + Myra heavy
+  meltdown:
+    ash: 0.45
+    sol: 0.05
+    echo: 0.10
+    kai: 0.05
+    myra: 0.35
+
+  # "Can't do basic tasks" → Sol heavy
+  executive_dysfunction:
+    ash: 0.15
+    sol: 0.55
+    echo: 0.10
+    kai: 0.10
+    myra: 0.10
+
+  # "Can't stop self-blame" → Echo heavy
+  negative_self_talk:
+    ash: 0.20
+    sol: 0.05
+    echo: 0.55
+    kai: 0.05
+    myra: 0.15
+
+  # "Stuck in hyperfocus/loop" → Kai heavy
+  hyperfocus_stuck:
+    ash: 0.05
+    sol: 0.20
+    echo: 0.10
+    kai: 0.55
+    myra: 0.10
+
+  # "Don't know / Shut down" → Myra heavy (Silent Mode)
+  shutdown:
+    ash: 0.10
+    sol: 0.05
+    echo: 0.05
+    kai: 0.05
+    myra: 0.75
+
+# ============================================================================
+# PERSONA DESCRIPTIONS (for prompt construction)
+# ============================================================================
+
+personas:
+  ash:
+    name: "Ash"
+    focus: "Validates burnout, diffuses shame, prioritizes 'being' over 'doing'"
+    ideal_for: ["meltdown", "burnout", "overwhelm"]
+  sol:
+    name: "Sol"
+    focus: "Scaffolds executive function, breaks down tasks, manages attention fatigue"
+    ideal_for: ["executive_dysfunction", "task_avoidance", "planning"]
+  echo:
+    name: "Echo"
+    focus: "Mirrors internal monologue, reframes cognitive distortions and negative self-talk"
+    ideal_for: ["negative_self_talk", "self_criticism", "rumination"]
+  kai:
+    name: "Kai"
+    focus: "Redirects hyperfocus and fixation into constructive pathways"
+    ideal_for: ["hyperfocus_stuck", "looping", "fixation"]
+  myra:
+    name: "Myra"
+    focus: "Relational safety, co-regulation, anchors non-verbal Silent Mode"
+    ideal_for: ["shutdown", "nonverbal", "co_regulation"]

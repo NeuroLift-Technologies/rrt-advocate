@@ -1,0 +1,4 @@
+# RRT Advocate - Solidarity Framework Protective Layer
+# Python 3.9+
+
+PyYAML>=6.0

@@ -3,12 +3,15 @@ RRT Advocate - Rapid Response Team Advocate
 Main implementation for crisis intervention and immediate ADHD support
 
 This module implements the core RRT Advocate functionality within the
-NeuroLift Technologies AI-fusion framework.
+NeuroLift Technologies AI-fusion framework. Integrated as the Protective Layer
+(RRT AIdvocAIte) of the HAIEF Solidarity Framework with TOI-OTOI governance,
+Persona Fusion Engine, Tiered Activation Dialogue Tree, and 3-layer CDE.
 """
 
 import asyncio
 import logging
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass, field
 from enum import Enum
@@ -17,18 +20,28 @@ import json
 # Crisis detection and response imports
 from crisis.detectors.crisis_detector import CrisisDetector
 from crisis.assessors.crisis_assessor import CrisisAssessor
+from crisis.models import CrisisAssessment, CrisisLevel
 from response.interventions.intervention_manager import InterventionManager
 from response.de_escalation.de_escalation_engine import DeEscalationEngine
 from coordination.supervisor.supervisor_interface import SupervisorInterface
 from learning.patterns.pattern_analyzer import PatternAnalyzer
 
-class CrisisLevel(Enum):
-    """Crisis severity levels for response coordination"""
-    GREEN = "stable"
-    YELLOW = "elevated"
-    ORANGE = "high"
-    RED = "critical"
-    BLACK = "emergency"
+# Solidarity Framework - TOI-OTOI, Persona Fusion, Dialogue, Prompts, CDE
+try:
+    from governance.toi_parser import TOIParser, TOIConfig
+    from governance.otoi_coordinator import OTOICoordinator
+    from persona.fusion_engine import PersonaFusionEngine
+    from dialogue.stage_handlers import StageHandlers
+    from prompts.tone_profiles import ToneProfileLoader
+    from crisis.detection.cde import CrisisDetectionEngine, CDEResult
+    _SOLIDARITY_AVAILABLE = True
+except ImportError:
+    _SOLIDARITY_AVAILABLE = False
+    TOIParser = TOIConfig = OTOICoordinator = None
+    PersonaFusionEngine = PersonaBlend = None
+    StageHandlers = ToneProfileLoader = None
+    CrisisDetectionEngine = CDEResult = None
+
 
 class ResponseStatus(Enum):
     """Status of crisis response interventions"""
@@ -38,19 +51,6 @@ class ResponseStatus(Enum):
     ESCALATED = "escalated"
     FAILED = "failed"
 
-@dataclass
-class CrisisAssessment:
-    """Comprehensive crisis assessment data structure"""
-    timestamp: datetime
-    crisis_level: CrisisLevel
-    primary_indicators: List[str]
-    secondary_indicators: List[str]
-    confidence_score: float
-    estimated_duration: Optional[timedelta]
-    recommended_interventions: List[str]
-    escalation_threshold: float
-    user_safety_score: float
-    context_factors: Dict[str, Any] = field(default_factory=dict)
 
 @dataclass
 class InterventionResponse:
@@ -75,7 +75,8 @@ class RRTAdvocate:
     def __init__(self, 
                  user_id: str,
                  config_path: str = "config/crisis_thresholds.yaml",
-                 supervisor_interface: Optional[SupervisorInterface] = None):
+                 supervisor_interface: Optional[SupervisorInterface] = None,
+                 toi_config_path: Optional[str] = None):
         """
         Initialize RRT Advocate with user-specific configuration
         
@@ -83,17 +84,38 @@ class RRTAdvocate:
             user_id: Unique identifier for the user
             config_path: Path to crisis detection configuration
             supervisor_interface: Interface to NeuroLift Supervisor AI
+            toi_config_path: Path to TOI (Terms of Interaction) config; optional
         """
         self.user_id = user_id
         self.config_path = config_path
         self.supervisor = supervisor_interface
         
-        # Initialize core components
+        # Initialize core components (legacy)
         self.crisis_detector = CrisisDetector(config_path)
         self.crisis_assessor = CrisisAssessor(user_id)
         self.intervention_manager = InterventionManager(user_id)
         self.de_escalation_engine = DeEscalationEngine()
         self.pattern_analyzer = PatternAnalyzer(user_id)
+        
+        # Solidarity Framework components (TOI, Fusion, Dialogue, CDE)
+        self._toi: Optional[Any] = None
+        self._otoi: Optional[Any] = None
+        self._fusion_engine: Optional[Any] = None
+        self._stage_handlers: Optional[Any] = None
+        self._tone_loader: Optional[Any] = None
+        self._cde: Optional[Any] = None
+        
+        if _SOLIDARITY_AVAILABLE:
+            _config_dir = Path(config_path).parent if config_path else Path("config")
+            _toi_path = toi_config_path or str(_config_dir / "toi_schema.yaml")
+            _parser = TOIParser(_toi_path)
+            self._toi = _parser.parse()
+            self._otoi = OTOICoordinator(self._toi)
+            self._fusion_engine = PersonaFusionEngine(str(_config_dir / "persona_weights.yaml"))
+            self._stage_handlers = StageHandlers(self._fusion_engine, self._toi)
+            self._tone_loader = ToneProfileLoader(str(_config_dir / "tone_profiles.yaml"))
+            self._cde = CrisisDetectionEngine()
+            self.logger_info_solidarity = True
         
         # State management
         self.is_monitoring = False
@@ -111,6 +133,8 @@ class RRTAdvocate:
         self._setup_logging()
         
         self.logger.info(f"RRT Advocate initialized for user {user_id}")
+        if _SOLIDARITY_AVAILABLE and getattr(self, "logger_info_solidarity", False):
+            self.logger.info("Solidarity Framework: TOI-OTOI, Persona Fusion, CDE integrated")
 
     def _setup_logging(self):
         """Configure logging for crisis response tracking"""
@@ -414,6 +438,80 @@ class RRTAdvocate:
                 if i.effectiveness_score >= 0.7
             )
             self.intervention_success_rate = success_count / len(recent_interventions)
+
+    # ========================================================================
+    # SOLIDARITY FRAMEWORK API (TOI, Fusion, Dialogue Tree, CDE)
+    # ========================================================================
+
+    def get_stage_1_consent_prompt(self) -> str:
+        """Stage 1: Agency-first consent prompt before full RRT activation."""
+        if self._stage_handlers:
+            return self._stage_handlers.handle_stage_1_consent_prompt()
+        return "Would you like some support right now? You can say yes, not yet, or tell me what you're experiencing."
+
+    def get_stage_2_options(self) -> List[str]:
+        """Return Stage 2 distress assessment options for UI."""
+        if self._stage_handlers:
+            return self._stage_handlers.get_stage_2_options()
+        return [
+            "Everything hurts / Meltdown",
+            "Can't do basic tasks",
+            "Can't stop self-blame",
+            "Stuck in hyperfocus/loop",
+            "Don't know / Shut down",
+        ]
+
+    def process_stage_2_input(self, user_input: str) -> Dict[str, Any]:
+        """
+        Process Stage 2 distress input → Persona blend for response generation.
+        Returns blend weights, primary persona, silent_mode flag.
+        """
+        if not self._stage_handlers:
+            return {"weights": {}, "primary_persona": "myra", "silent_mode": True}
+        result = self._stage_handlers.handle_stage_2_assessment(user_input)
+        return {
+            "distress_key": result.distress_key,
+            "weights": result.blend.weights,
+            "primary_persona": result.blend.primary_persona,
+            "secondary_personas": result.blend.secondary_personas,
+            "silent_mode": result.silent_mode,
+        }
+
+    def get_tone_instructions(self) -> str:
+        """Get LLM prompt instructions from TOI tone profile."""
+        if self._tone_loader and self._toi:
+            return self._tone_loader.get_instructions(self._toi.tone_profile)
+        return "Use a warm, validating tone. Acknowledge feelings before offering support."
+
+    def detect_crisis_from_text(
+        self,
+        text: str,
+        latency_seconds: Optional[float] = None,
+        is_loop: Optional[bool] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        3-layer CDE: local-first crisis detection from free text.
+        Returns CDE result with suggested_distress_key for Fusion.
+        """
+        if not self._cde:
+            return None
+        self._cde.record_message(text, latency_seconds)
+        result = self._cde.detect(text, latency_seconds, is_loop)
+        return {
+            "composite_score": result.composite_score,
+            "layer1_score": result.layer1_score,
+            "layer2_score": result.layer2_score,
+            "layer3_score": result.layer3_score,
+            "detected_fields": result.detected_fields,
+            "suggested_distress_key": result.suggested_distress_key,
+            "timestamp": result.timestamp.isoformat(),
+        }
+
+    def validate_response_against_toi(self, proposed_action: Dict[str, Any]) -> bool:
+        """Validate proposed response respects TOI boundaries (no forced productivity, etc.)."""
+        if self._toi and _SOLIDARITY_AVAILABLE:
+            return TOIParser().validate_for_response(self._toi, proposed_action)
+        return True
 
     async def get_status_report(self) -> Dict[str, Any]:
         """
