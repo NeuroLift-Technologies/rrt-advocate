@@ -1,543 +1,474 @@
 """
-RRT Advocate - Rapid Response Team Advocate
-Main implementation for crisis intervention and immediate ADHD support
+RRT AIdvocAIte — Protective Layer of the Human-AI ElevAItion Foundation
+Solidarity Framework.
 
-This module implements the core RRT Advocate functionality within the
-NeuroLift Technologies AI-fusion framework.
+NeuroLift Technologies | Solidarity Framework v2.0
+
+This module is the primary orchestration entry point.  It wires together:
+
+  Constitutional Layer
+    TOIParser          — ingests and validates the user's Terms of Interaction
+    OTOICoordinator    — enforces the interaction contract at runtime
+
+  Protective Layer (this module)
+    CrisisDetectionEngine (CDE)  — 3-layer local-first detection pipeline
+    FusionEngine                 — dynamic 5-persona blending
+    TieredDialogueTree           — 6-stage agency-first activation flow
+    ConsentManager               — consent gating before any full deployment
+    InterventionManager          — assembles and delivers blended responses
+
+Design ethos (non-negotiable):
+  - Local-first & privacy-centric: CDE never calls a remote endpoint.
+  - Anti-gaslight / shame-resistant: error messages never pathologise the user.
+  - No forced productivity: burnout inputs never trigger task loops.
+  - Agency first: consent is required before full RRT deployment.
 """
+from __future__ import annotations
 
 import asyncio
-import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from dataclasses import dataclass, field
-from enum import Enum
 import json
+import logging
+import sys
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
 
-# Crisis detection and response imports
-from crisis.detectors.crisis_detector import CrisisDetector
-from crisis.assessors.crisis_assessor import CrisisAssessor
-from response.interventions.intervention_manager import InterventionManager
-from response.de_escalation.de_escalation_engine import DeEscalationEngine
-from coordination.supervisor.supervisor_interface import SupervisorInterface
-from learning.patterns.pattern_analyzer import PatternAnalyzer
+import yaml
 
-class CrisisLevel(Enum):
-    """Crisis severity levels for response coordination"""
-    GREEN = "stable"
-    YELLOW = "elevated"
-    ORANGE = "high"
-    RED = "critical"
-    BLACK = "emergency"
+from .crisis.detection_engine import CrisisDetectionEngine
+from .crisis.models import CrisisLevel, DetectionResult
+from .dialogue.consent_manager import ConsentManager
+from .dialogue.tiered_tree import DialogueStage, StageResult, TieredDialogueTree
+from .personas.fusion_engine import FusionEngine
+from .personas.models import PersonaBlend
+from .response.intervention_manager import InterventionManager, InterventionRecord
+from .toi.models import InteractionContract, ToneProfile
+from .toi.otoi_coordinator import OTOICoordinator
+from .toi.toi_parser import TOIParser
 
-class ResponseStatus(Enum):
-    """Status of crisis response interventions"""
-    PENDING = "pending"
-    ACTIVE = "active"
-    SUCCESSFUL = "successful"
-    ESCALATED = "escalated"
-    FAILED = "failed"
+logger = logging.getLogger(__name__)
 
-@dataclass
-class CrisisAssessment:
-    """Comprehensive crisis assessment data structure"""
-    timestamp: datetime
-    crisis_level: CrisisLevel
-    primary_indicators: List[str]
-    secondary_indicators: List[str]
-    confidence_score: float
-    estimated_duration: Optional[timedelta]
-    recommended_interventions: List[str]
-    escalation_threshold: float
-    user_safety_score: float
-    context_factors: Dict[str, Any] = field(default_factory=dict)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+
+
+# ---------------------------------------------------------------------------
+# Session state
+# ---------------------------------------------------------------------------
 
 @dataclass
-class InterventionResponse:
-    """Response data from crisis intervention"""
-    intervention_id: str
-    start_time: datetime
-    end_time: Optional[datetime]
-    status: ResponseStatus
-    effectiveness_score: Optional[float]
-    user_feedback: Optional[str]
-    side_effects: List[str] = field(default_factory=list)
-    follow_up_required: bool = False
+class SessionState:
+    """Tracks the runtime state of a single user session."""
+
+    user_id: str
+    contract: InteractionContract
+    detection_result: DetectionResult | None = None
+    persona_blend: PersonaBlend | None = None
+    last_intervention: InterventionRecord | None = None
+    dialogue_stage: DialogueStage = DialogueStage.AMBIENT
+    activation_count: int = 0
+    session_start: datetime = field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
+
+
+# ---------------------------------------------------------------------------
+# Main orchestrator
+# ---------------------------------------------------------------------------
 
 class RRTAdvocate:
     """
-    Rapid Response Team Advocate - Crisis intervention specialist
-    
-    The RRT Advocate provides immediate crisis detection, assessment, and
-    intervention for ADHD-related emergencies within the NeuroLift ecosystem.
+    The RRT AIdvocAIte — top-level orchestrator for the Protective Layer.
+
+    Instantiate once per user session.  Use ``process_message()`` as the
+    primary entry point for incoming user text.  Use ``activate()`` to
+    manually trigger the tiered dialogue when a non-text event (e.g. a UI
+    tap or inactivity timeout) warrants intervention.
     """
-    
-    def __init__(self, 
-                 user_id: str,
-                 config_path: str = "config/crisis_thresholds.yaml",
-                 supervisor_interface: Optional[SupervisorInterface] = None):
-        """
-        Initialize RRT Advocate with user-specific configuration
-        
-        Args:
-            user_id: Unique identifier for the user
-            config_path: Path to crisis detection configuration
-            supervisor_interface: Interface to NeuroLift Supervisor AI
-        """
-        self.user_id = user_id
-        self.config_path = config_path
-        self.supervisor = supervisor_interface
-        
-        # Initialize core components
-        self.crisis_detector = CrisisDetector(config_path)
-        self.crisis_assessor = CrisisAssessor(user_id)
-        self.intervention_manager = InterventionManager(user_id)
-        self.de_escalation_engine = DeEscalationEngine()
-        self.pattern_analyzer = PatternAnalyzer(user_id)
-        
-        # State management
-        self.is_monitoring = False
-        self.current_crisis: Optional[CrisisAssessment] = None
-        self.active_interventions: List[InterventionResponse] = []
-        self.crisis_history: List[CrisisAssessment] = []
-        
-        # Performance tracking
-        self.response_times: List[float] = []
-        self.intervention_success_rate: float = 0.0
-        self.last_assessment_time: Optional[datetime] = None
-        
-        # Setup logging
-        self.logger = logging.getLogger(f"RRTAdvocate-{user_id}")
-        self._setup_logging()
-        
-        self.logger.info(f"RRT Advocate initialized for user {user_id}")
 
-    def _setup_logging(self):
-        """Configure logging for crisis response tracking"""
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    def __init__(
+        self,
+        user_id: str,
+        toi_config_path: str | Path | None = None,
+        crisis_config_path: str | Path = "config/crisis_thresholds.yaml",
+    ) -> None:
+        self._user_id = user_id
+        self._toi_parser = TOIParser()
+        self._otoi = OTOICoordinator()
+        self._cde = CrisisDetectionEngine()
+        self._fusion = FusionEngine()
+        self._dialogue = TieredDialogueTree(fusion_engine=self._fusion)
+        self._consent = ConsentManager()
+        self._intervention_mgr = InterventionManager(otoi_coordinator=self._otoi)
+        self._crisis_config = self._load_crisis_config(crisis_config_path)
+
+        toi_raw = self._toi_parser.from_yaml(toi_config_path) if toi_config_path else self._toi_parser._default_config(user_id)
+        import uuid
+        self._contract = InteractionContract(
+            toi=toi_raw,
+            session_id=str(uuid.uuid4()),
         )
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
-        self.logger.setLevel(logging.INFO)
+        self._session = SessionState(user_id=user_id, contract=self._contract)
+        self._is_monitoring = False
 
-    async def start_monitoring(self) -> bool:
-        """
-        Start continuous crisis monitoring
-        
-        Returns:
-            bool: True if monitoring started successfully
-        """
-        if self.is_monitoring:
-            self.logger.warning("Crisis monitoring already active")
-            return True
-            
-        try:
-            self.is_monitoring = True
-            self.logger.info("Starting crisis monitoring")
-            
-            # Start monitoring loop
-            asyncio.create_task(self._monitoring_loop())
-            
-            # Notify supervisor of monitoring start
-            if self.supervisor:
-                await self.supervisor.notify_advocate_status(
-                    advocate_id="rrt",
-                    status="monitoring_active",
-                    user_id=self.user_id
-                )
-            
-            return True
-            
-        except Exception as e:
-            self.logger.error(f"Failed to start monitoring: {e}")
-            self.is_monitoring = False
-            return False
+        logger.info("RRT AIdvocAIte initialised | user=%s | tone=%s", user_id, toi_raw.tone_profile.value)
 
-    async def stop_monitoring(self) -> bool:
-        """
-        Stop crisis monitoring
-        
-        Returns:
-            bool: True if monitoring stopped successfully
-        """
-        if not self.is_monitoring:
-            return True
-            
-        try:
-            self.is_monitoring = False
-            self.logger.info("Stopping crisis monitoring")
-            
-            # Complete any active interventions
-            for intervention in self.active_interventions:
-                if intervention.status == ResponseStatus.ACTIVE:
-                    await self._complete_intervention(intervention)
-            
-            # Notify supervisor
-            if self.supervisor:
-                await self.supervisor.notify_advocate_status(
-                    advocate_id="rrt",
-                    status="monitoring_stopped",
-                    user_id=self.user_id
-                )
-            
-            return True
-            
-        except Exception as e:
-            self.logger.error(f"Error stopping monitoring: {e}")
-            return False
+    # ------------------------------------------------------------------
+    # Primary API
+    # ------------------------------------------------------------------
 
-    async def _monitoring_loop(self):
-        """Main monitoring loop for continuous crisis detection"""
-        while self.is_monitoring:
-            try:
-                # Perform crisis assessment
-                assessment = await self.assess_current_state()
-                
-                # Handle crisis if detected
-                if assessment.crisis_level != CrisisLevel.GREEN:
-                    await self._handle_crisis(assessment)
-                
-                # Update pattern analysis
-                await self.pattern_analyzer.update_patterns(assessment)
-                
-                # Brief pause before next assessment
-                await asyncio.sleep(1)  # 1-second monitoring interval
-                
-            except Exception as e:
-                self.logger.error(f"Error in monitoring loop: {e}")
-                await asyncio.sleep(5)  # Longer pause on error
+    def process_message(self, text: str) -> dict[str, Any]:
+        """
+        Process an incoming user message through the full pipeline.
 
-    async def assess_current_state(self) -> CrisisAssessment:
-        """
-        Perform comprehensive crisis assessment
-        
-        Returns:
-            CrisisAssessment: Current crisis assessment
-        """
-        start_time = datetime.now()
-        
-        try:
-            # Detect crisis indicators
-            indicators = await self.crisis_detector.detect_crisis_indicators()
-            
-            # Assess crisis level and context
-            assessment = await self.crisis_assessor.assess_crisis(indicators)
-            
-            # Record response time
-            response_time = (datetime.now() - start_time).total_seconds()
-            self.response_times.append(response_time)
-            self.last_assessment_time = datetime.now()
-            
-            # Log assessment
-            self.logger.info(
-                f"Crisis assessment completed: {assessment.crisis_level.value} "
-                f"(confidence: {assessment.confidence_score:.2f}, "
-                f"response_time: {response_time:.3f}s)"
-            )
-            
-            return assessment
-            
-        except Exception as e:
-            self.logger.error(f"Crisis assessment failed: {e}")
-            # Return safe default assessment
-            return CrisisAssessment(
-                timestamp=datetime.now(),
-                crisis_level=CrisisLevel.GREEN,
-                primary_indicators=[],
-                secondary_indicators=[],
-                confidence_score=0.0,
-                estimated_duration=None,
-                recommended_interventions=[],
-                escalation_threshold=0.8,
-                user_safety_score=1.0
-            )
+        Pipeline:
+          CDE analysis → consent check → dialogue routing → response assembly
 
-    async def _handle_crisis(self, assessment: CrisisAssessment):
+        Returns a response dict suitable for serialisation to JSON.
         """
-        Handle detected crisis with appropriate interventions
-        
-        Args:
-            assessment: Crisis assessment data
-        """
-        self.current_crisis = assessment
-        self.crisis_history.append(assessment)
-        
-        self.logger.warning(
-            f"Crisis detected: {assessment.crisis_level.value} "
-            f"(confidence: {assessment.confidence_score:.2f})"
+        detection = self._cde.analyse(text)
+        self._session.detection_result = detection
+
+        logger.info(
+            "CDE | level=%s | score=%.3f | distress=%s",
+            detection.crisis_level.value,
+            detection.composite_score,
+            detection.dominant_distress_type,
         )
-        
-        try:
-            # Immediate safety check
-            if assessment.user_safety_score < 0.3:
-                await self._emergency_escalation(assessment)
-                return
-            
-            # Deploy appropriate interventions
-            if assessment.crisis_level in [CrisisLevel.YELLOW, CrisisLevel.ORANGE]:
-                await self._deploy_standard_interventions(assessment)
-            elif assessment.crisis_level == CrisisLevel.RED:
-                await self._deploy_intensive_interventions(assessment)
-            elif assessment.crisis_level == CrisisLevel.BLACK:
-                await self._emergency_escalation(assessment)
-            
-            # Notify supervisor of crisis
-            if self.supervisor:
-                await self.supervisor.handle_crisis(
-                    advocate_id="rrt",
-                    crisis_assessment=assessment,
-                    user_id=self.user_id
-                )
-                
-        except Exception as e:
-            self.logger.error(f"Crisis handling failed: {e}")
-            # Escalate on handling failure
-            await self._emergency_escalation(assessment)
 
-    async def _deploy_standard_interventions(self, assessment: CrisisAssessment):
-        """Deploy standard crisis interventions"""
-        for intervention_type in assessment.recommended_interventions:
-            try:
-                intervention = await self.intervention_manager.deploy_intervention(
-                    intervention_type=intervention_type,
-                    crisis_context=assessment.context_factors,
-                    urgency_level="standard"
-                )
-                
-                if intervention:
-                    self.active_interventions.append(intervention)
-                    self.logger.info(f"Deployed intervention: {intervention_type}")
-                    
-            except Exception as e:
-                self.logger.error(f"Failed to deploy {intervention_type}: {e}")
+        if detection.crisis_level == CrisisLevel.GREEN:
+            return self._build_response(
+                message="I'm here in the background, listening.",
+                stage=DialogueStage.AMBIENT,
+                detection=detection,
+            )
 
-    async def _deploy_intensive_interventions(self, assessment: CrisisAssessment):
-        """Deploy intensive crisis interventions for high-severity situations"""
-        # Start de-escalation process
-        de_escalation_task = asyncio.create_task(
-            self.de_escalation_engine.start_de_escalation(assessment)
+        if not self._consent.consented:
+            stage_result = self._dialogue.trigger_entry(self._contract.toi)
+            return self._stage_result_to_response(stage_result, detection)
+
+        blend = self._fusion.compute(
+            distress_input=detection.dominant_distress_type,
+            raw_text=text,
+            toi_config=self._contract.toi,
         )
-        
-        # Deploy multiple interventions simultaneously
-        intervention_tasks = []
-        for intervention_type in assessment.recommended_interventions:
-            task = asyncio.create_task(
-                self.intervention_manager.deploy_intervention(
-                    intervention_type=intervention_type,
-                    crisis_context=assessment.context_factors,
-                    urgency_level="intensive"
-                )
-            )
-            intervention_tasks.append(task)
-        
-        # Wait for interventions to complete
-        results = await asyncio.gather(*intervention_tasks, return_exceptions=True)
-        
-        # Process intervention results
-        for i, result in enumerate(results):
-            if isinstance(result, Exception):
-                self.logger.error(f"Intervention {i} failed: {result}")
-            elif result:
-                self.active_interventions.append(result)
-        
-        # Wait for de-escalation
-        await de_escalation_task
+        self._session.persona_blend = blend
 
-    async def _emergency_escalation(self, assessment: CrisisAssessment):
-        """Handle emergency-level crisis escalation"""
-        self.logger.critical(f"EMERGENCY ESCALATION: {assessment.crisis_level.value}")
-        
-        try:
-            # Immediate supervisor notification
-            if self.supervisor:
-                await self.supervisor.emergency_escalation(
-                    advocate_id="rrt",
-                    crisis_assessment=assessment,
-                    user_id=self.user_id
-                )
-            
-            # Activate all available crisis resources
-            await self.intervention_manager.activate_emergency_protocols(assessment)
-            
-            # Log emergency escalation
-            self.logger.critical(
-                f"Emergency protocols activated for user {self.user_id} "
-                f"at {assessment.timestamp}"
-            )
-            
-        except Exception as e:
-            self.logger.critical(f"Emergency escalation failed: {e}")
+        directive = self._otoi.produce_directive(
+            contract=self._contract,
+            persona_weights=blend.weights,
+            distress_type=blend.distress_type,
+        )
 
-    async def _complete_intervention(self, intervention: InterventionResponse):
-        """Complete and evaluate an active intervention"""
-        try:
-            intervention.end_time = datetime.now()
-            
-            # Evaluate intervention effectiveness
-            effectiveness = await self.intervention_manager.evaluate_intervention(
-                intervention.intervention_id
-            )
-            
-            intervention.effectiveness_score = effectiveness
-            
-            # Update success rate
-            self._update_success_rate()
-            
-            # Remove from active interventions
-            if intervention in self.active_interventions:
-                self.active_interventions.remove(intervention)
-            
-            self.logger.info(
-                f"Intervention {intervention.intervention_id} completed "
-                f"(effectiveness: {effectiveness:.2f})"
-            )
-            
-        except Exception as e:
-            self.logger.error(f"Failed to complete intervention: {e}")
+        silent = directive.silence_requested or self._contract.silent_mode_active
+        record = self._intervention_mgr.assemble(blend, self._contract, silent_mode=silent)
+        self._session.last_intervention = record
+        self._session.activation_count += 1
 
-    def _update_success_rate(self):
-        """Update intervention success rate based on recent performance"""
-        if not self.crisis_history:
-            return
-        
-        # Calculate success rate from recent interventions
-        recent_interventions = [
-            i for i in self.active_interventions 
-            if i.end_time and i.effectiveness_score is not None
-        ]
-        
-        if recent_interventions:
-            success_count = sum(
-                1 for i in recent_interventions 
-                if i.effectiveness_score >= 0.7
-            )
-            self.intervention_success_rate = success_count / len(recent_interventions)
+        return self._build_response(
+            message=record.response_text,
+            stage=DialogueStage.PERSONA_RESPONSE,
+            detection=detection,
+            blend=blend,
+            silent_mode=silent,
+            system_prompt=self._intervention_mgr.get_system_prompt(blend, self._contract),
+        )
 
-    async def get_status_report(self) -> Dict[str, Any]:
+    def handle_dialogue_input(self, stage: DialogueStage, user_input: str) -> dict[str, Any]:
         """
-        Get comprehensive status report for monitoring and debugging
-        
-        Returns:
-            Dict containing current status and performance metrics
+        Handle a structured dialogue input (e.g. a button tap from the UI).
+
+        Parameters
+        ----------
+        stage:
+            The current stage expecting a response.
+        user_input:
+            The user's selection or text input.
         """
+        if stage == DialogueStage.CONSENT_CHECKPOINT:
+            consent_state = self._consent.evaluate(user_input)
+            self._contract.consent_granted = consent_state.consented
+            self._contract.silent_mode_active = consent_state.silent_mode_requested
+
+            stage_result = self._dialogue.handle_consent(user_input, self._contract.toi)
+            return self._stage_result_to_response(stage_result)
+
+        if stage == DialogueStage.DISTRESS_ASSESSMENT:
+            stage_result = self._dialogue.handle_distress_assessment(
+                selection_id=user_input,
+                toi_config=self._contract.toi,
+            )
+            if stage_result.persona_blend:
+                blend = stage_result.persona_blend
+                self._session.persona_blend = blend
+                record = self._intervention_mgr.assemble(
+                    blend, self._contract, silent_mode=stage_result.silent_mode
+                )
+                self._session.last_intervention = record
+                stage_result.message = record.response_text
+            return self._stage_result_to_response(stage_result)
+
+        if stage == DialogueStage.CHECKIN:
+            helpful = user_input.lower() in ("yes", "y", "helped", "better")
+            stage_result = self._dialogue.handle_checkin(helpful)
+            return self._stage_result_to_response(stage_result)
+
+        if stage == DialogueStage.CLOSURE:
+            stage_result = self._dialogue.close_session()
+            self._consent.reset()
+            self._contract.consent_granted = False
+            return self._stage_result_to_response(stage_result)
+
+        return self._build_response(
+            message="I'm not sure what you need right now — take your time.",
+            stage=stage,
+        )
+
+    def activate(self) -> dict[str, Any]:
+        """
+        Manually trigger Stage 1 consent checkpoint (e.g. from a UI button
+        or inactivity timeout).
+        """
+        stage_result = self._dialogue.trigger_entry(self._contract.toi)
+        return self._stage_result_to_response(stage_result)
+
+    def get_status(self) -> dict[str, Any]:
+        """Return a serialisable status snapshot of the current session."""
         return {
-            "user_id": self.user_id,
-            "monitoring_active": self.is_monitoring,
-            "current_crisis": {
-                "level": self.current_crisis.crisis_level.value if self.current_crisis else "none",
-                "confidence": self.current_crisis.confidence_score if self.current_crisis else 0.0
+            "user_id": self._user_id,
+            "session_id": self._contract.session_id,
+            "dialogue_stage": self._dialogue.current_stage.name,
+            "consent_granted": self._contract.consent_granted,
+            "silent_mode": self._contract.silent_mode_active,
+            "tone_profile": self._contract.toi.tone_profile.value,
+            "activations_this_session": self._session.activation_count,
+            "session_start": self._session.session_start.isoformat(),
+            "last_detection": {
+                "level": self._session.detection_result.crisis_level.value
+                if self._session.detection_result
+                else "none",
+                "score": self._session.detection_result.composite_score
+                if self._session.detection_result
+                else 0.0,
+                "distress_type": self._session.detection_result.dominant_distress_type
+                if self._session.detection_result
+                else "none",
             },
-            "active_interventions": len(self.active_interventions),
-            "crisis_history_count": len(self.crisis_history),
-            "performance": {
-                "avg_response_time": sum(self.response_times[-100:]) / len(self.response_times[-100:]) if self.response_times else 0.0,
-                "success_rate": self.intervention_success_rate,
-                "last_assessment": self.last_assessment_time.isoformat() if self.last_assessment_time else None
-            }
+            "last_blend": {
+                "lead": self._session.persona_blend.lead_persona.name
+                if self._session.persona_blend
+                else "none",
+                "distress_type": self._session.persona_blend.distress_type
+                if self._session.persona_blend
+                else "none",
+            },
         }
 
-    async def manual_intervention(self, intervention_type: str, context: Dict[str, Any] = None) -> bool:
-        """
-        Manually trigger a specific intervention
-        
-        Args:
-            intervention_type: Type of intervention to deploy
-            context: Additional context for the intervention
-            
-        Returns:
-            bool: True if intervention was successfully deployed
-        """
-        try:
-            self.logger.info(f"Manual intervention requested: {intervention_type}")
-            
-            intervention = await self.intervention_manager.deploy_intervention(
-                intervention_type=intervention_type,
-                crisis_context=context or {},
-                urgency_level="manual"
-            )
-            
-            if intervention:
-                self.active_interventions.append(intervention)
-                return True
-            
-            return False
-            
-        except Exception as e:
-            self.logger.error(f"Manual intervention failed: {e}")
-            return False
+    def reset_session(self) -> None:
+        """Reset all session state for a fresh interaction cycle."""
+        self._cde.reset_session()
+        self._consent.reset()
+        self._dialogue.reset()
+        self._contract.consent_granted = False
+        self._contract.silent_mode_active = False
+        self._session = SessionState(
+            user_id=self._user_id,
+            contract=self._contract,
+        )
+        logger.info("Session reset | user=%s", self._user_id)
 
-    async def shutdown(self):
-        """Gracefully shutdown the RRT Advocate"""
-        self.logger.info("Shutting down RRT Advocate")
-        
-        # Stop monitoring
-        await self.stop_monitoring()
-        
-        # Save crisis history and patterns
-        await self.pattern_analyzer.save_patterns()
-        
-        # Final status report
-        status = await self.get_status_report()
-        self.logger.info(f"Final status: {json.dumps(status, indent=2)}")
-        
-        self.logger.info("RRT Advocate shutdown complete")
+    # ------------------------------------------------------------------
+    # Async monitoring interface (backward-compat surface)
+    # ------------------------------------------------------------------
+
+    async def start_monitoring(self) -> bool:
+        """Start async background monitoring loop."""
+        if self._is_monitoring:
+            return True
+        self._is_monitoring = True
+        asyncio.create_task(self._monitoring_loop())
+        logger.info("Monitoring started | user=%s", self._user_id)
+        return True
+
+    async def stop_monitoring(self) -> bool:
+        """Stop async monitoring loop."""
+        self._is_monitoring = False
+        logger.info("Monitoring stopped | user=%s", self._user_id)
+        return True
+
+    async def _monitoring_loop(self) -> None:
+        """Lightweight async loop — processes queued messages if any."""
+        while self._is_monitoring:
+            await asyncio.sleep(1)
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    def _stage_result_to_response(
+        self,
+        stage_result: StageResult,
+        detection: DetectionResult | None = None,
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "stage": stage_result.stage.name,
+            "next_stage": stage_result.next_stage.name,
+            "message": stage_result.message,
+            "options": stage_result.options,
+            "silent_mode": stage_result.silent_mode,
+            "escalation_signal": stage_result.escalation_signal,
+            "metadata": stage_result.metadata,
+        }
+        if stage_result.persona_blend:
+            payload["blend"] = {
+                "lead": stage_result.persona_blend.lead_persona.name,
+                "distress_type": stage_result.persona_blend.distress_type,
+                "rationale": stage_result.persona_blend.rationale,
+                "weights": stage_result.persona_blend.weights.as_dict(),
+            }
+        if detection:
+            payload["detection"] = {
+                "level": detection.crisis_level.value,
+                "score": detection.composite_score,
+                "distress_type": detection.dominant_distress_type,
+            }
+        return payload
+
+    def _build_response(
+        self,
+        message: str,
+        stage: DialogueStage,
+        detection: DetectionResult | None = None,
+        blend: PersonaBlend | None = None,
+        silent_mode: bool = False,
+        system_prompt: str | None = None,
+    ) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "stage": stage.name,
+            "message": message,
+            "silent_mode": silent_mode,
+        }
+        if system_prompt:
+            payload["system_prompt"] = system_prompt
+        if blend:
+            payload["blend"] = {
+                "lead": blend.lead_persona.name,
+                "distress_type": blend.distress_type,
+                "rationale": blend.rationale,
+                "weights": blend.weights.as_dict(),
+            }
+        if detection:
+            payload["detection"] = {
+                "level": detection.crisis_level.value,
+                "score": detection.composite_score,
+                "distress_type": detection.dominant_distress_type,
+                "escalation_required": detection.escalation_required,
+            }
+        return payload
+
+    @staticmethod
+    def _load_crisis_config(path: str | Path) -> dict:
+        p = Path(path)
+        if p.exists():
+            with p.open("r", encoding="utf-8") as fh:
+                return yaml.safe_load(fh) or {}
+        return {}
 
 
-# ============================================================================
-# UTILITY FUNCTIONS
-# ============================================================================
+# ---------------------------------------------------------------------------
+# Package-level factory
+# ---------------------------------------------------------------------------
 
-async def create_rrt_advocate(user_id: str, 
-                            config_path: str = "config/crisis_thresholds.yaml",
-                            supervisor_interface: Optional[SupervisorInterface] = None) -> RRTAdvocate:
+def create_rrt_advocate(
+    user_id: str,
+    toi_config_path: str | Path | None = None,
+    crisis_config_path: str | Path = "config/crisis_thresholds.yaml",
+) -> "RRTAdvocate":
     """
-    Factory function to create and initialize RRT Advocate
-    
-    Args:
-        user_id: Unique identifier for the user
-        config_path: Path to crisis detection configuration
-        supervisor_interface: Interface to NeuroLift Supervisor AI
-        
-    Returns:
-        Initialized RRT Advocate instance
+    Create a fully initialised RRT AIdvocAIte.
+
+    Parameters
+    ----------
+    user_id:
+        Unique identifier for the user.
+    toi_config_path:
+        Path to the user's TOI YAML file.  If None, sensible defaults apply.
+    crisis_config_path:
+        Path to the crisis thresholds config.
     """
-    advocate = RRTAdvocate(user_id, config_path, supervisor_interface)
-    
-    # Perform initial system checks
-    await advocate.assess_current_state()
-    
-    return advocate
+    return RRTAdvocate(
+        user_id=user_id,
+        toi_config_path=toi_config_path,
+        crisis_config_path=crisis_config_path,
+    )
 
 
-# ============================================================================
-# MAIN EXECUTION (for testing)
-# ============================================================================
+# ---------------------------------------------------------------------------
+# CLI demo harness
+# ---------------------------------------------------------------------------
 
-async def main():
-    """Main function for testing RRT Advocate functionality"""
-    print("RRT Advocate - Crisis Intervention System")
-    print("=" * 50)
-    
-    # Create test advocate
-    advocate = await create_rrt_advocate("test_user_001")
-    
-    try:
-        # Start monitoring
-        await advocate.start_monitoring()
-        
-        # Run for a short test period
-        await asyncio.sleep(10)
-        
-        # Get status report
-        status = await advocate.get_status_report()
-        print(f"Status Report: {json.dumps(status, indent=2)}")
-        
-    finally:
-        # Shutdown
-        await advocate.shutdown()
+def _demo() -> None:
+    """Quick smoke-test / demo of the full pipeline."""
+    print("\n" + "=" * 60)
+    print("  RRT AIdvocAIte — Solidarity Framework Demo")
+    print("=" * 60)
+
+    advocate = create_rrt_advocate("demo_user")
+
+    test_messages = [
+        ("Feeling a bit distracted today.", "GREEN — ambient check"),
+        ("I can't stop blaming myself for everything.  It's my fault.", "YELLOW+ — ECHO/ASH blend"),
+        ("I'm so overwhelmed, everything hurts, I can't do anything right.", "ORANGE+ — ASH/MYRA blend"),
+    ]
+
+    for text, label in test_messages:
+        print(f"\n--- {label} ---")
+        print(f"Input: {text!r}")
+        result = advocate.process_message(text)
+        print(f"Stage : {result['stage']}")
+        if "detection" in result:
+            d = result["detection"]
+            print(f"CDE   : level={d['level']}  score={d['score']:.3f}  distress={d['distress_type']}")
+        if "blend" in result:
+            b = result["blend"]
+            print(f"Blend : lead={b['lead']}  distress={b['distress_type']}")
+            for name, w in sorted(b["weights"].items(), key=lambda kv: -kv[1]):
+                bar = "█" * int(w * 20)
+                print(f"        {name:<5} {bar:<20} {w:.3f}")
+        if result.get("message"):
+            print(f"Response: {result['message']}")
+
+    print("\n--- Consent + Stage 2 walkthrough ---")
+    advocate.reset_session()
+    # Manually trigger entry
+    entry = advocate.activate()
+    print(f"Stage 1 prompt: {entry['message']}")
+    print("Options:", [o["label"] for o in entry.get("options", [])])
+
+    consent_resp = advocate.handle_dialogue_input(
+        DialogueStage.CONSENT_CHECKPOINT, "yes"
+    )
+    print(f"\nStage 2 prompt: {consent_resp['message']}")
+    print("Options:", [o["label"] for o in consent_resp.get("options", [])])
+
+    assessment_resp = advocate.handle_dialogue_input(
+        DialogueStage.DISTRESS_ASSESSMENT, "meltdown"
+    )
+    print(f"\nPersona response: {assessment_resp.get('message', '[silent]')}")
+    if "blend" in assessment_resp:
+        b = assessment_resp["blend"]
+        print(f"Lead persona: {b['lead']} ({b['distress_type']})")
+        print(f"Rationale: {b['rationale']}")
+
+    print("\n" + "=" * 60)
+    print("Status snapshot:")
+    print(json.dumps(advocate.get_status(), indent=2))
+    print("=" * 60 + "\n")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    _demo()

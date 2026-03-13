@@ -1,0 +1,86 @@
+# Default Persona Weights — canonical mappings from distress type to persona blend.
+# These are the base weights used by the FusionEngine before semantic and TOI boosting.
+# All weights are normalised internally; they describe relative activation strength.
+
+distress_types:
+  meltdown:
+    description: "Everything hurts / Meltdown — heavily weighted toward ASH + MYRA"
+    weights:
+      ASH: 0.45
+      SOL: 0.05
+      ECHO: 0.10
+      KAI: 0.05
+      MYRA: 0.35
+    silent_mode: false
+
+  task_paralysis:
+    description: "Can't do basic tasks — heavily weighted toward SOL"
+    weights:
+      ASH: 0.15
+      SOL: 0.55
+      ECHO: 0.10
+      KAI: 0.10
+      MYRA: 0.10
+    silent_mode: false
+
+  self_blame:
+    description: "Can't stop self-blame — heavily weighted toward ECHO"
+    weights:
+      ASH: 0.20
+      SOL: 0.05
+      ECHO: 0.55
+      KAI: 0.05
+      MYRA: 0.15
+    silent_mode: false
+
+  hyperfocus_loop:
+    description: "Stuck in hyperfocus / loop — heavily weighted toward KAI"
+    weights:
+      ASH: 0.10
+      SOL: 0.15
+      ECHO: 0.10
+      KAI: 0.55
+      MYRA: 0.10
+    silent_mode: false
+
+  shutdown:
+    description: "Don't know / Shut down — heavily weighted toward MYRA, Silent Mode eligible"
+    weights:
+      ASH: 0.15
+      SOL: 0.05
+      ECHO: 0.05
+      KAI: 0.05
+      MYRA: 0.70
+    silent_mode: true
+
+  unknown:
+    description: "Unrecognised distress — equal distribution, MYRA leads by default"
+    weights:
+      ASH: 0.20
+      SOL: 0.20
+      ECHO: 0.20
+      KAI: 0.20
+      MYRA: 0.20
+    silent_mode: false
+
+# ── Persona Definitions (reference) ──────────────────────────────────────────
+personas:
+  ASH:
+    mandate: "Validates burnout, diffuses shame, prioritises being over doing."
+    preferred_tones: [supportive_default, therapeutic_reflective]
+
+  SOL:
+    mandate: "Scaffolds executive function, breaks down tasks, manages attention fatigue."
+    preferred_tones: [directive, minimal]
+
+  ECHO:
+    mandate: "Mirrors internal monologue, reframes cognitive distortions and negative self-talk."
+    preferred_tones: [therapeutic_reflective, supportive_default]
+
+  KAI:
+    mandate: "Redirects hyperfocus and fixation into constructive pathways."
+    preferred_tones: [directive, supportive_default]
+
+  MYRA:
+    mandate: "Provides relational safety, co-regulation, and anchors the non-verbal Silent Mode."
+    preferred_tones: [minimal, supportive_default]

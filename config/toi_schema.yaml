@@ -1,0 +1,55 @@
+# TOI Schema — Terms of Interaction configuration template
+# Copy this file and customise it to define a user's interaction contract.
+# All fields are optional; missing fields fall back to the defaults shown here.
+
+# Unique identifier for the user (required).
+user_id: "your_user_id_here"
+
+# ── Tone Profile ─────────────────────────────────────────────────────────────
+# Controls the overall communication style.
+# Options:
+#   supportive_default     — warm, validating, relational (default)
+#   minimal                — ultra-concise, lowest cognitive load
+#   directive              — clear, action-oriented (ideal for SOL/KAI)
+#   therapeutic_reflective — empathetic mirroring, soft Socratic questions
+tone_profile: "supportive_default"
+
+# ── Pacing ────────────────────────────────────────────────────────────────────
+# How quickly the system moves through interactions.
+# Options: slow | standard | responsive
+pacing: "standard"
+
+# ── Cognitive Scaffolding ─────────────────────────────────────────────────────
+cognitive_scaffolding:
+  # Break multi-step instructions into numbered micro-chunks.
+  chunking_enabled: true
+  # Include simple emoji anchors as spatial markers in text.
+  visual_anchors: false
+  # Repeat the user's stated goal back before offering next steps.
+  working_memory_offload: true
+  # Never end a message with an unresolved question during distress.
+  no_open_loops: true
+
+# ── Safety Boundaries ─────────────────────────────────────────────────────────
+safety_boundaries:
+  # System must never push task completion when burnout is detected.
+  no_productivity_pressure: true
+  # Full RRT activation always needs a user opt-in signal.
+  require_explicit_consent: true
+  # Minimum user_safety_score before emergency contacts are suggested.
+  emergency_contact_threshold: 0.10
+  # Minimum safety score before suggesting external crisis lines.
+  external_resource_threshold: 0.20
+  # Whether the user may enter Silent Mode.
+  silent_mode_eligible: true
+
+# ── Persona Preferences ───────────────────────────────────────────────────────
+# Personas the user has asked NOT to hear from.
+# Options: ASH | SOL | ECHO | KAI | MYRA
+persona_mute_list: []
+
+# Personas the user has expressed affinity for (small weight boost).
+preferred_personas: []
+
+# Timestamp of last update (ISO 8601 format).
+last_updated: ""
