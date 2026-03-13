@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from .models import CDELayerResult, CrisisAssessment, DistressInput, InteractionContext
@@ -39,7 +39,7 @@ class CrisisDetectionEngine:
         silent_mode = context.distress_input == DistressInput.DONT_KNOW_SHUT_DOWN or "shutdown" in semantic_hits
 
         return CrisisAssessment(
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(UTC),
             distress_input=context.distress_input,
             severity_score=severity,
             confidence_score=confidence,
