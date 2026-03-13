@@ -1,0 +1,37 @@
+version: 1
+governance:
+  local_first: true
+  privacy_centric: true
+  user_agency_first: true
+  anti_gaslight_language: true
+  no_forced_productivity: true
+
+toi_defaults:
+  tone: supportive_default
+  pacing: gentle
+  cognitive_scaffolding: moderate
+  safety_boundaries:
+    require_explicit_consent: true
+    allow_external_escalation: false
+    allow_reflective_questions: true
+    allow_silent_mode: true
+    max_active_personas: 3
+    blocked_personas: []
+
+tone_profiles:
+  supportive_default:
+    style: "Warm, steady, validating."
+    max_sentences: 4
+    ask_before_expanding: false
+  minimal:
+    style: "Extremely concise and low-demand."
+    max_sentences: 2
+    ask_before_expanding: true
+  directive:
+    style: "Clear, actionable, and structured."
+    max_sentences: 3
+    ask_before_expanding: false
+  therapeutic_reflective:
+    style: "Empathetic mirroring with soft reflection."
+    max_sentences: 4
+    ask_before_expanding: false

@@ -75,39 +75,23 @@ Crisis Avatar + Emergency Aide → RRT Advocate
 
 ```
 src/
-├── crisis/              # Crisis detection and assessment
-│   ├── detectors/       # Real-time crisis pattern recognition
-│   ├── assessors/       # Crisis severity and type classification
-│   └── triggers/        # ADHD-specific trigger identification
-├── response/            # Immediate response protocols
-│   ├── interventions/   # Crisis intervention strategies
-│   ├── de_escalation/   # De-escalation techniques
-│   └── stabilization/   # Immediate stabilization protocols
-├── coordination/        # System integration and escalation
-│   ├── supervisor/      # Supervisor AI communication
-│   ├── advocates/       # Multi-Advocate coordination
-│   └── external/        # External resource integration
-└── learning/            # Continuous improvement
-    ├── patterns/        # Crisis pattern analysis
-    ├── effectiveness/   # Response effectiveness tracking
-    └── adaptation/      # Personalized response optimization
+├── rrt_advocate.py           # Public entry point and demo harness
+└── rrt_core/
+    ├── config.py             # YAML config loading
+    ├── models.py             # TOI, stage, and assessment models
+    ├── toi.py                # TOI parsing and OTOI persona governance
+    ├── cde.py                # Local-first 3-layer crisis detection engine
+    ├── personas.py           # Persona fusion weights and rationale
+    ├── tone_profiles.py      # Configurable tone renderers
+    └── engine.py             # Main RRT Advocate orchestration engine
 
 config/
-├── crisis_thresholds.yaml    # Crisis detection parameters
-├── response_protocols.yaml   # Standard response procedures
-├── escalation_rules.yaml     # Escalation decision trees
-└── privacy_settings.yaml     # Privacy and security configuration
-
-docs/
-├── crisis_protocols.md       # Crisis response documentation
-├── integration_guide.md      # NeuroLift ecosystem integration
-├── training_methodology.md   # Avatar-Aide fusion process
-└── privacy_security.md       # Privacy and security specifications
+├── crisis_thresholds.yaml    # Activation stages, CDE lexicons, distress mapping
+└── toi_otoi.yaml             # TOI defaults, governance, and tone profiles
 
 tests/
-├── crisis_simulation/        # Crisis scenario testing
-├── response_validation/      # Response effectiveness testing
-└── integration_tests/        # Ecosystem integration testing
+├── conftest.py               # Test import path setup
+└── test_rrt_advocate.py      # End-to-end orchestration coverage
 ```
 
 ## Development Philosophy
@@ -158,9 +142,9 @@ The RRT Advocate coordinates with other specialized Advocates:
 
 ## Development Status
 
-**Current Phase**: Initial Development (Testing TOI-OTOI Integration Strategy)
+**Current Phase**: Protective Layer refactor
 
-This repository serves as a testing ground for integrating the TOI-OTOI framework with existing NeuroLift systems, following the user's strategy of building initial AI agents with different development structures before full framework integration.
+This repository now serves as the Solidarity Framework Protective Layer testbed for TOI/OTOI-governed crisis response, local-first distress detection, and dynamic fusion of the five core NeuroLift personas.
 
 ## Getting Started
 
@@ -170,40 +154,25 @@ This repository serves as a testing ground for integrating the TOI-OTOI framewor
 - Crisis response training data
 - ADHD-specific crisis pattern datasets
 
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/JDUB1216/rrt-advocate.git
-cd rrt-advocate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure crisis detection parameters
-cp config/crisis_thresholds.example.yaml config/crisis_thresholds.yaml
-# Edit configuration files as needed
-
-# Run initial setup
-python setup.py install
-```
-
 ### Quick Start
 ```python
-from rrt_advocate import RRTAdvocate
+from rrt_advocate import DistressInput, RRTAdvocate
 
 # Initialize RRT Advocate
-rrt = RRTAdvocate(
-    user_profile="path/to/user/profile.json",
-    crisis_config="config/crisis_thresholds.yaml"
+rrt = RRTAdvocate(user_id="demo-user")
+
+# Stage 1: ask for consent before intervention
+entry_prompt = rrt.create_entry_prompt({"tone": "supportive_default"})
+
+# Stage 2 -> Stage 3/4/5: user selects a distress flavor and grants consent
+response = rrt.assess_interaction(
+    user_message="Everything hurts and I cannot slow my thoughts down.",
+    distress_input=DistressInput.EVERYTHING_HURTS_MELTDOWN,
+    toi_config={"tone": "supportive_default", "pacing": "gentle"},
+    recent_user_messages=["too much", "meltdown"],
+    response_latency_seconds=95,
+    consent_granted=True,
 )
-
-# Start crisis monitoring
-rrt.start_monitoring()
-
-# Manual crisis assessment
-crisis_level = rrt.assess_current_state()
-if crisis_level.requires_intervention:
-    response = rrt.deploy_intervention(crisis_level)
 ```
 
 ## Contributing
