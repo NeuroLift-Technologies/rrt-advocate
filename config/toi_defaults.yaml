@@ -1,0 +1,18 @@
+toi:
+  tone: supportive_default
+  pacing: gentle
+  cognitive_scaffolding: layered
+  preferred_personas: []
+  blocked_personas: []
+  silent_mode:
+    enabled: true
+    no_timers: true
+    calm_visuals: true
+    minimal_text: true
+  safety_boundaries:
+    require_stage1_consent: true
+    allow_directive_tone: true
+    allow_reflective_questions: true
+    protect_from_productivity_pressure: true
+    allow_external_escalation: false
+    max_single_persona_weight: 0.58

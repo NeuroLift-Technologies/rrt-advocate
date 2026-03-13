@@ -118,18 +118,18 @@ class PersonalDataIntegration:
 
 ### TOI-OTOI Framework Integration
 
-As part of the testing strategy for TOI-OTOI framework integration, the RRT Advocate implements:
+The repository now includes a first concrete implementation of the Solidarity Framework protective layer:
 
-#### Current Implementation (Separate Development Structure)
-- Independent crisis detection and response systems
-- Standalone configuration and preference management
-- Direct integration with NeuroLift ecosystem components
-- Comprehensive documentation of integration patterns
+#### Current Implementation
+- **Terms of Interaction (TOI)**: User-defined tone, pacing, cognitive scaffolding, persona constraints, and safety boundaries are parsed before response generation.
+- **Optimization Through Organized Intelligence (OTOI)**: Persona orchestration is coordinated by a governor that prevents a single persona or tone from overriding the user's explicit contract.
+- **Tiered activation**: Stage 1 consent and Stage 2 distress selection are enforced before full intervention.
+- **Local-first CDE**: Semantic, sentiment, and behavioral layers run without default cloud processing.
 
-#### Future TOI-OTOI Integration
-- **Terms of Interaction (TOI)**: User-defined crisis response preferences and boundaries
-- **Optimization Through Organized Intelligence (OTOI)**: Systematic optimization of crisis interventions based on user feedback and outcomes
-- **Framework Unification**: Seamless integration with the broader TOI-OTOI framework
+#### Next Integration Steps
+- Deeper ecosystem handoff hooks for Supervisor AI
+- Shared TOI profile distribution across other advocates
+- Cross-repository schema reuse for TOI / OTOI configuration
 
 ```python
 # Future TOI-OTOI integration structure
