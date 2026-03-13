@@ -31,8 +31,7 @@ async def main() -> None:
     )
     print("Stage 1:")
     print(entry.message)
-    print("
-Stage 3:")
+    print("\nStage 3:")
     print(
         json.dumps(
             {
