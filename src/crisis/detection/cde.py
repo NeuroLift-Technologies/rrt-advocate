@@ -208,15 +208,15 @@ class CrisisDetectionEngine:
 
         # Suggest distress key for Fusion Engine
         suggested = None
-        if "meltdown" in str(detected_fields).lower() or "overwhelm" in detected_fields:
+        if "overwhelm" in detected_fields and ("shut" in text.lower() or "don't know" in text.lower()):
+            suggested = "shutdown"
+        elif "meltdown" in str(detected_fields).lower() or "overwhelm" in detected_fields:
             suggested = "meltdown"
         elif "task_avoidance" in detected_fields or "negative_self_talk" in detected_fields:
             if "negative_self_talk" in detected_fields and "self" in text.lower():
                 suggested = "negative_self_talk"
             else:
                 suggested = "executive_dysfunction"
-        elif "overwhelm" in detected_fields and ("shut" in text.lower() or "don't know" in text.lower()):
-            suggested = "shutdown"
         elif "hyperfocus" in str(detected_fields).lower() or "loop" in text.lower():
             suggested = "hyperfocus_stuck"
 
