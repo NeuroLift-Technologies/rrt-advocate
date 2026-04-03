@@ -26,4 +26,4 @@ class CrisisDetector:
 
     async def detect_crisis_indicators(self) -> dict:
         """Legacy: return minimal indicators. Use CDE.detect() for full pipeline."""
-        return {"indicators": [], "cde_available": True}
+        return {"indicators": [], "cde_available": self._cde is not None}
