@@ -85,13 +85,39 @@ class PersonaFusionEngine:
         """Normalize user input for matching."""
         return raw.lower().strip()
 
+    def _matches_distress_phrase(self, normalized: str, phrase: str) -> bool:
+        """
+        Match known distress phrases conservatively.
+
+        Accept:
+        - exact matches
+        - inputs that start with a known phrase followed by a separator or whitespace
+
+        Reject:
+        - arbitrary substring matches
+        - short inputs that are only contained within a longer phrase
+        """
+        if normalized == phrase:
+            return True
+
+        if normalized.startswith(phrase):
+            if len(normalized) == len(phrase):
+                return True
+            return normalized[len(phrase)] in {" ", "/", "-", ",", ".", ":", ";"}
+
+        return False
+
     def _map_to_config_key(self, user_input: str) -> str:
         """Map Stage 2 distress input to config key."""
         normalized = self._normalize_input(user_input)
 
-        # Exact or partial match
+        # Prefer exact matches for known UI strings
+        if normalized in DISTRESS_INPUT_MAP:
+            return DISTRESS_INPUT_MAP[normalized]
+
+        # Conservative prefix match for user inputs that add trailing context
         for phrase, key in DISTRESS_INPUT_MAP.items():
-            if phrase in normalized or normalized in phrase:
+            if self._matches_distress_phrase(normalized, phrase):
                 return key
 
         # Fallback: try direct key match
