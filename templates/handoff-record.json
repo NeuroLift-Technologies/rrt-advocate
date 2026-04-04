@@ -1,0 +1,27 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.0/handoff-record",
+  "agent_name": "AGENT_NAME_HERE",
+  "platform": "claude-code | copilot | cursor | gemini | other",
+  "session_id": "SESSION-UUID-HERE",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "session_started": "ISO-8601-TIMESTAMP",
+  "session_ended": "ISO-8601-TIMESTAMP",
+  "otoi_version": "ORG-DEV-OTOI-1.0.0",
+  "task_description": "What was being worked on",
+  "work_completed": [
+    "List of completed items"
+  ],
+  "work_remaining": [
+    "List of incomplete items"
+  ],
+  "blockers": [
+    "Any blockers encountered"
+  ],
+  "escalations_filed": [],
+  "files_modified": [],
+  "branch": "branch-name",
+  "pr_number": null,
+  "next_agent_instructions": "Clear instructions for the next agent picking up this work",
+  "human_approval_needed": false,
+  "human_approval_reason": null
+}
