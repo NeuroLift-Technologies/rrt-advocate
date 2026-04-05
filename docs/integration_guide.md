@@ -1,397 +1,202 @@
 # NeuroLift Ecosystem Integration Guide
 
-## Overview
+This guide documents the **current, code-verified integration surface** for this repository.
+It intentionally avoids speculative architecture and focuses on behavior implemented in:
 
-The RRT (Rapid Response Team) Advocate is designed to seamlessly integrate with the broader NeuroLift Technologies ecosystem, providing specialized crisis intervention capabilities while maintaining coordination with other system components.
+- `src/rrt_advocate.py`
+- `config/crisis_thresholds.yaml`
 
-## Architecture Integration
+> Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.0. Do not modify crisis logic or thresholds without explicit approval.
 
-### Supervisor AI Coordination
+---
 
-The RRT Advocate operates under the coordination of the NeuroLift Supervisor AI, following the established multi-agent architecture:
+## 1) What this repository currently provides
+
+`RRTAdvocate` is an async orchestration layer that:
+
+1. Runs continuous crisis assessments in a monitoring loop.
+2. Routes non-green assessments into tiered intervention flows.
+3. Escalates emergencies to a supervisor interface (if provided).
+4. Exposes status/reporting and manual intervention hooks for operators.
+
+The core implementation is in `src/rrt_advocate.py`.
+
+---
+
+## 2) Public interfaces (codepaths you can integrate with)
+
+### Enums
+
+- `CrisisLevel`: `GREEN`, `YELLOW`, `ORANGE`, `RED`, `BLACK`
+- `ResponseStatus`: `PENDING`, `ACTIVE`, `SUCCESSFUL`, `ESCALATED`, `FAILED`
+
+### Data models
+
+- `CrisisAssessment`
+  - Includes `crisis_level`, `confidence_score`, `user_safety_score`,
+    `recommended_interventions`, and `context_factors`.
+- `InterventionResponse`
+  - Tracks intervention lifecycle (`start_time`, `end_time`, `status`, `effectiveness_score`).
+
+### Main class
+
+- `RRTAdvocate(user_id: str, config_path: str = "config/crisis_thresholds.yaml", supervisor_interface: Optional[SupervisorInterface] = None)`
+- `await start_monitoring() -> bool`
+- `await stop_monitoring() -> bool`
+- `await assess_current_state() -> CrisisAssessment`
+- `await get_status_report() -> Dict[str, Any]`
+- `await manual_intervention(intervention_type: str, context: Dict[str, Any] = None) -> bool`
+- `await shutdown()`
+
+### Factory
+
+- `await create_rrt_advocate(...) -> RRTAdvocate`
+  - Creates an instance and performs one initial assessment.
+
+---
+
+## 3) Runtime workflow
+
+The runtime path in `RRTAdvocate` is:
+
+1. `start_monitoring()` sets `is_monitoring=True` and starts `_monitoring_loop()` as a background task.
+2. `_monitoring_loop()`:
+   - calls `assess_current_state()`
+   - if level is not `GREEN`, calls `_handle_crisis(assessment)`
+   - updates pattern analysis via `pattern_analyzer.update_patterns(assessment)`
+3. `_handle_crisis()` routes by severity:
+   - `YELLOW`/`ORANGE` -> `_deploy_standard_interventions()`
+   - `RED` -> `_deploy_intensive_interventions()`
+   - `BLACK` or low `user_safety_score` -> `_emergency_escalation()`
+4. Supervisor callbacks fire when configured:
+   - `notify_advocate_status(...)` on start/stop
+   - `handle_crisis(...)` for detected crises
+   - `emergency_escalation(...)` for emergency states
+5. `shutdown()` stops monitoring, persists patterns (`save_patterns()`), and logs final status.
+
+---
+
+## 4) Expected external integration points
+
+`RRTAdvocate` imports the following modules from outside this repository snapshot:
+
+- `crisis.detectors.crisis_detector.CrisisDetector`
+- `crisis.assessors.crisis_assessor.CrisisAssessor`
+- `response.interventions.intervention_manager.InterventionManager`
+- `response.de_escalation.de_escalation_engine.DeEscalationEngine`
+- `coordination.supervisor.supervisor_interface.SupervisorInterface`
+- `learning.patterns.pattern_analyzer.PatternAnalyzer`
+
+This means standalone execution in this repo alone will fail unless those modules are available on `PYTHONPATH`.
+
+Minimal supervisor contract expected by `RRTAdvocate`:
 
 ```python
-# Example Supervisor AI interface
 class SupervisorInterface:
-    async def handle_crisis(self, advocate_id: str, crisis_assessment: CrisisAssessment, user_id: str):
-        """Handle crisis escalation from RRT Advocate"""
-        
-    async def emergency_escalation(self, advocate_id: str, crisis_assessment: CrisisAssessment, user_id: str):
-        """Handle emergency-level crisis escalation"""
-        
-    async def notify_advocate_status(self, advocate_id: str, status: str, user_id: str):
-        """Notify supervisor of advocate status changes"""
+    async def notify_advocate_status(self, advocate_id: str, status: str, user_id: str): ...
+    async def handle_crisis(self, advocate_id: str, crisis_assessment, user_id: str): ...
+    async def emergency_escalation(self, advocate_id: str, crisis_assessment, user_id: str): ...
 ```
 
-### Multi-Advocate Collaboration
+---
 
-The RRT Advocate coordinates with other specialized Advocates in the NeuroLift ecosystem:
+## 5) Configuration runbook (`config/crisis_thresholds.yaml`)
 
-#### Primary Collaboration Scenarios
+The default config path is `config/crisis_thresholds.yaml`. It contains:
 
-1. **Executive Function Crisis + Time Management**
-   - RRT Advocate detects executive function collapse
-   - Coordinates with Timely Advocate for time-sensitive interventions
-   - Shares crisis context for comprehensive support
+- crisis level ranges (`green`..`black`)
+- indicator weights and thresholds
+- crisis pattern definitions
+- escalation rules
+- intervention mappings by severity
+- privacy/security/performance parameters
 
-2. **Attention Crisis + Focus Management**
-   - RRT Advocate identifies attention system failure
-   - Collaborates with FocusFlow Advocate for specialized attention restoration
-   - Maintains crisis monitoring while focus interventions are deployed
+Important operational constraints:
 
-3. **Emotional Dysregulation + Impulse Control**
-   - RRT Advocate detects emotional crisis
-   - Works with ImpulseGuard Advocate to prevent impulsive decisions during crisis
-   - Coordinates de-escalation strategies
+- `RRTAdvocate._monitoring_loop()` currently sleeps for a fixed `1` second interval.
+  - It does **not** currently consume per-level `monitoring_interval` values from YAML.
+- Escalation behavior in code is driven by `assessment.user_safety_score` and `assessment.crisis_level`.
+  - YAML escalation thresholds are consumed by external components (for example, detector/assessor) rather than directly in `RRTAdvocate`.
 
-#### Collaboration Protocol
+---
 
-```python
-# Multi-Advocate coordination example
-class AdvocateCoordination:
-    async def request_advocate_support(self, 
-                                     requesting_advocate: str,
-                                     target_advocate: str,
-                                     crisis_context: Dict[str, Any],
-                                     urgency_level: str) -> bool:
-        """Request support from another advocate during crisis"""
-        
-    async def share_crisis_context(self, 
-                                 crisis_assessment: CrisisAssessment,
-                                 target_advocates: List[str]) -> None:
-        """Share crisis context with relevant advocates"""
+## 6) Developer setup (current repository state)
+
+### Prerequisites
+
+- Python 3.8+
+- Access to the external NeuroLift modules listed in Section 4
+
+### Suggested local workflow
+
+1. Create and activate a virtual environment.
+2. Ensure external dependency packages/modules are importable.
+3. Run a basic import check:
+
+```bash
+python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
 ```
 
-### User Profile Integration
+4. Once dependencies are available, execute:
 
-The RRT Advocate integrates with the centralized user profile system to access:
-
-- **Crisis History**: Previous crisis patterns and effective interventions
-- **Trigger Patterns**: Known crisis triggers and early warning signs
-- **Intervention Preferences**: User-preferred crisis response strategies
-- **Emergency Contacts**: Configured emergency contact information
-- **Privacy Settings**: User-defined privacy and escalation preferences
-
-```python
-# User profile integration
-class UserProfileIntegration:
-    def get_crisis_preferences(self, user_id: str) -> Dict[str, Any]:
-        """Retrieve user's crisis response preferences"""
-        
-    def update_crisis_history(self, user_id: str, crisis_event: CrisisAssessment) -> None:
-        """Update user's crisis history with new event"""
-        
-    def get_emergency_contacts(self, user_id: str) -> List[Dict[str, str]]:
-        """Retrieve user's emergency contact information"""
+```bash
+python src/rrt_advocate.py
 ```
 
-## Data Integration Points
+---
 
-### Personal Data Manager Integration
+## 7) Troubleshooting and common pitfalls
 
-The RRT Advocate leverages the Personal Data Manager repository for:
+### `ModuleNotFoundError` for `crisis.*`, `response.*`, `coordination.*`, or `learning.*`
 
-#### Crisis Pattern Analysis
-- Historical crisis data across all user platforms
-- Environmental factor correlation (calendar events, location data)
-- Communication pattern analysis for early warning signs
-- Sleep and health data integration
+Cause: those modules are referenced but not vendored in this repository snapshot.
 
-#### Intervention Effectiveness Tracking
-- Cross-platform intervention outcome data
-- Long-term crisis recovery patterns
-- Personalized intervention optimization
-- Privacy-preserving effectiveness analytics
+Fix: install/provide the dependent NeuroLift packages or run in the full multi-repo/monorepo environment where they exist.
 
-```python
-# Personal Data Manager integration
-class PersonalDataIntegration:
-    async def analyze_crisis_patterns(self, user_id: str, timeframe: timedelta) -> Dict[str, Any]:
-        """Analyze historical crisis patterns from all data sources"""
-        
-    async def correlate_environmental_factors(self, crisis_timestamp: datetime) -> List[str]:
-        """Identify environmental factors that may have contributed to crisis"""
-        
-    async def track_intervention_outcomes(self, intervention_id: str, outcome_data: Dict) -> None:
-        """Track intervention outcomes across all user data sources"""
-```
+### Duplicate log lines after creating multiple `RRTAdvocate` instances
 
-### TOI-OTOI Framework Integration
+Cause: `_setup_logging()` always adds a new `StreamHandler` to the same logger name for a given `user_id`.
 
-As part of the testing strategy for TOI-OTOI framework integration, the RRT Advocate implements:
+Fix: guard handler registration in your fork/integration layer or reuse advocate instances per user.
 
-#### Current Implementation (Separate Development Structure)
-- Independent crisis detection and response systems
-- Standalone configuration and preference management
-- Direct integration with NeuroLift ecosystem components
-- Comprehensive documentation of integration patterns
+### Monitoring appears active after caller scope exits
 
-#### Future TOI-OTOI Integration
-- **Terms of Interaction (TOI)**: User-defined crisis response preferences and boundaries
-- **Optimization Through Organized Intelligence (OTOI)**: Systematic optimization of crisis interventions based on user feedback and outcomes
-- **Framework Unification**: Seamless integration with the broader TOI-OTOI framework
+Cause: `start_monitoring()` launches `_monitoring_loop()` as a background task via `asyncio.create_task`.
 
-```python
-# Future TOI-OTOI integration structure
-class TOIOTOIIntegration:
-    def apply_user_toi(self, crisis_context: Dict, user_toi: Dict) -> Dict:
-        """Apply user's Terms of Interaction to crisis response"""
-        
-    def optimize_through_otoi(self, intervention_history: List, outcomes: List) -> Dict:
-        """Optimize interventions through organized intelligence analysis"""
-```
+Fix: always call `await shutdown()` (or at minimum `await stop_monitoring()`) in service teardown paths.
 
-## External System Integration
+### `intervention_success_rate` remains low/zero unexpectedly
 
-### Crisis Resource Integration
+Cause: success-rate updates are calculated from `active_interventions` entries with completion data; completed interventions are then removed from that list.
 
-The RRT Advocate integrates with external crisis support resources:
+Fix: if this metric is operationally important, persist completed interventions in integration code or adjust implementation before relying on it for dashboards/alerts.
 
-#### Crisis Hotlines and Services
-- National Suicide Prevention Lifeline (988)
-- Crisis Text Line (741741)
-- Local mental health crisis centers
-- ADHD-specific support resources
+---
 
-#### Professional Support Networks
-- User's mental health professionals
-- ADHD specialists and coaches
-- Crisis intervention teams
-- Support group networks
+## 8) Operational runbook for service owners
 
-```python
-# External resource integration
-class ExternalResourceIntegration:
-    async def connect_crisis_hotline(self, crisis_level: CrisisLevel, user_preferences: Dict) -> bool:
-        """Connect user to appropriate crisis hotline"""
-        
-    async def notify_professional_support(self, user_id: str, crisis_summary: str) -> None:
-        """Notify user's professional support team of crisis"""
-        
-    async def access_local_resources(self, location: str, crisis_type: str) -> List[Dict]:
-        """Access local crisis resources based on user location"""
-```
+### Start sequence
 
-### Healthcare System Integration
+1. Instantiate via `create_rrt_advocate(...)` (per user session).
+2. Call `start_monitoring()`.
+3. Verify `monitoring_active` via `get_status_report()`.
 
-For users who consent to healthcare integration:
+### During runtime
 
-#### Electronic Health Records (EHR)
-- Crisis event documentation
-- Intervention outcome tracking
-- Medication correlation analysis
-- Professional care coordination
+- Poll or request `get_status_report()` for:
+  - current crisis level/confidence
+  - active intervention count
+  - response performance metrics
+- Use `manual_intervention(...)` for operator-assisted recovery workflows.
 
-#### Wearable Device Integration
-- Real-time physiological monitoring
-- Sleep pattern analysis
-- Activity level tracking
-- Stress indicator detection
+### Stop sequence
 
-```python
-# Healthcare integration (with user consent)
-class HealthcareIntegration:
-    async def log_crisis_event(self, user_id: str, crisis_data: Dict, consent_level: str) -> None:
-        """Log crisis event to healthcare records with appropriate consent"""
-        
-    async def correlate_medication_effects(self, user_id: str, timeframe: timedelta) -> Dict:
-        """Analyze medication effects on crisis patterns"""
-```
+1. Call `shutdown()`.
+2. Confirm monitoring is inactive and final status has been logged.
 
-## Privacy and Security Integration
+---
 
-### NeuroLift Privacy Framework
+## 9) Known documentation boundaries
 
-The RRT Advocate adheres to the NeuroLift privacy-first design principles:
-
-#### Local Processing Priority
-- Crisis detection processed locally when possible
-- Minimal data transmission for privacy protection
-- User-controlled data sharing preferences
-- Encrypted storage of all crisis data
-
-#### User Agency Maintenance
-- Complete user control over crisis response preferences
-- Opt-in external resource activation
-- Transparent data usage and sharing
-- Right to crisis data deletion
-
-```python
-# Privacy framework integration
-class PrivacyFramework:
-    def enforce_privacy_preferences(self, user_id: str, data_operation: str) -> bool:
-        """Enforce user's privacy preferences for data operations"""
-        
-    def encrypt_crisis_data(self, crisis_data: Dict, user_key: str) -> bytes:
-        """Encrypt crisis data with user-controlled encryption"""
-        
-    def audit_data_access(self, user_id: str, accessor: str, data_type: str) -> None:
-        """Audit all access to user's crisis data"""
-```
-
-## Development Integration Workflow
-
-### Repository Synchronization
-
-The RRT Advocate repository integrates with the broader NeuroLift development workflow:
-
-#### GitHub Actions Integration
-- Automated testing with other NeuroLift components
-- Cross-repository change notifications
-- Integrated deployment pipelines
-- Coordinated version management
-
-#### Notion Project Integration
-- Automated change logging to dedicated Notion project
-- Development milestone tracking
-- Integration testing documentation
-- Performance monitoring reports
-
-### Continuous Integration Pipeline
-
-```yaml
-# Example CI/CD integration
-name: RRT Advocate Integration Tests
-on:
-  push:
-    branches: [main]
-  repository_dispatch:
-    types: [dependency-update]
-
-jobs:
-  integration-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test Supervisor AI Integration
-        run: python -m pytest tests/integration_tests/supervisor_integration_test.py
-        
-      - name: Test Multi-Advocate Coordination
-        run: python -m pytest tests/integration_tests/advocate_coordination_test.py
-        
-      - name: Test Privacy Framework Compliance
-        run: python -m pytest tests/integration_tests/privacy_compliance_test.py
-```
-
-## Deployment Integration
-
-### NeuroLift Ecosystem Deployment
-
-The RRT Advocate deploys as part of the integrated NeuroLift system:
-
-#### Container Orchestration
-- Docker containerization for consistent deployment
-- Kubernetes orchestration for scalability
-- Service mesh integration for secure communication
-- Health monitoring and automatic recovery
-
-#### Configuration Management
-- Centralized configuration management
-- Environment-specific crisis thresholds
-- User-specific customization support
-- Real-time configuration updates
-
-```yaml
-# Example Kubernetes deployment integration
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rrt-advocate
-  namespace: neurolift-advocates
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: rrt-advocate
-  template:
-    metadata:
-      labels:
-        app: rrt-advocate
-    spec:
-      containers:
-      - name: rrt-advocate
-        image: neurolift/rrt-advocate:latest
-        env:
-        - name: SUPERVISOR_AI_ENDPOINT
-          value: "http://supervisor-ai:8080"
-        - name: PRIVACY_FRAMEWORK_ENDPOINT
-          value: "http://privacy-framework:8080"
-```
-
-## Monitoring and Observability Integration
-
-### System-Wide Monitoring
-
-The RRT Advocate integrates with NeuroLift's monitoring infrastructure:
-
-#### Performance Metrics
-- Crisis detection accuracy across the ecosystem
-- Response time coordination with other advocates
-- System-wide intervention success rates
-- Resource utilization and optimization
-
-#### Health Monitoring
-- Advocate availability and responsiveness
-- Integration point health checks
-- Data consistency validation
-- Privacy compliance monitoring
-
-```python
-# Monitoring integration
-class MonitoringIntegration:
-    async def report_performance_metrics(self, metrics: Dict[str, float]) -> None:
-        """Report performance metrics to system monitoring"""
-        
-    async def health_check(self) -> Dict[str, bool]:
-        """Perform comprehensive health check of all integrations"""
-        
-    async def validate_data_consistency(self, user_id: str) -> bool:
-        """Validate data consistency across integrated systems"""
-```
-
-## Future Integration Roadmap
-
-### Phase 1: Core Integration (Current)
-- ✅ Supervisor AI coordination
-- ✅ Basic multi-advocate collaboration
-- ✅ User profile integration
-- ✅ Privacy framework compliance
-
-### Phase 2: Enhanced Integration (Q1 2026)
-- 🔄 Advanced multi-advocate coordination
-- 🔄 Personal Data Manager deep integration
-- 🔄 External resource automation
-- 🔄 Healthcare system integration
-
-### Phase 3: TOI-OTOI Framework Integration (Q2 2026)
-- 📋 Full TOI-OTOI framework adoption
-- 📋 Advanced user preference learning
-- 📋 Systematic intervention optimization
-- 📋 Framework unification completion
-
-### Phase 4: Advanced Ecosystem Integration (Q3 2026)
-- 📋 Predictive crisis prevention
-- 📋 Cross-user pattern analysis (anonymized)
-- 📋 AI-driven intervention development
-- 📋 Comprehensive ecosystem optimization
-
-## Integration Testing Strategy
-
-### Unit Integration Tests
-- Individual component integration validation
-- Mock external service testing
-- Privacy compliance verification
-- Performance benchmark validation
-
-### System Integration Tests
-- End-to-end crisis response workflow
-- Multi-advocate coordination scenarios
-- External resource integration testing
-- Data consistency validation
-
-### User Acceptance Integration Tests
-- Real-world crisis scenario testing
-- User experience validation
-- Privacy and security verification
-- Performance and reliability testing
-
-This integration guide ensures that the RRT Advocate operates seamlessly within the NeuroLift ecosystem while maintaining its specialized crisis intervention capabilities and adhering to the privacy-first, user-agency-focused principles of the platform.
+This guide intentionally documents only behavior verifiable in this repository.
+For roadmap plans, ecosystem proposals, or architectural intent not yet implemented here, treat those artifacts as design references rather than runtime truth.
