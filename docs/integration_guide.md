@@ -76,7 +76,26 @@ The runtime path in `RRTAdvocate` is:
 
 ---
 
-## 4) Expected external integration points
+## 4) Lifecycle semantics and integration constraints
+
+The async lifecycle methods have a few integration-relevant behaviors:
+
+- `start_monitoring()` is idempotent in practice:
+  - if already running, it logs a warning and returns `True`
+  - it schedules `_monitoring_loop()` using `asyncio.create_task(...)` and returns immediately
+- `stop_monitoring()` sets `is_monitoring=False` and attempts to complete active interventions before returning.
+- `create_rrt_advocate(...)` performs one initial call to `assess_current_state()` before returning.
+- `assess_current_state()` returns a safe default `GREEN` assessment on internal failure instead of raising.
+
+Operational implications:
+
+- Keep the process/event loop alive after `start_monitoring()` because monitoring runs in a background task.
+- Always call `shutdown()` during teardown to stop monitoring and persist patterns.
+- Treat a `GREEN` assessment with `confidence_score=0.0` as a potential fallback signal when dependency calls fail.
+
+---
+
+## 5) Expected external integration points
 
 `RRTAdvocate` imports the following modules from outside this repository snapshot:
 
@@ -100,7 +119,7 @@ class SupervisorInterface:
 
 ---
 
-## 5) Configuration runbook (`config/crisis_thresholds.yaml`)
+## 6) Configuration runbook (`config/crisis_thresholds.yaml`)
 
 The default config path is `config/crisis_thresholds.yaml`. It contains:
 
@@ -120,7 +139,7 @@ Important operational constraints:
 
 ---
 
-## 6) Developer setup (current repository state)
+## 7) Developer setup (current repository state)
 
 ### Prerequisites
 
@@ -143,9 +162,39 @@ python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
 python src/rrt_advocate.py
 ```
 
+### Minimal async service integration example
+
+```python
+import asyncio
+from src.rrt_advocate import create_rrt_advocate
+
+
+async def run_service():
+    advocate = await create_rrt_advocate(user_id="demo-user-001")
+    await advocate.start_monitoring()
+
+    try:
+        # Keep the service alive while monitoring runs in background.
+        await asyncio.sleep(30)
+        status = await advocate.get_status_report()
+        print(status)
+
+        # Optional operator override.
+        await advocate.manual_intervention(
+            intervention_type="grounding_technique",
+            context={"source": "operator-console"}
+        )
+    finally:
+        await advocate.shutdown()
+
+
+if __name__ == "__main__":
+    asyncio.run(run_service())
+```
+
 ---
 
-## 7) Troubleshooting and common pitfalls
+## 8) Troubleshooting and common pitfalls
 
 ### `ModuleNotFoundError` for `crisis.*`, `response.*`, `coordination.*`, or `learning.*`
 
@@ -171,9 +220,15 @@ Cause: success-rate updates are calculated from `active_interventions` entries w
 
 Fix: if this metric is operationally important, persist completed interventions in integration code or adjust implementation before relying on it for dashboards/alerts.
 
+### `current_crisis` appears stale in status reports
+
+Cause: `current_crisis` is set when a non-green crisis is handled and is not explicitly cleared on later green assessments.
+
+Fix: treat `current_crisis` as "last handled crisis context" and pair it with fresh assessment/state signals in your integration layer.
+
 ---
 
-## 8) Operational runbook for service owners
+## 9) Operational runbook for service owners
 
 ### Start sequence
 
@@ -196,7 +251,7 @@ Fix: if this metric is operationally important, persist completed interventions 
 
 ---
 
-## 9) Known documentation boundaries
+## 10) Known documentation boundaries
 
 This guide intentionally documents only behavior verifiable in this repository.
 For roadmap plans, ecosystem proposals, or architectural intent not yet implemented here, treat those artifacts as design references rather than runtime truth.
