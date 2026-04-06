@@ -6,6 +6,22 @@
 
 ---
 
+
+## Local Development (Repository Snapshot)
+
+Because this repository references external NeuroLift modules that are not vendored here, runtime execution requires the broader ecosystem on `PYTHONPATH`. For this standalone snapshot, the fastest way to validate behavior is via the unit tests that use local stubs.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -U pip pytest pytest-asyncio
+pytest
+```
+
+Project tooling defaults are defined in `pyproject.toml`.
+
+---
+
 ## What This Is
 
 The RRT (Rapid Response Team) AIdvocAIte is the **Protective Layer** of the [Solidarity Framework](https://github.com/NeuroLift-Technologies) — a real-time crisis intervention system that detects when a user enters a state of burnout, distress, or emotional collapse and **actively intervenes** through a coordinated team of five specialized AI personas.
