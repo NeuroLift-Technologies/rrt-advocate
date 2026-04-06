@@ -9,16 +9,40 @@
 
 ## Local Development (Repository Snapshot)
 
-Because this repository references external NeuroLift modules that are not vendored here, runtime execution requires the broader ecosystem on `PYTHONPATH`. For this standalone snapshot, the fastest way to validate behavior is via the unit tests that use local stubs.
+This repository currently supports two distinct developer workflows:
+
+1. **Standalone validation (works in this snapshot)** via unit tests that install local
+   stub modules for external NeuroLift imports.
+2. **Full runtime execution** against the broader NeuroLift ecosystem on `PYTHONPATH`.
+
+### A) Standalone test workflow
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -U pip pytest pytest-asyncio
-pytest
+pip install -U pip
+pip install -e .
+pip install pytest pytest-asyncio
+pytest -q
 ```
 
-Project tooling defaults are defined in `pyproject.toml`.
+Notes:
+- `tests/test_rrt_advocate.py` injects test doubles for `crisis.*`, `response.*`,
+  `coordination.*`, and `learning.*` before importing `src.rrt_advocate`.
+- This validates orchestration behavior in `RRTAdvocate` without requiring the full
+  multi-repo environment.
+
+### B) Full runtime workflow
+
+`src/rrt_advocate.py` directly imports external NeuroLift modules. Running it directly
+requires those packages/modules to exist on `PYTHONPATH`.
+
+```bash
+python src/rrt_advocate.py
+```
+
+Project tooling defaults (including pytest path config and Ruff settings) live in
+`pyproject.toml`.
 
 ---
 

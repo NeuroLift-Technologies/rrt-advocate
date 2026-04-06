@@ -122,24 +122,43 @@ Important operational constraints:
 
 ## 6) Developer setup (current repository state)
 
-### Prerequisites
+### A) Standalone validation workflow (no external packages required)
 
-- Python 3.8+
-- Access to the external NeuroLift modules listed in Section 4
+`pyproject.toml` defines Python/tooling defaults for this snapshot:
 
-### Suggested local workflow
+- `requires-python = ">=3.10"`
+- pytest config (`pythonpath = ["."]`, `testpaths = ["tests"]`)
+- Ruff lint config
 
-1. Create and activate a virtual environment.
-2. Ensure external dependency packages/modules are importable.
-3. Run a basic import check:
+Use this path to validate `RRTAdvocate` behavior in isolation:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+pip install -e .
+pip install pytest pytest-asyncio
+pytest -q
+```
+
+How this works:
+
+- `tests/test_rrt_advocate.py` installs stub modules into `sys.modules` for
+  `crisis.*`, `response.*`, `coordination.*`, and `learning.*`.
+- Tests then import `src.rrt_advocate` and verify observable behavior:
+  - status-report shape/defaults (`get_status_report()`)
+  - safe GREEN fallback if detector path raises (`assess_current_state()`)
+  - false return and no active entry when manual deployment returns `None`
+
+### B) Full ecosystem runtime workflow (external modules required)
+
+To execute runtime entrypoints without test stubs, provide the modules listed in
+Section 4 on `PYTHONPATH`.
+
+Suggested checks:
 
 ```bash
 python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
-```
-
-4. Once dependencies are available, execute:
-
-```bash
 python src/rrt_advocate.py
 ```
 
@@ -152,6 +171,12 @@ python src/rrt_advocate.py
 Cause: those modules are referenced but not vendored in this repository snapshot.
 
 Fix: install/provide the dependent NeuroLift packages or run in the full multi-repo/monorepo environment where they exist.
+
+### `pytest` passes, but direct runtime import/execution still fails
+
+Cause: tests use local stubs to satisfy external imports; production/runtime code paths still require real external modules.
+
+Fix: treat pytest in this snapshot as unit-level orchestration validation, and run full runtime checks only in an environment where NeuroLift dependencies are present.
 
 ### Duplicate log lines after creating multiple `RRTAdvocate` instances
 
@@ -200,3 +225,7 @@ Fix: if this metric is operationally important, persist completed interventions 
 
 This guide intentionally documents only behavior verifiable in this repository.
 For roadmap plans, ecosystem proposals, or architectural intent not yet implemented here, treat those artifacts as design references rather than runtime truth.
+
+Additional boundary for this snapshot:
+
+- Local tests validate `RRTAdvocate` orchestration with stubs; they do not validate real detector/assessor/intervention/supervisor implementations from the broader ecosystem.
