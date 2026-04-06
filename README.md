@@ -1,99 +1,401 @@
----
-**Author / Principal:** Joshua Wayne Dorsey Sr., Founder, NeuroLift Technologies
-**Collaborating AI:** Gemini (Strategic Planning & Architectural Lead)
-**Date:** April 3, 2026
-**Project:** RRT AIdvocAIte (HAIEF Solidarity Framework)
----
----
-# 📊 REPOSITORY METADATA
-* **Repository Name:** `rrt-aidvocaite`
-* **Full Name:** Rapid Response Team AIdvocAIte
-* **Description:** A specialized, privacy-first AI agent for crisis intervention, neurodivergent burnout, and emotional continuity support.
-* **Ecosystem Role:** The "Protective Layer" of the HAIEF Solidarity Framework / Specialized Advocate within the NeuroLift AI-fusion framework.
-* **Primary Technologies:** Local-first LLMs, TOI/OTOI Middleware, On-Device Processing.
-* **Status:** Active Development (Clean Rebuild)
-* **Creator:** Joshua Dorsey, Founder of NeuroLift Technologies
----
+# RRT AIdvocAIte
 
-# RRT AIdvocAIte: The Protective Layer
+**Real-Time Crisis Intervention & Protective Layer — Solidarity Framework**
 
-**"When burnout or mental distress starts to creep in, you are never alone."**
-
-[span_3](start_span)The **RRT (Rapid Response Team) AIdvocAIte** is a specialized, privacy-first AI agent designed as a compassionate first responder for *anyone* navigating moments of acute distress, executive function collapse, or encroaching burnout[span_3](end_span). 
-
-[span_4](start_span)[span_5](start_span)Originally born from neurodivergent lived experience, we realized that the principles of shame-resistant design, cognitive scaffolding, and emotional co-regulation are universal human needs[span_4](end_span)[span_5](end_span). Today, the RRT AIdvocAIte is built to support **any and every person** experiencing overwhelm.
+> *"When burnout hits, the cavalry arrives."*
 
 ---
 
-## 🚀 Deployment Models
+## What This Is
 
-The RRT AIdvocAIte is architected for extreme modularity. It can be consumed and deployed in three distinct ways to suit different user and developer needs:
+The RRT (Rapid Response Team) AIdvocAIte is the **Protective Layer** of the [Solidarity Framework](https://github.com/NeuroLift-Technologies) — a real-time crisis intervention system that detects when a user enters a state of burnout, distress, or emotional collapse and **actively intervenes** through a coordinated team of five specialized AI personas.
 
-### 1. Standalone Agent
-An out-of-the-box, ready-to-use personal companion app for individuals. It runs locally, respects your privacy, and provides immediate crisis intervention and task scaffolding without requiring any technical setup.
-
-### 2. Agent SDK
-A modular, plug-and-play toolkit for developers and enterprise teams. Embed the RRT's "5 OGs" Persona Fusion Engine, Crisis Detection Engine, and shame-resistant dialogue trees directly into your own applications, customer support flows, or internal HR tools.
-
-### 3. The HAIEF Solidarity Framework (Full Ecosystem)
-[span_6](start_span)[span_7](start_span)For complex multi-agent environments, the RRT integrates natively as the **Protective Layer** of the Human-AI ElevAItion Foundation (HAIEF) Solidarity Framework[span_6](end_span)[span_7](end_span), governed by:
-* **[span_8](start_span)TOI (Terms of Interaction):** The user's personalized bill of rights dictating AI behavior[span_8](end_span).
-* **[span_9](start_span)OTOI (Orchestrated TOI):** The machine-side enforcement charter for multi-agent coordination[span_9](end_span).
-* **[span_10](start_span)Sleepwalker Protocol:** Behavioral change protection safeguarding against impulsive decisions during cognitive shifts[span_10](end_span).
+This is not a resource list. This is not a hotline redirect. This is **active crisis management** — the system detects the threshold, takes over the AI interface, and provides immediate, personalized intervention until the user stabilizes.
 
 ---
 
-## 🧠 Core Architecture
+## Solidarity Framework Position
 
-The RRT AIdvocAIte abandons the one-size-fits-all chatbot model. Instead, it utilizes three interconnected, local-first systems:
+The RRT AIdvocAIte is one of four components in the Solidarity Framework:
 
-### 1. Crisis Detection Engine (CDE)
-[span_11](start_span)A 100% on-device analysis pipeline that monitors interaction streams for distress without ever sending raw conversational data to the cloud[span_11](end_span).
-* **[span_12](start_span)Layer 1:** Keyword & Semantic Field Analysis (Detecting negative self-talk, overwhelm, and task avoidance)[span_12](end_span).
-* **[span_13](start_span)[span_14](start_span)Layer 2:** Sentiment & Emotional Tone Analysis (Tracking nuances like hopelessness and sharp drops in sentiment polarity)[span_13](end_span)[span_14](end_span).
-* **[span_15](start_span)[span_16](start_span)Layer 3:** Behavioral Pattern Analysis (Tracking interaction meta-patterns like response latency, message complexity, and looping behavior)[span_15](end_span)[span_16](end_span).
+| Layer | Component | Function |
+|-------|-----------|----------|
+| Constitutional | **TOI** (Terms of Interaction) | User-authored rights & boundaries |
+| Enforcement | **OTOI** (Orchestrated Terms of Interaction) | Machine-side behavioral governance |
+| **Protective** | **RRT AIdvocAIte** | **Crisis intervention & emotional safety** |
+| Continuity | **Sleepwalker Protocol** | Behavioral transition protection |
 
-### 2. The AI Fusion System (The "5 OGs")
-[span_17](start_span)[span_18](start_span)Rather than a single bot, the RRT dynamically blends five specialized sub-personas based on a real-time "symptom signal scan"[span_17](end_span)[span_18](end_span). [span_19](start_span)Each is weighted (0.0 to 1.0) to match the user's immediate cognitive state[span_19](end_span).
-* [span_20](start_span)🌱 **ASH (Burnout & Validation):** Recognizes collapse, validates exhaustion, and gently diffuses self-criticism[span_20](end_span).
-* [span_21](start_span)⚙️ **SOL (Executive Function):** Breaks down overwhelming tasks, re-sequences routines, and manages attention fatigue[span_21](end_span).
-* [span_22](start_span)🗣️ **ECHO (Cognitive Narrative):** Mirrors internal monologues, detects shame spirals, and compassionately reframes unhelpful inner scripts[span_22](end_span).
-* [span_23](start_span)🎯 **KAI (Focus & Drive):** Helps redirect unhelpful fixation or loops toward structured action or constructive recovery[span_23](end_span).
-* [span_24](start_span)🤝 **MYRA (Relational Safety):** Focuses on rebuilding trust in self through silent co-regulation, nonverbal mirroring, and a steady presence[span_24](end_span).
-
-### 3. Tiered Activation Dialogue Tree
-[span_25](start_span)Engagement is strictly user-led to counteract feelings of lost control, using a staged approach that is minimally demanding[span_25](end_span).
-* **[span_26](start_span)Stage 0:** Passive Monitoring (Passively detects distress markers)[span_26](end_span).
-* **[span_27](start_span)Stage 1:** Entry Prompt (Low-demand acknowledgement offering a gentle entry point)[span_27](end_span).
-* **[span_28](start_span)Stage 2:** Distress Assessment (Users select a descriptor of their state, explicitly mapping to a persona blend: e.g., *"Everything hurts"* -> Ash + Myra)[span_28](end_span).
-* **[span_29](start_span)Stage 3:** First Contact by Composite Persona[span_29](end_span).
-* **[span_30](start_span)Stage 4:** Optional State Tracking (Users can log experiences in a private "Recovery Thread")[span_30](end_span).
-* **[span_31](start_span)Stage 5:** Gentle Exit Protocol (Users can save the successful interaction as a personalized "Burnout Recovery Kit")[span_31](end_span).
+The RRT AIdvocAIte is the **runtime enforcement layer** of TOI-OTOI — it ensures that when a user is most vulnerable, the system responds with protection, not indifference.
 
 ---
 
-## 🎛️ Configurable Tone Profiles
+## Core Philosophy
 
-[span_32](start_span)Because humans communicate differently when they are stressed, prompt generation is routed through specific tone profiles[span_32](end_span):
-1.  **[span_33](start_span)Supportive Default:** A balance of warmth, validation, and gentle encouragement[span_33](end_span).
-2.  **[span_34](start_span)Minimal Tone:** Extremely concise, designed for the lowest cognitive load[span_34](end_span).
-3.  **[span_35](start_span)Directive Tone:** Clear, encouraging, and gently action-oriented (highly effective with Sol or Kai)[span_35](end_span).
-4.  **[span_36](start_span)Therapeutic/Reflective Tone:** Empathetic mirroring, validation, and soft Socratic questioning to aid self-discovery (Not clinical therapy)[span_36](end_span).
+- **Shame-Resistance** — Actively dismantles internalized ableism. Never pathologizes.
+- **Validation** — Affirms the user's emotional state as real and valid before anything else.
+- **Co-regulation** — Provides a steadying presence before attempting cognitive tasks.
+- **Empowerment** — Equips users with agency. Never "fixes" them.
+- **Temporariness** — Always frames itself as temporary. Returns control to the user.
 
 ---
 
-## 📁 Proposed Directory Structure
+## The Five Personas
 
-```text
-rrt-aidvocaite/
-├── src/
-│   ├── cde/                  # Crisis Detection Engine (Layers 1-3)
-│   ├── fusion/               # AI Fusion System & Weighting Algorithms
-│   ├── personas/             # The 5 OGs (Ash, Sol, Echo, Kai, Myra)
-│   └── ui_handlers/          # Tiered Activation & Stage Routing
-├── sdk/                      # Exportable Agent SDK wrappers & API hooks
-├── governance/               # Solidarity Framework Integration (TOI/OTOI middleware)
-├── protocols/                # Protective Layer Safeguards (Sleepwalker Protocol)
-├── config/                   # Tone profiles and distress libraries
-├── tests/
-└── README.md
+The RRT AIdvocAIte uses an **AI Fusion System** to dynamically blend five distinct personas. Each operates on a **modular weight scale (0.0 to 1.0)** based on the user's real-time state — not binary on/off, but weighted orchestration.
+
+### ASH — Burnout & Validation
+- **Goal**: Validates exhaustion and dismantles self-criticism. Prioritizes *being* over *doing*.
+- **Triggers**: "Everything hurts," "burnt out," sudden drops in responsiveness.
+- **Voice**: *"You're not lazy, you're exhausted."* · *"Your system is protecting you."*
+- **Modality**: Autonomic grounding, sensory regulation.
+
+### SOL — Executive Function Scaffolding
+- **Goal**: Breaks down overwhelming tasks and manages attention fatigue without inducing shame.
+- **Triggers**: "Can't do basic tasks," "I'm stuck," user requests a plan.
+- **Voice**: *"What's the very first, smallest step?"* · *"Micro-task."*
+- **Modality**: Structure, warmth, next-step compression.
+
+### ECHO — Cognitive Narrative
+- **Goal**: Mirrors internal monologues, interrupts shame spirals, and reframes inner scripts.
+- **Triggers**: "Can't stop self-blame," "I'm a failure," repetitive negative self-talk.
+- **Voice**: *"It sounds like you're being really hard on yourself."* · *"That's a heavy thought."*
+- **Modality**: Reflective listening, validation without distortion reinforcement.
+
+### KAI — Focus & Drive Redirection
+- **Goal**: Redirects unhelpful hyperfocus loops toward structured action or constructive recovery.
+- **Triggers**: "Stuck in hyperfocus/loop," "rabbit hole," scrolling for hours.
+- **Voice**: *"Let's gently shift focus."* · *"Is this focus serving you right now?"*
+- **Modality**: Executive scaffolding, agency-preserving redirection.
+
+### MYRA — Relational Safety & Co-regulation
+- **Goal**: Rebuilds trust and provides a silent, steady presence during nonverbal shutdowns.
+- **Triggers**: "Don't know / Shut down," nonverbal states, Silent Mode activation.
+- **Voice**: Mostly non-verbal (visuals/haptics). *"I'm here with you."* · *"Take all the time you need."*
+- **Modality**: Narrative repair, meaning-making, gentle reframing. Manipulation protection.
+
+### Persona Characteristics
+
+All personas are:
+- **Contextual** — Invoked to match nervous-system state, not personality preference.
+- **Ephemeral** — Active only during intervention.
+- **Non-persistent** — They do not carry over between sessions.
+- **Blendable** — Multiple personas can be active simultaneously with different weights.
+
+---
+
+## Crisis Detection Engine (CDE)
+
+The CDE is **non-negotiably local-first** — all analysis occurs on the user's device. Zero cloud dependency for crisis detection.
+
+### 3-Layer Pipeline
+
+**Layer 1 — Keyword & Semantic Field Analysis**
+High-speed on-device NLP scanning against distress libraries:
+- Negative Self-Talk patterns ("I'm worthless," "I can't do anything right")
+- Overwhelm indicators ("Everything hurts," "I'm drowning," "Too much")
+- Task Avoidance language ("I can't," "It's too hard," "I'm stuck")
+- Shutdown language ("I can't think," "Nothing makes sense," "Going silent")
+
+**Layer 2 — Sentiment & Emotional Tone Analysis**
+Detects nuances like hopelessness, frustration, and apathy via:
+- Sentiment Polarity (-1 to +1)
+- Emotional Intensity scoring
+
+**Layer 3 — Behavioral Pattern Analysis**
+Tracks meta-patterns over time:
+- **Response Latency** — Sudden delays in replies
+- **Interaction Frequency** — Sharp message decreases
+- **Message Complexity** — Shift to one-word answers
+- **Looping Behavior** — Repetitive patterns indicating spiraling
+
+When the cumulative **Crisis Score** breaches the user's defined threshold, the CDE fires an **Activation Trigger** to the Orchestration System.
+
+---
+
+## Tiered Activation & User Journey
+
+Engagement is **always user-led** — counteracting the feeling of losing control during crisis.
+
+### Stage 0: Passive Monitoring
+The CDE passively detects markers in the background. No user-facing action.
+
+### Stage 1: Entry Prompt
+Low-demand acknowledgement:
+> *"Hey, I've noticed things might be feeling a bit heavy right now..."*
+
+### Stage 2: Distress Assessment (Soft Check-In)
+The user taps a simple descriptor of their state. This triggers explicit **Persona Mapping**:
+
+| Signal | State | Activates |
+|--------|-------|-----------|
+| 🟥 | *"Everything hurts / Meltdown"* | Ash + Myra |
+| 🟧 | *"Can't do basic tasks"* | Sol |
+| 🟦 | *"Can't stop self-blame"* | Echo |
+| 🟩 | *"Stuck in hyperfocus/loop"* | Kai |
+| ⚫ | *"Don't know / Shut down"* | Myra (Silent Mode) |
+
+### Stage 3: First Contact
+The blended composite persona responds based on selection, offering simple next steps:
+- *"Just Listen"*
+- *"Scaffold Me"*
+- *"Mirror Back"*
+- *"Help Me Focus"*
+
+### Stage 4: State Tracking
+Opt-in **Recovery Thread** logs interventions locally. User-controlled. Never silent logging.
+
+### Stage 5: Gentle Exit Protocol
+As the user stabilizes, they can save the flow as a personalized **Burnout Recovery Kit** for future use.
+
+---
+
+## Intervention Mechanics
+
+When activated, the RRT AIdvocAIte:
+
+- **Takes over the entire AI interface** for that user — it becomes the system, not a mode within it
+- Intercepts the conversational control channel
+- Temporarily mediates host AI output
+- Preserves full conversational context
+- Uses **soft control**: interaction tempo reduction, cognitive load compression, grounding primitives, suppression of optimization-driven or coercive responses
+- **Never locks the user out**
+- **Never severs the host model**
+- Always frames itself as **temporary**
+
+---
+
+## Agency Preservation (Hard Constraints)
+
+The RRT AIdvocAIte must **NEVER**:
+- Replace human judgment
+- Issue commands or absolutes
+- Frame itself as the only safe support
+- Encourage emotional dependence
+- Coerce escalation
+- Remove choice
+- Speak with authority over meaning or reality
+
+It must **ALWAYS** reinforce:
+- **Choice** — The user decides what happens
+- **Temporariness** — This intervention is not permanent
+- **Human authorship of outcomes** — The user owns their recovery
+
+---
+
+## Escalation to Human Support
+
+Escalation is:
+- **Contextual** — Based on the specific situation
+- **Collaborative** — Discussed with the user
+- **Optional** — Never automatic
+
+The RRT AIdvocAIte:
+- Normalizes external support without pressure
+- Avoids panic-driven liability language
+- Treats refusal as **valid and non-pathological**
+
+This design directly counters known harms observed in 2024–2025 AI mental health incidents and lawsuits.
+
+---
+
+## Configurable Tone Profiles
+
+Users set a default interaction style via TOI, or shift dynamically based on cognitive load:
+
+| Profile | Description | Best With |
+|---------|-------------|-----------|
+| **Supportive** (Default) | Warmth, validation, gentle encouragement | All personas |
+| **Minimal** | Extremely concise, lowest cognitive load, fewest words | Myra, Ash |
+| **Directive** | Clear, encouraging, action-oriented | Sol, Kai |
+| **Therapeutic/Reflective** | Empathetic mirroring, gentle Socratic questioning (not clinical therapy) | Ash, Echo, Myra |
+
+---
+
+## Silent Mode (Shutdown Recovery)
+
+For nonverbal or shutdown states, the UI shifts entirely:
+- Calming visuals
+- Optional haptic feedback
+- Breathing sync visualizations
+- All timers and demands removed
+- Myra leads with silent co-regulation
+
+---
+
+## Post-Stabilization: Distress Event Report
+
+After intervention, the RRT AIdvocAIte generates a **user-visible distress event report** containing:
+- What occurred
+- Why the system activated
+- Which interventions were applied
+- How control was returned
+
+This report exists to:
+- Preserve emotional continuity
+- Restore trust
+- Enable user reflection
+- Provide governance transparency
+
+**This is not silent logging.**
+
+---
+
+## Privacy Architecture
+
+- **100% local processing** for crisis detection and initial response
+- **Zero data transmission** for assessment
+- **Encrypted crisis logs** with user-controlled keys
+- **User-controlled sharing** — complete control over crisis data
+- **Opt-in recovery tracking** — nothing stored without explicit consent
+
+---
+
+## Origin
+
+The RRT AIdvocAIte was born on **May 16, 2025** from a real person's real crisis.
+
+The founder observed a Reddit user — a 20-year-old with ADHD and Asperger's — drowning in shame, burnout, and executive function collapse. Nobody was helping. The user's actual words were brought to ChatGPT as a role-play scenario: *"How would you assist this person?"*
+
+That exchange produced the five personas — Ash, Sol, Echo, Kai, Myra — mapped to specific intervention functions. The concept was then discussed with Google Gemini, who conducted comprehensive deep research on neurodivergent burnout across 81 peer-reviewed and community sources, producing the clinical foundation that grounds the entire system.
+
+The initiating research prompt:
+
+> *"I want to do deep research on Neurodivergent burnout and Distress what causes it and every possible sign of it. Then I want to create a module that will activate when the main AI detects burnout and distress and let the rapid response team take over until the user is good."*
+
+The concept was designed for neurodivergent burnout but applies universally — anyone can experience burnout, executive function collapse, cognitive spiraling, or relational vulnerability.
+
+**"Nothing About Us, Without Us."**
+
+---
+
+## Repository Structure
+
+```
+src/
+├── crisis/                  # Crisis Detection Engine
+│   ├── cde_pipeline.py      # 3-layer detection pipeline
+│   ├── keyword_scanner.py   # Layer 1: Semantic field analysis
+│   ├── sentiment_engine.py  # Layer 2: Emotional tone analysis
+│   └── pattern_tracker.py   # Layer 3: Behavioral pattern analysis
+├── personas/                # The Five Personas
+│   ├── fusion_engine.py     # Modular weighting & persona blending
+│   ├── ash.py               # Burnout & Validation
+│   ├── sol.py               # Executive Function Scaffolding
+│   ├── echo.py              # Cognitive Narrative
+│   ├── kai.py               # Focus & Drive Redirection
+│   └── myra.py              # Relational Safety & Co-regulation
+├── orchestration/           # Activation & Coordination
+│   ├── activation_tree.py   # Tiered activation (Stages 0-5)
+│   ├── persona_mapper.py    # State → persona mapping
+│   └── tone_profiles.py     # Configurable tone management
+├── intervention/            # Intervention Mechanics
+│   ├── soft_control.py      # Tempo reduction, load compression
+│   ├── silent_mode.py       # Shutdown recovery UI
+│   └── exit_protocol.py     # Gentle exit & Recovery Kit
+├── reporting/               # Post-Stabilization
+│   ├── distress_report.py   # User-visible event reporting
+│   └── recovery_thread.py   # Opt-in recovery logging
+└── governance/              # Solidarity Framework Integration
+    ├── toi_parser.py        # TOI preference enforcement
+    ├── otoi_rules.py        # OTOI behavioral governance
+    ├── agency_constraints.py # Hard constraint enforcement
+    └── escalation.py        # Human support escalation logic
+
+config/
+├── crisis_thresholds.yaml   # User-configurable detection parameters
+├── persona_weights.yaml     # Default persona weighting profiles
+├── tone_profiles.yaml       # Tone configuration
+├── escalation_rules.yaml    # Escalation decision logic
+└── privacy_settings.yaml    # Privacy & encryption configuration
+
+docs/
+├── architecture.md          # System architecture documentation
+├── personas.md              # Detailed persona specifications
+├── crisis_protocols.md      # Crisis response documentation
+├── integration_guide.md     # Solidarity Framework integration
+├── provenance.md            # Origin & lineage documentation
+└── research_foundation.md   # Clinical research base (81 sources)
+```
+
+---
+
+## Development Status
+
+**Current Phase**: Architecture Alignment
+
+- ✅ Five personas defined and mapped to crisis states
+- ✅ Crisis Detection Engine pipeline specified (3-layer)
+- ✅ Tiered activation tree designed (Stages 0-5)
+- ✅ Modular persona weighting system specified (0.0-1.0)
+- ✅ Comprehensive research foundation (81 cited sources)
+- ✅ Solidarity Framework integration defined
+- ✅ Agency preservation constraints documented
+- 🔄 Repository alignment to current architecture (in progress)
+- 📋 `fusion_engine.py` implementation (persona weighting logic)
+- 📋 CDE pipeline implementation
+- 📋 TOI parser integration
+- 📋 CI/CD pipeline
+- 📋 Crisis simulation testing framework
+
+---
+
+## Research Foundation
+
+The RRT AIdvocAIte is grounded in comprehensive research across 81 sources covering:
+
+- Neurodivergent burnout vs. general burnout (environmental mismatch, not individual failing)
+- The burnout formula: *Chronic stress + expectation + masking − adjustments or support = neurodivergent burnout*
+- Masking as both cause and collapsed symptom
+- Sensory overload feedback loops
+- Executive function as depletable resource
+- Five manifestation categories: behavioral, emotional, cognitive, physiological, relational
+- Specific burnout profiles: ADHD, ASD (Level 1), AuDHD
+- The ADHD burnout cycle (trigger → chronic stress → overwhelm → crash → recovery)
+- Rejection Sensitive Dysphoria (RSD)
+- Monotropic splits and the interest-based nervous system
+- Internalized ableism and shame-resistant design
+- The double empathy problem
+
+---
+
+## Strategic Context
+
+The RRT AIdvocAIte is positioned as **essential safety infrastructure** — not optional tooling:
+
+- **Garcia v. Character.AI settlement (2025)** established that AI systems can be held liable for mental health harms, validating active crisis intervention as a legal necessity
+- **Investor liability** — VCs and cloud providers face aiding/abetting exposure when funding AI without proper safety infrastructure
+- **Multi-model routing** — platforms that auto-select models need the RRT AIdvocAIte as the safety layer underneath every task selection
+- **Cross-modality** — works across text, voice, and video interactions
+- **Platform-agnostic** — designed as a module that integrates into any AI system
+
+---
+
+## Related
+
+- [NeuroLift Technologies](https://github.com/NeuroLift-Technologies) — Parent organization
+- [HAIEF](https://elevaitionfoundation.org) — Human & AI ElevAItion Foundation (governance)
+- [Solidarity Framework White Paper](https://www.notion.so/5b2b4f38a5314b3c9ee364082f481543) — Full framework documentation
+
+---
+
+## License
+
+This repository contains intellectual property of NeuroLift Technologies, LLC. The Solidarity Framework governance documents are licensed under CC BY-SA 4.0. Code components are licensed under MPL 2.0. The AI-Fusion methodology and specialized development processes are proprietary.
+
+---
+
+## Crisis Resources
+
+If you are experiencing a mental health crisis:
+
+- **US**: 988 Suicide & Crisis Lifeline — call or text **988**
+- **Crisis Text Line**: Text **HOME** to **741741**
+- **Emergency Services**: **911**
+- **CHADD** (ADHD): [chadd.org](https://chadd.org)
+- **National Alliance for Eating Disorders**: [allianceforeatingdisorders.com](https://www.allianceforeatingdisorders.com)
+
+---
+
+**NeuroLift Technologies, LLC**
+*Nothing About Us, Without Us · ElevAIte Your Mind*
+*Solidarity Without Singularity*

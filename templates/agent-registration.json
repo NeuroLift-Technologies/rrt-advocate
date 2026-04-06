@@ -1,0 +1,21 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.0/agent-registration",
+  "agent_name": "AGENT_NAME_HERE",
+  "platform": "claude-code | copilot | cursor | gemini | other",
+  "session_id": "SESSION-UUID-HERE",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "task_description": "Brief description of the task being performed",
+  "scope_confirmed_by_human": false,
+  "session_started": "ISO-8601-TIMESTAMP",
+  "otoi_version": "ORG-DEV-OTOI-1.0.0",
+  "steps_completed": {
+    "read_otoi_contract": false,
+    "read_agents_md": false,
+    "read_claude_md": false,
+    "read_active_threads": false,
+    "self_registered": false
+  },
+  "active_thread_conflicts_checked": true,
+  "escalation_needed": false,
+  "escalation_reason": null
+}
