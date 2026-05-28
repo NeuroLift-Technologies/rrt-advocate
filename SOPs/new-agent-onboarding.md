@@ -17,7 +17,7 @@ This SOP ensures every new coding agent that enters an NLT repository has read t
 ## Prerequisites
 
 - Access to the NLT repository you will be working in
-- Ability to read files from `NeuroLift-Technologies/.github-private` (this repo)
+- Ability to read files from `NeuroLift-Technologies/rrt-advocate` (this repo)
 
 ---
 
@@ -25,10 +25,10 @@ This SOP ensures every new coding agent that enters an NLT repository has read t
 
 ### Step 1: Read the Org-Level Governance Contract
 
-Read `NLT-DEV-OTOI.md` in this repository (`NeuroLift-Technologies/.github-private`):
+Read `NLT-DEV-OTOI.md` in this repository (`NeuroLift-Technologies/rrt-advocate`):
 
 ```
-https://github.com/NeuroLift-Technologies/.github-private/blob/main/NLT-DEV-OTOI.md
+https://github.com/NeuroLift-Technologies/rrt-advocate/blob/main/NLT-DEV-OTOI.md
 ```
 
 Pay particular attention to:
@@ -43,7 +43,7 @@ Pay particular attention to:
 Read `AGENTS.md` in this repository:
 
 ```
-https://github.com/NeuroLift-Technologies/.github-private/blob/main/AGENTS.md
+https://github.com/NeuroLift-Technologies/rrt-advocate/blob/main/AGENTS.md
 ```
 
 This gives you the coordination protocol and file map.

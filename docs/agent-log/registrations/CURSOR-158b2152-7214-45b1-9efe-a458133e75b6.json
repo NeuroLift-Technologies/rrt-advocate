@@ -17,5 +17,5 @@
   },
   "active_thread_conflicts_checked": true,
   "escalation_needed": true,
-  "escalation_reason": "NLT-DEV-OTOI.md not found in .github-private within this repository snapshot; proceeded with available governance files."
+  "escalation_reason": "NLT-DEV-OTOI.md not found in rrt-advocate within this repository snapshot; proceeded with available governance files."
 }

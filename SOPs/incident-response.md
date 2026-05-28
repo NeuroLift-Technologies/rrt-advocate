@@ -183,11 +183,11 @@ Once configured, no PR containing detected credential patterns can be merged.
 #### Pre-Commit Scanning (Local Defense-in-Depth)
 
 Install the secrets scanner hook from `agents-templates/hooks/secrets-scanner/` in this
-repository (this template already exists inside `.github-private`). This catches secrets before
+repository (this template already exists inside `rrt-advocate`). This catches secrets before
 they are ever committed:
 
 ```bash
-# Run from the root of the .github-private repository
+# Run from the root of the .github-repository
 cp -r agents-templates/hooks/secrets-scanner .github/hooks/
 chmod +x .github/hooks/secrets-scanner/scan-secrets.sh
 ```

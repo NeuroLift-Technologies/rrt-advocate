@@ -7,7 +7,7 @@
     "branch": "workspace",
     "work_completed": [
       "Added missing baseline governance files where required.",
-      "Synchronized org governance core from .github-private into the repository.",
+      "Synchronized org governance core from rrt-advocate into the repository.",
       "Added the NLT Governance Steward custom agent.",
       "Added the validate-governance workflow."
     ],

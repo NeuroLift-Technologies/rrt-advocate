@@ -24,7 +24,7 @@ This repository operates under **ORG-DEV-OTOI-1.0.0**.
 
 Before beginning any work, you MUST complete the 5-step session start protocol:
 
-1. Read `NLT-DEV-OTOI.md` in `.github-private` (Sections 1, 4, 4.4, 5, 8)
+1. Read `NLT-DEV-OTOI.md` in `rrt-advocate` (Sections 1, 4, 4.4, 5, 8)
 2. Read `AGENTS.md` in this repository
 3. Read this file (`CLAUDE.md`) — you are here ✓
 4. Read `docs/active-threads.md` — check for in-progress work before starting
@@ -142,7 +142,7 @@ rrt-advocate/
 
 | Need | Where to go |
 |---|---|
-| Governance contract | `NLT-DEV-OTOI.md` in `.github-private` |
+| Governance contract | `NLT-DEV-OTOI.md` in `rrt-advocate` |
 | Active work state | `docs/active-threads.md` |
 | Self-registration | `templates/agent-registration.json` |
 | File an escalation | `.github/ISSUE_TEMPLATE/agent-escalation.md` |

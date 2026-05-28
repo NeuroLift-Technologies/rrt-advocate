@@ -2,10 +2,10 @@
   "nltotoi_version": "1.0.0",
   "document_id": "ORG-DEV-OTOI-1.0.0",
   "repository": {
-    "name": "NeuroLift-Technologies/.github-private",
-    "purpose": "Internal coding agent governance — TOI-OTOI operational contracts",
+    "name": "NeuroLift-Technologies/rrt-advocate",
+    "purpose": "Repository-specific coding agent governance for rrt-advocate",
     "mode": "production",
-    "visibility": "private",
+    "visibility": "repository-local",
     "audience": "internal-coding-agents"
   },
   "canonical_contract": "NLT-DEV-OTOI.md",
@@ -46,7 +46,7 @@
     "solidarity_framework": true,
     "haief": true,
     "haief_url": "https://elevaitionfoundation.org",
-    "public_governance": "https://github.com/NeuroLift-Technologies/.github"
+    "public_governance": "https://github.com/NeuroLift-Technologies/rrt-advocate"
   },
   "metadata": {
     "created": "2026-03-31",

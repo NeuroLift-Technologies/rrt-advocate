@@ -148,7 +148,7 @@ check_content "NLT-DEV-OTOI.md"  "Solidarity Framework"          "Solidarity Fra
 check_content "NLT-DEV-OTOI.md"  "HAIEF"                         "HAIEF reference"
 check_content "AGENTS.md"        "NLT-DEV-OTOI.md"               "OTOI reference in AGENTS.md"
 check_content "AGENTS.md"        "ORG-DEV-OTOI-1.0.0"            "Document ID in AGENTS.md"
-check_content "nltotoi.json"     "NeuroLift-Technologies/.github-private" "Repository name in manifest"
+check_content "nltotoi.json"     "NeuroLift-Technologies/rrt-advocate" "Repository name in manifest"
 check_content "nltotoi.json"     "ORG-DEV-OTOI-1.0.0"            "Document ID in manifest"
 check_content "nltotoi.json"     "NLT-DEV-OTOI.md"               "Canonical contract path in manifest"
 

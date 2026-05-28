@@ -3,18 +3,18 @@
 
 | Layer | Repo | Audience | Purpose |
 |---|---|---|---|
-| **Public governance identity** | `NeuroLift-Technologies/.github` | All agents, public | Solidarity Framework principles, HAIEF attribution, org profile |
-| **Private operational governance** | `NeuroLift-Technologies/.github-private` | Internal coding agents only | TOI-OTOI contracts, internal procedures, escalation templates, agent registration |
+| **Public governance identity** | `NeuroLift-Technologies/rrt-advocate` | All agents, public | Solidarity Framework principles, HAIEF attribution, org profile |
+| **Private operational governance** | `NeuroLift-Technologies/rrt-advocate` | Internal coding agents only | TOI-OTOI contracts, internal procedures, escalation templates, agent registration |
 | **Repo-level stubs** | Each NLT repo | That repo's agents | Thin pointers to both repos above |
 
 The key insight: the **principles** are public (Solidarity Framework is open-source). The **operational machinery** — who escalates what, how agents register, internal handoff formats, credential procedures — is private.
 
 ---
 
-## `.github-private` File Structure (from nlt-business-agents)
+## `rrt-advocate` File Structure (from nlt-business-agents)
 
 ```
-.github-private/
+rrt-advocate/
 ├── AGENTS.md                          ← Internal gateway (extends public AGENTS.md)
 ├── NLT-DEV-OTOI.md                    ← Full coding agent contract (from docs/context/)
 ├── nltotoi.json                       ← Internal discovery manifest
@@ -86,7 +86,7 @@ The key insight: the **principles** are public (Solidarity Framework is open-sou
 
 ### Direct Lifts (copy with minor adjustments)
 
-| Source (nlt-business-agents) | Destination (.github-private) | Change |
+| Source (nlt-business-agents) | Destination (rrt-advocate) | Change |
 |---|---|---|
 | `docs/context/NLT-DEV-OTOI.md` | `NLT-DEV-OTOI.md` | Update `document_id` to `ORG-DEV-OTOI-1.0.0`, remove project-specific stack references |
 | `AGENTS.md` | `AGENTS.md` | Internal version — keep full coordination protocol, add pointer to public `.github` AGENTS.md |
@@ -161,7 +161,7 @@ jobs:
 
 | File | Content |
 |---|---|
-| `AGENTS.md` | Thin gateway — points to `.github-private` for internal governance, includes public Solidarity Framework principles |
+| `AGENTS.md` | Thin gateway — points to `rrt-advocate` for internal governance, includes public Solidarity Framework principles |
 | `NLT-GOVERNANCE.md` | Public version of OTOI — principles, ethical commitments, HAIEF attribution. No internal procedures |
 | `CLAUDE.md` | 30-line directive: who we are, read `NLT-GOVERNANCE.md`, escalate to Josh |
 | `profile/README.md` | Public org face — mission, HAIEF link, Solidarity Framework |
@@ -172,13 +172,13 @@ jobs:
 
 ## Implementation Sequence
 
-1. **Create `NeuroLift-Technologies/.github-private`** (private repo, org members only)
+1. **Create `NeuroLift-Technologies/rrt-advocate`** (private repo, org members only)
 2. **Populate from nlt-business-agents** using the mapping table above
-3. **Update `nltotoi.json`** in `.github-private` to scope to org:
+3. **Update `nltotoi.json`** in `rrt-advocate` to scope to org:
    ```json
    "repository": {
-     "name": "NeuroLift-Technologies/.github-private",
-     "purpose": "Internal coding agent governance — TOI-OTOI operational contracts",
+     "name": "NeuroLift-Technologies/rrt-advocate",
+     "purpose": "Repository-specific coding agent governance for rrt-advocate",
      "mode": "production"
    }
    ```
@@ -197,7 +197,7 @@ Drop this `CLAUDE.md` in each repo root:
 You are working in a NeuroLift Technologies repository.
 
 **Mandatory reading (in order):**
-1. Org-level governance: https://github.com/NeuroLift-Technologies/.github-private/blob/main/NLT-DEV-OTOI.md
+1. Repo-local governance: https://github.com/NeuroLift-Technologies/rrt-advocate/blob/main/NLT-DEV-OTOI.md
 2. Project context: `docs/context/README_TO_AI.md` (this repo)
 3. Active threads: `docs/active-threads.md` (this repo)
 
@@ -209,4 +209,4 @@ deployment, UX, and strategic decisions. Escalate. Do not guess.
 
 ---
 
-The `.github-private` repo becomes the internal constitution that every coding agent reads at session start — operational, specific, enforced. The public `.github` repo becomes the Solidarity Framework's public face. The two together give you exactly the three-tier model the Claude Code (Opus) handoff document designed — and that Codex CLI and other agents now follow: org canonical → repo operational → public identity.
+The `rrt-advocate` repo becomes the internal constitution that every coding agent reads at session start — operational, specific, enforced. The public `.github` repo becomes the Solidarity Framework's public face. The two together give you exactly the three-tier model the Claude Code (Opus) handoff document designed — and that Codex CLI and other agents now follow: org canonical → repo operational → public identity.
