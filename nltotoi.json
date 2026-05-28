@@ -2,7 +2,7 @@
   "nltotoi_version": "1.0.0",
   "document_id": "ORG-DEV-OTOI-1.0.0",
   "repository": {
-    "name": "NeuroLift-Technologies/.github-private",
+    "name": "NeuroLift-Technologies/rrt-advocate",
     "purpose": "Internal coding agent governance — TOI-OTOI operational contracts",
     "mode": "production",
     "visibility": "private",
@@ -51,6 +51,6 @@
   "metadata": {
     "created": "2026-03-31",
     "version": "1.0.0",
-    "last_updated": "2026-04-04"
+    "last_updated": "2026-05-28"
   }
 }

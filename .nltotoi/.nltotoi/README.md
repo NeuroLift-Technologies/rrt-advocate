@@ -1,6 +1,6 @@
 # .nltotoi — NLT Governance Namespace
 
-This namespace contains internal governance artifacts for the `NeuroLift-Technologies/.github-private` repository.
+This namespace contains internal governance artifacts for the `NeuroLift-Technologies/rrt-advocate` repository.
 
 ## Purpose
 
