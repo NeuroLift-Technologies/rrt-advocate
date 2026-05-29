@@ -11,7 +11,7 @@ import re
 import logging
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Dict, Tuple, Set
+from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -153,7 +153,7 @@ class KeywordAnalysisResult:
     matches: List[KeywordMatch] = field(default_factory=list)
     confidence_score: float = 0.0
     self_harm_detected: bool = False
-    primary_field: KeywordSemanticField = None
+    primary_field: Optional[KeywordSemanticField] = None
 
     def has_field(self, semantic_field: KeywordSemanticField) -> bool:
         return semantic_field in self.detected_fields
