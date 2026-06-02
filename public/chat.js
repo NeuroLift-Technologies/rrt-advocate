@@ -41,6 +41,8 @@ async function sendMessage() {
   const assistantMessageEl = addMessageToChat("assistant", "");
   const assistantTextEl = assistantMessageEl.querySelector("p");
 
+  let responseText = "";
+
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
@@ -56,7 +58,6 @@ async function sendMessage() {
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    let responseText = "";
     let buffer = "";
 
     while (true) {
@@ -73,13 +74,18 @@ async function sendMessage() {
       responseText = appendEvents(parsed.events, responseText, assistantTextEl);
     }
 
-    if (responseText) {
-      chatHistory.push({ role: "assistant", content: responseText });
-    }
   } catch (error) {
     console.error("Error:", error);
-    assistantTextEl.textContent = "I hit a connection error. Take one breath with me, then try again.";
+    if (responseText) {
+      assistantTextEl.textContent = `${responseText}\n\nConnection dropped. Take one breath with me, then try again.`;
+    } else {
+      assistantTextEl.textContent = "I hit a connection error. Take one breath with me, then try again.";
+    }
   } finally {
+    const finalText = assistantTextEl.textContent.trim();
+    if (finalText) {
+      chatHistory.push({ role: "assistant", content: finalText });
+    }
     isProcessing = false;
     userInput.disabled = false;
     sendButton.disabled = false;
