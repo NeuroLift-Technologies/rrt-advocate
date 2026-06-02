@@ -97,6 +97,14 @@ class CrisisDetector:
     """
 
     def __init__(self, config_path: str = "config/crisis_thresholds.yaml"):
+        """Initialize the 3-layer detector.
+
+        Args:
+            config_path: Retained for interface symmetry with the assessor and
+                advocate. The detector itself is **config-free** — the YAML
+                thresholds are consumed by the CrisisAssessor, not here — so
+                this value does not affect detection behavior.
+        """
         self.config_path = config_path
         self._keyword_layer = KeywordLayer()
         self._sentiment_layer = SentimentLayer(window_size=5)

@@ -1,0 +1,32 @@
+{
+  "name": "rrt-advocate",
+  "description": "RRT AIdvocAIte assistant powered by Cloudflare Workers AI",
+  "cloudflare": {
+    "label": "RRT AIdvocAIte",
+    "products": [
+      "Workers",
+      "Workers AI",
+      "AI Gateway"
+    ],
+    "categories": [
+      "ai",
+      "healthcare"
+    ],
+    "docs_url": "https://developers.cloudflare.com/workers-ai/",
+    "publish": true
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250425.0",
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3",
+    "wrangler": "4.56.0"
+  },
+  "private": true,
+  "scripts": {
+    "cf-typegen": "wrangler types",
+    "check": "tsc --noEmit && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev"
+  }
+}

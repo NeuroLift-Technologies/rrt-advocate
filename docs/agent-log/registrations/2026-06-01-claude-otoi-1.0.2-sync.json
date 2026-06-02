@@ -1,0 +1,29 @@
+{
+  "agent_registration": {
+    "session_id": "rrt-advocate-sync-handoff-8uII8",
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "date": "2026-06-01",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/rrt-advocate",
+    "branch": "claude/rrt-advocate-sync-handoff-8uII8",
+    "role": "governance-sync",
+    "authority": "Joshua W. Dorsey, Sr.",
+    "scope": [
+      "Bring the rrt-advocate governance overlay up to date with canonical NLT governance (ORG-DEV-OTOI-1.0.2)",
+      "Add the canonical .claude/ Claude Code session template",
+      "Fix the nested .nltotoi/.nltotoi/ and templates/templates/ layout defects",
+      "Produce a governance inventory/status report and a session handoff record"
+    ],
+    "capabilities": [
+      "file-sync",
+      "governance-validation",
+      "handoff-authoring"
+    ],
+    "limitations": [
+      "No crisis-intervention logic changes (src/, config/crisis_thresholds.yaml, tests/, data/ untouched)",
+      "No self-amendment of the OTOI contract — 1.0.2 was provided by Joshua W. Dorsey, Sr. and propagated as-is"
+    ],
+    "builds_on": "PR #17 (claude/governance-docs-restore-yB5sI)",
+    "session_start_protocol_completed": true
+  }
+}

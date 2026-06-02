@@ -1,6 +1,6 @@
 ---
 name: Agent Escalation
-about: Filed by a coding agent when escalation is required per ORG-DEV-OTOI-1.0.0
+about: Filed by a coding agent when escalation is required per ORG-DEV-OTOI-1.0.2
 title: '[ESCALATION] [AGENT_NAME]: [Brief description]'
 labels: escalation, agent-action-required
 assignees: JDUB1216
@@ -8,10 +8,10 @@ assignees: JDUB1216
 
 ## Agent Escalation
 
-**Agent:** <!-- Agent name / platform -->  
-**Session/Branch:** <!-- Branch or session ID -->  
-**Date:** <!-- ISO 8601 date -->  
-**OTOI Version:** ORG-DEV-OTOI-1.0.0  
+**Agent:** <!-- Agent name / platform -->
+**Session/Branch:** <!-- Branch or session ID -->
+**Date:** <!-- ISO 8601 date -->
+**OTOI Version:** ORG-DEV-OTOI-1.0.2
 **Priority:** <!-- low | medium | high | critical -->
 
 ---
@@ -37,12 +37,12 @@ assignees: JDUB1216
 ### Options Considered
 
 **Option A:**
-- Description: 
-- Trade-offs: 
+- Description:
+- Trade-offs:
 
 **Option B:**
-- Description: 
-- Trade-offs: 
+- Description:
+- Trade-offs:
 
 ---
 
@@ -60,7 +60,7 @@ assignees: JDUB1216
 
 ### Checklist
 
-- [ ] I have read ORG-DEV-OTOI-1.0.0 and confirmed this escalation is required
+- [ ] I have read ORG-DEV-OTOI-1.0.2 and confirmed this escalation is required
 - [ ] I have documented this escalation in `docs/escalations/` in the working repo
 - [ ] I have stopped work on the blocked items pending resolution
 - [ ] I have updated `docs/active-threads.md` to reflect this blocker
