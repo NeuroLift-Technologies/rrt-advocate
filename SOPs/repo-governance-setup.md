@@ -1,16 +1,16 @@
 # SOP: Repository Governance Setup
 
-**SOP ID:** SOP-NLT-002
-**Version:** 1.1.0
-**Scope:** Setting up governance stubs in a new or existing NLT repository
-**Authority:** Joshua W. Dorsey, Sr.
-**Governed by:** ORG-DEV-OTOI-1.0.2
+**SOP ID:** SOP-NLT-002  
+**Version:** 1.0.0  
+**Scope:** Setting up governance stubs in a new or existing NLT repository  
+**Authority:** Joshua W. Dorsey, Sr.  
+**Governed by:** ORG-DEV-OTOI-1.0.0
 
 ---
 
 ## Purpose
 
-This SOP defines how to add the minimum required governance artifacts to a new or existing NeuroLift Technologies repository so that coding agents — including Claude Code sessions — can operate correctly within it.
+This SOP defines how to add the minimum required governance artifacts to a new or existing NeuroLift Technologies repository so that coding agents can operate correctly within it.
 
 ---
 
@@ -19,7 +19,6 @@ This SOP defines how to add the minimum required governance artifacts to a new o
 - Creating a new NLT repository
 - Adding governance to an existing NLT repository that lacks it
 - Auditing a repo for governance compliance
-- Adding Claude Code session-level governance to an existing repo
 
 ---
 
@@ -27,12 +26,11 @@ This SOP defines how to add the minimum required governance artifacts to a new o
 
 Each NLT repo should have:
 
-| File / Directory | Purpose |
+| File | Purpose |
 |---|---|
 | `CLAUDE.md` | Agent session directive — points to org-level OTOI |
 | `docs/active-threads.md` | Current work state tracker |
 | `docs/agent-log/` | Directory for agent registration and handoff records |
-| `.claude/` | Claude Code session configuration (synced from `.github-private` once the `governance-auto-propagate.yml` workflow extension is applied) |
 
 ---
 
@@ -63,12 +61,16 @@ You are working in a NeuroLift Technologies repository.
 deployment, UX, and strategic decisions. Escalate. Do not guess.
 
 **Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
-**OTOI Version:** ORG-DEV-OTOI-1.0.2
+**OTOI Version:** ORG-DEV-OTOI-1.0.0
 ```
 
-Replace `[REPO NAME]` with the actual repository name. Add any project-specific context (build commands, gotchas, code paths) below the mandatory reading section.
+Replace `[REPO NAME]` with the actual repository name.
+
+Add any project-specific context below the mandatory reading section.
 
 ### Step 2: Create `docs/active-threads.md`
+
+Create `docs/active-threads.md` with the following starting structure:
 
 ```markdown
 # Active Threads — [REPO NAME]
@@ -91,6 +93,8 @@ Replace `[REPO NAME]` with the actual repository name. Add any project-specific 
 ```
 
 ### Step 3: Create `docs/agent-log/` Directory Structure
+
+Create the following directory structure:
 
 ```
 docs/
@@ -115,72 +119,57 @@ Format reference: `NeuroLift-Technologies/.github-private` templates directory.
 
 ### Step 4: (Optional) Create `docs/escalations/` Directory
 
+If the repo will likely generate escalations, create:
+
 ```
 docs/
 └── escalations/
     └── README.md
 ```
 
+`docs/escalations/README.md`:
+
+```markdown
+# Escalations
+
+This directory contains escalation records for this repository.
+Each escalation document corresponds to a GitHub issue filed via the agent-escalation template.
+
+Format reference: `templates/escalation.md` in `NeuroLift-Technologies/.github-private`.
+```
+
 ### Step 5: Grant GitHub App Access to `.github-private`
 
-Coding agents must be able to read the governance files in `.github-private`. If the GitHub App is scoped to "Selected repositories":
+Coding agents (e.g., GitHub Copilot, Codex) must be able to read the governance files in
+`.github-private` from within the new repository. If the GitHub App installation is scoped
+to **"Selected repositories"**, you must add `.github-private` to its access list.
 
 1. Go to `https://github.com/organizations/NeuroLift-Technologies/settings/installations`
-2. Find the GitHub App used by agents (Copilot, Codex, Claude Code) and click **Configure**.
+2. Find the GitHub App used by agents in this repo (e.g., **Copilot**, **Codex**) and click **Configure**.
 3. Under **Repository access → Selected repositories**, add **`.github-private`**.
 4. Click **Save**.
 
-> Fallback: The public mirror URLs in the `CLAUDE.md` template above work if access cannot be granted immediately. See `docs/troubleshooting/github-app-access.md` in `.github-private`.
+> If you cannot complete this step immediately, the `CLAUDE.md` template above includes
+> public mirror URLs as fallback. See
+> [`docs/troubleshooting/github-app-access.md`](../docs/troubleshooting/github-app-access.md)
+> in `.github-private` for full instructions.
 
 ### Step 6: Commit the Governance Setup
 
 Commit using the format:
 
 ```
-[AGENT_NAME] chore(governance): add repo governance stubs (ORG-DEV-OTOI-1.0.2)
+[AGENT_NAME] chore(governance): add repo governance stubs (ORG-DEV-OTOI-1.0.0)
 ```
 
 ### Step 7: Verify
 
 Confirm the following exist and contain correct content:
-- [ ] `CLAUDE.md` references `NLT-DEV-OTOI` and `ORG-DEV-OTOI-1.0.2`
+- [ ] `CLAUDE.md` points to `NLT-DEV-OTOI.md` canonical URL
+- [ ] `CLAUDE.md` references `ORG-DEV-OTOI-1.0.0`
 - [ ] `docs/active-threads.md` exists and is readable
 - [ ] `docs/agent-log/` directory structure created
 - [ ] GitHub App has access to `.github-private` (or public mirror fallback is in place)
-
-### Step 8: Provision the `.claude/` Template
-
-The `.claude/` directory holds the canonical Claude Code session configuration: `settings.json`, the SessionStart hook, subagents, skills, and slash commands.
-
-> **Current automation state.** As of SOP-NLT-002 v1.1.0, the live `governance-auto-propagate.yml` workflow in `.github-private` syncs `CLAUDE.md`, `docs/active-threads.md`, `docs/agent-log/README.md`, and the canonical `.claude/` template. Repo-specific overrides still belong in `.claude/settings.local.json`, which the workflow never overwrites.
-
-**A. Automated.** The nightly `governance-auto-propagate.yml` run (05:00 UTC) opens a PR in each affected repo combined with any other governance stub remediation. Title pattern: `[GOVERNANCE] Add mandatory NLT governance stubs (ORG-DEV-OTOI-1.0.2)`. The PR body lists the `.claude/` files synced. Review and merge.
-
-```bash
-# Manual trigger (from .github-private repo, only useful after the extension is applied)
-gh workflow run governance-auto-propagate.yml -R NeuroLift-Technologies/.github-private
-```
-
-**B. Manual (works today).** Copy the entire `.claude/` directory from `NeuroLift-Technologies/.github-private` at `main`:
-
-```
-.claude/
-├── README.md
-├── settings.json
-├── hooks/
-│   ├── session-start.sh
-│   └── README.md
-├── agents/
-├── skills/
-└── commands/
-```
-
-Verify:
-- [ ] `.claude/settings.json` contains the `SessionStart` hook wiring
-- [ ] `.claude/hooks/session-start.sh` is executable (`chmod +x` if filesystem-tracked)
-- [ ] Starting a Claude Code session prints the OTOI reading order and a list of governance file presence checks
-
-**Do not edit `.claude/` files in this repo** — they are overwritten by the next propagation run (once the extension is applied). For repo-specific session overrides, create `.claude/settings.local.json` (which the propagation workflow never overwrites).
 
 ---
 
@@ -194,8 +183,6 @@ cd .github-private
 bash .nltotoi/scripts/validate-governance.sh
 ```
 
-For a product repo, the same script can be run locally if `.nltotoi/` is provisioned, or the CI workflow `validate-governance.yml` enforces the same checks on every push and PR.
-
 ---
 
-*SOP-NLT-002 v1.1.0 | NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*
+*SOP-NLT-002 v1.0.0 | NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*

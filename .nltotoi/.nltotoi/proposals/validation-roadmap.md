@@ -1,7 +1,7 @@
 # Validation Roadmap — NLT Governance
 
 **Status:** v1.0 — Basic file existence validation implemented  
-**Scope:** `NeuroLift-Technologies/rrt-advocate`  
+**Scope:** `NeuroLift-Technologies/.github-private`  
 **Owner:** Joshua W. Dorsey, Sr.
 
 ---
@@ -11,7 +11,7 @@
 The `validate-governance.sh` script provides:
 
 - ✅ Required file existence checks
-- ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.2`)
+- ✅ Document ID header validation (`ORG-DEV-OTOI-1.0.0`)
 - ✅ Authority marker checks
 - ✅ Exit code reporting for CI integration
 
@@ -60,4 +60,4 @@ All validation scripts must:
 
 ---
 
-*Validation roadmap — NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*
+*Validation roadmap — NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*

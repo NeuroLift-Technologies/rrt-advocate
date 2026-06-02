@@ -1,13 +1,5 @@
 # RRT AIdvocAIte
 
-```yaml
-ai_assistant_directive:
-  priority: 1
-  instruction: "Before performing any development or coding tasks, read NLT-DEV-OTOI.md."
-  description: "NLT-DEV-OTOI.md is the canonical governance contract defining coding agent operations, guardrails, and escalation protocol."
-  required_file: "NLT-DEV-OTOI.md"
-```
-
 **Real-Time Crisis Intervention & Protective Layer — Solidarity Framework**
 
 > *"When burnout hits, the cavalry arrives."*

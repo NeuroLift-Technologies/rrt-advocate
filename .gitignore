@@ -2,6 +2,3 @@ src/**/__pycache__/
 tests/**/__pycache__/
 **/__pycache__/
 data/
-node_modules/
-.wrangler/
-dist/

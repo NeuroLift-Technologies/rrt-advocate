@@ -1,8 +1,8 @@
 ## Agent Contribution Checklist
 
-**Agent:** [Name / platform]
-**Session:** [Branch / session ID]
-**Governed by:** ORG-DEV-OTOI-1.0.2
+**Agent:** [Name / platform]  
+**Session:** [Branch / session ID]  
+**Governed by:** ORG-DEV-OTOI-1.0.0  
 **Working repo:** [Repository name]
 
 ---

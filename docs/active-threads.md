@@ -1,7 +1,7 @@
 # Active Threads — `rrt-advocate`
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.2
-**Last Updated**: 2026-06-01
+**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Last Updated**: 2026-04-05
 
 > ⚠️ All agents MUST read this file before starting any work (OTOI Section 4.1 Step 4).
 > Do not start a thread that duplicates or conflicts with an in-progress item below.
@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-003 | Sync governance overlay to canonical ORG-DEV-OTOI-1.0.2 (add `.claude/`, flatten nested `.nltotoi/`+`templates/`, fix manifest repo-name) | Claude Code | `claude/rrt-advocate-sync-handoff-8uII8` | 🔵 PR open — awaiting Joshua review | 2026-06-01 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 

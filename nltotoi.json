@@ -1,8 +1,8 @@
 {
-  "nltotoi_version": "1.0.2",
-  "document_id": "ORG-DEV-OTOI-1.0.2",
+  "nltotoi_version": "1.0.0",
+  "document_id": "ORG-DEV-OTOI-1.0.0",
   "repository": {
-    "name": "NeuroLift-Technologies/rrt-advocate",
+    "name": "NeuroLift-Technologies/.github-private",
     "purpose": "Internal coding agent governance — TOI-OTOI operational contracts",
     "mode": "production",
     "visibility": "private",
@@ -10,14 +10,12 @@
   },
   "canonical_contract": "NLT-DEV-OTOI.md",
   "agents_gateway": "AGENTS.md",
-  "claude_code_template": ".claude/",
   "discovery": {
     "file_index": ".nltotoi/index/governance-files.md",
     "validation_script": ".nltotoi/scripts/validate-governance.sh",
     "contracts_namespace": ".nltotoi/contracts/README.md",
     "agents_directory": "agents/",
-    "vscode_agents_directory": ".github/agents/",
-    "claude_code_directory": ".claude/"
+    "vscode_agents_directory": ".github/agents/"
   },
   "required_files": [
     "NLT-DEV-OTOI.md",
@@ -27,22 +25,17 @@
     ".nltotoi/index/governance-files.md",
     ".nltotoi/contracts/README.md",
     ".nltotoi/scripts/validate-governance.sh",
-    ".nltotoi/proposals/validation-roadmap.md",
     "templates/agent-registration.json",
     "templates/handoff-record.json",
     "templates/escalation.md",
     "templates/intent-log.md",
-    "templates/commit-message.md",
     "ISSUE_TEMPLATE/agent-escalation.md",
     "ISSUE_TEMPLATE/governance-proposal.md",
     "PULL_REQUEST_TEMPLATE/agent-contribution.md",
-    ".github/workflows/validate-governance.yml",
+    "workflows/validate-governance.yml",
     "SOPs/new-agent-onboarding.md",
     "SOPs/repo-governance-setup.md",
-    "SOPs/incident-response.md",
-    ".claude/README.md",
-    ".claude/settings.json",
-    ".claude/hooks/session-start.sh"
+    "SOPs/incident-response.md"
   ],
   "authority": {
     "final_decision_maker": "Joshua W. Dorsey, Sr.",
@@ -57,7 +50,7 @@
   },
   "metadata": {
     "created": "2026-03-31",
-    "version": "1.0.2",
-    "last_updated": "2026-06-01"
+    "version": "1.0.0",
+    "last_updated": "2026-04-04"
   }
 }
