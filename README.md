@@ -23,11 +23,16 @@ The core runtime modules are vendored under `src/`. Run commands from the reposi
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip pytest pytest-asyncio pyyaml
-python3 -m pytest
+python3 -m pytest tests/test_cde.py tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py
 ```
 
 Project tooling defaults are defined in `pyproject.toml` (`requires-python >=3.10`).
 For the current code-verified runtime interface, see [`docs/integration_guide.md`](docs/integration_guide.md).
+
+Known test boundary: full `python3 -m pytest` currently includes
+`tests/test_rrt_advocate.py`, a legacy stub harness that shadows the now-vendored
+CDE module and fails before exercising `RRTAdvocate`. Use the focused component
+suites above until that harness is updated.
 
 ---
 
