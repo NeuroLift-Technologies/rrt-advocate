@@ -1,7 +1,7 @@
 # SOP: Repository Governance Setup
 
 **SOP ID:** SOP-NLT-002  
-**Version:** 1.1.0  
+**Version:** 1.1.1  
 **Scope:** Setting up governance stubs in a new or existing NLT repository  
 **Authority:** Joshua W. Dorsey, Sr.  
 **Governed by:** ORG-DEV-OTOI-1.0.0
@@ -148,6 +148,39 @@ Confirm the following exist and contain correct content:
 - [ ] `docs/agent-log/` directory structure created
 - [ ] GitHub App has access to `.github-private` (or public mirror fallback is in place)
 
+### Step 7B: Maintain Repo-Local Governance Metadata
+
+Use this checklist when a governance propagation PR, cleanup PR, or repo-specific
+restoration changes `.nltotoi/`, `nltotoi.json`, validation scripts, or agent
+session docs.
+
+| Path | What it represents | Maintenance rule |
+|---|---|---|
+| `NLT-DEV-OTOI.md` and `AGENTS.md` | Org-level governance contract and gateway mirrored into this repo | Preserve org-level framing. Do not replace `.github-private` references with this repo name unless the line is explicitly describing repo-local files. |
+| `nltotoi.json` | Machine-readable discovery manifest for this repository | `repository.name` should identify the product repo, but `canonical_contract`, authority, amendment process, and public governance URL should continue to point at the canonical org governance model. |
+| `.nltotoi/index/governance-files.md` | Human-readable registry for required/recommended repo governance files | Keep it aligned with files that actually exist in this repo and with the active validator. |
+| `.nltotoi/scripts/validate-governance.sh` | Repo-local validation command run by CI | Treat this as the current enforcement surface for this repo. The GitHub workflow calls this script directly. |
+| `docs/agent-log/` | Audit trail for agent sessions | Add a registration at session start and a handoff when work is significant, incomplete, or likely to be resumed by another agent. |
+
+Concrete source-verified checks:
+
+```bash
+bash .nltotoi/scripts/validate-governance.sh
+python -m json.tool nltotoi.json >/dev/null
+git diff --check
+```
+
+Common pitfalls:
+
+- Avoid global find/replace between `.github-private` and the product repo name.
+  Some references intentionally point to the canonical private governance source.
+- Do not describe future or copied workflows as active unless the corresponding
+  file exists under `.github/workflows/` in this repo.
+- If a registry, manifest, or validation roadmap lists files beyond the active
+  validator, document that distinction instead of claiming CI enforces them.
+- Do not edit crisis intervention logic, `config/crisis_thresholds.yaml`, or
+  safety thresholds as part of governance cleanup.
+
 ### Step 8: Provision the `.claude/` Template
 
 The `.claude/` directory holds the canonical Claude Code session configuration: `settings.json`, the SessionStart hook, subagents, skills, and slash commands.
@@ -198,4 +231,4 @@ For a product repo, the same script can be run locally if `.nltotoi/` is provisi
 
 ---
 
-*SOP-NLT-002 v1.1.0 | NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
+*SOP-NLT-002 v1.1.1 | NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*

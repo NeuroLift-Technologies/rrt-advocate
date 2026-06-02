@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-003 | Documentation automation follow-up for PR #17 governance restoration | Cursor Automation | `cursor/engineering-documentation-updates-1872` | 🔄 In progress | 2026-06-02 |
 
 ---
 
