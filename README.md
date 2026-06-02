@@ -14,21 +14,26 @@ The core runtime modules live under `src/` and are importable either through
 as `crisis.detectors.crisis_detector`.
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -U pip pytest pytest-asyncio PyYAML
+python -m pip install -U pip pytest pytest-asyncio PyYAML
 # Optional: improves local sentiment scoring; otherwise a heuristic fallback is used.
-pip install vaderSentiment
-pytest
+python -m pip install vaderSentiment
+python -m pytest tests/test_cde.py
 ```
 
 Useful focused checks:
 
 ```bash
-pytest tests/test_cde.py
-pytest tests/test_rrt_advocate.py
+python -m pytest tests/test_cde.py
+python -m pytest tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py
 PYTHONPATH=src python -c "from crisis.detectors.crisis_detector import CrisisDetector; print('cde import ok')"
 ```
+
+If your shell has no `python` shim, use `python3` for the same commands. The
+full `python -m pytest` suite currently exposes a legacy `tests/test_rrt_advocate.py`
+stub mismatch: its fake `crisis.detectors.crisis_detector` module does not export
+`CrisisIndicators`, which `src/rrt_advocate.py` now imports.
 
 Project tooling defaults are defined in `pyproject.toml`. See
 `docs/integration_guide.md` for the code-verified integration surface and

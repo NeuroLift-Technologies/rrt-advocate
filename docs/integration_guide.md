@@ -251,10 +251,10 @@ python -m pip install vaderSentiment
 pytest tests/test_cde.py
 ```
 
-4. Run the broader local test suite:
+4. Run the broader currently passing local suites:
 
 ```bash
-pytest
+pytest tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py
 ```
 
 5. Run a basic import check:
@@ -288,6 +288,12 @@ PY
 python src/rrt_advocate.py
 ```
 
+If your shell has no `python` shim, use `python3` for the same commands. In the
+current source snapshot, `python -m pytest` reaches 110 passing tests and then
+fails in `tests/test_rrt_advocate.py` because that legacy stub harness does not
+export `CrisisIndicators`, which `src/rrt_advocate.py` now imports. Use the
+focused commands above until the harness is updated.
+
 ---
 
 ## 8) Troubleshooting and common pitfalls
@@ -304,6 +310,24 @@ or set `PYTHONPATH=src` for top-level package imports.
 Cause: `CrisisAssessor` imports `yaml` to load `config/crisis_thresholds.yaml`.
 
 Fix: install `PyYAML` in the active environment.
+
+### `python: command not found`
+
+Cause: some Linux images provide `python3` without a `python` shim.
+
+Fix: use `python3` and `python3 -m pip`, or activate a virtual environment that
+provides `python`.
+
+### Full `pytest` fails in `tests/test_rrt_advocate.py`
+
+Cause: the current `tests/test_rrt_advocate.py` stub harness installs a fake
+`crisis.detectors.crisis_detector` module that exports `CrisisDetector` but not
+`CrisisIndicators`; `src/rrt_advocate.py` imports both.
+
+Fix: for detector validation, run `pytest tests/test_cde.py`. For the currently
+passing non-advocate suites, run `pytest tests/test_dialogue_tree.py
+tests/test_fusion_engine.py tests/test_toi.py`. Update the legacy stubs before
+using full-suite `pytest` as an all-green gate.
 
 ### Sentiment output differs between machines
 
