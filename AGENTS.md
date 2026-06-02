@@ -1,56 +1,151 @@
-# AGENTS.md — Agent Coordination Protocol for `rrt-advocate`
+# AGENTS.md — NeuroLift Technologies Organization-Wide Internal Gateway
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
-**Repository**: NeuroLift-Technologies/rrt-advocate
-
----
-
-## Purpose
-
-This file defines how AI coding agents coordinate within this repository. All agents MUST read this file as Step 2 of the OTOI session start protocol (OTOI Section 4.1).
+> **Internal use only.** This is the private governance gateway for all coding agents operating within NeuroLift Technologies repositories. For public-facing principles, see the public [`NeuroLift-Technologies/.github`](https://github.com/NeuroLift-Technologies/.github) repository.
 
 ---
 
-## Coordination Rules
+## You Are Here
 
-1. **Check `docs/active-threads.md` before starting any work.** Do not duplicate or conflict with in-progress threads.
-2. **Register yourself** using `templates/agent-registration.json` before making any commits.
-3. **Commit with your name** in every commit: `[AGENT_NAME] type(scope): description`
-4. **Write a handoff record** in `docs/agent-log/handoffs/` when ending a session with incomplete work.
-5. **Escalate immediately** when scope is unclear, a blocker appears, or an architectural decision is needed.
+You are a coding agent operating within the **NeuroLift Technologies** organization. This document is your internal coordination gateway.
+
+**Mandatory reading order:**
+1. `NLT-DEV-OTOI.md` — Full org-level coding agent contract (this repo, root level)
+2. Repo-level `CLAUDE.md` — Project-specific context (in the repo you are working in)
+3. `docs/active-threads.md` — Current work state (in the repo you are working in)
+
+> **Can't access `.github-private`?** If links to this repository return 404, key governance
+> docs are mirrored publicly:
+> - NLT-DEV-OTOI.md → https://github.com/NeuroLift-Technologies/.github/blob/main/governance/NLT-DEV-OTOI.md
+> - AGENTS.md → https://github.com/NeuroLift-Technologies/.github/blob/main/governance/AGENTS.md
+>
+> Ask your org admin to grant the GitHub App access to `.github-private`. See
+> `docs/troubleshooting/github-app-access.md` in this repo for instructions.
+
+**Final authority:** Joshua W. Dorsey, Sr. Escalate. Do not guess.
 
 ---
 
-## Internal File Map
+## Solidarity Framework Principles (Public)
 
-| File | Purpose |
-|---|---|
-| `CLAUDE.md` | AI assistant guide — repo context, escalation, commit rules |
-| `AGENTS.md` | This file — coordination protocol |
-| `docs/active-threads.md` | Live work state — always check before starting |
-| `docs/agent-log/registrations/` | Agent session registrations |
-| `docs/agent-log/handoffs/` | Agent handoff records |
-| `templates/agent-registration.json` | Self-registration template |
-| `templates/handoff-record.json` | Handoff template |
-| `templates/escalation.md` | Escalation template |
-| `src/rrt_advocate.py` | Core engine — safety-critical, escalate before touching |
-| `config/crisis_thresholds.yaml` | Crisis thresholds — safety-critical, escalate before touching |
+The ethical foundation of all NLT work is publicly documented in the **Solidarity Framework** and **HAIEF** (Human-AI Ethical Integration Framework):
+
+- Public governance principles: [`NeuroLift-Technologies/.github`](https://github.com/NeuroLift-Technologies/.github)
+- HAIEF reference: https://elevaitionfoundation.org
+
+The principles are public. The operational machinery is in this private repository.
+
+---
+
+## Coordination Protocol
+
+### Session Start (Every Session)
+
+```
+1. Read NLT-DEV-OTOI.md (this repo)
+2. Read repo-level CLAUDE.md (working repo)
+3. Read docs/active-threads.md (working repo)
+4. Self-register per OTOI Section 3
+5. Confirm task scope before beginning
+```
+
+### Commit Format
+
+All agent commits must follow:
+
+```
+[AGENT_NAME] type(scope): description
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`, `ci`
+
+### Escalation Triggers
+
+Escalate to Joshua immediately when:
+- Task scope is unclear or conflicts with existing work
+- An architectural or deployment decision is required
+- A blocker cannot be resolved by the agent
+- An ethical concern arises
+- LLM provider or external service selection is needed
+
+Use the escalation template: `templates/escalation.md`
 
 ---
 
 ## Guardrails
 
-- **Never modify crisis intervention logic** without Joshua W. Dorsey, Sr.'s explicit approval
-- **Never select or integrate LLM providers** without escalation
-- **Never deploy to production** without escalation
-- **Never approve governance amendments** — only Joshua can
-- **Minimal footprint**: Only touch files necessary for your specific task
+These are **non-negotiable**. No exceptions without explicit Joshua approval:
+
+| Guardrail | Details |
+|---|---|
+| No LLM provider lock-in | Do not hardcode or commit to a specific LLM provider |
+| No architecture decisions | Database, deployment, framework choices require human sign-off |
+| No production deployments | Human must explicitly approve all production actions |
+| No credential storage | Never store secrets, tokens, or credentials in code or VCS |
+| No external integrations | Third-party service connections require Joshua's approval |
+| No OTOI self-amendment | This governance doc cannot be changed by agents |
 
 ---
 
-## Escalation Target
+## Internal File Map
 
-**Joshua W. Dorsey, Sr.**
-Email: `info@neuroliftsolutions.com`
-GitHub: `@JDUB1216`
-Issue form: `.github/ISSUE_TEMPLATE/agent-escalation.md`
+All files below live in this repository (`NeuroLift-Technologies/.github-private`):
+
+```
+NLT-DEV-OTOI.md                        ← Canonical org-level agent contract
+AGENTS.md                               ← This file
+nltotoi.json                            ← Discovery manifest
+
+.nltotoi/
+├── README.md                           ← Namespace overview
+├── index/governance-files.md          ← File registry
+├── contracts/README.md                ← Contract namespace
+├── proposals/validation-roadmap.md    ← Validation roadmap
+└── scripts/validate-governance.sh     ← Governance validation
+
+templates/
+├── agent-registration.json            ← OTOI Section 3 registration format
+├── handoff-record.json                ← OTOI Section 5 handoff format
+├── escalation.md                      ← OTOI Section 4.3 escalation format
+└── intent-log.md                      ← Intent logging template
+
+ISSUE_TEMPLATE/
+├── agent-escalation.md                ← GitHub escalation issue form
+└── governance-proposal.md             ← OTOI amendment proposal form
+
+PULL_REQUEST_TEMPLATE/
+└── agent-contribution.md              ← Agent PR checklist
+
+workflows/
+└── validate-governance.yml            ← CI: runs validate-governance.sh
+
+SOPs/
+├── new-agent-onboarding.md            ← How to onboard a new coding agent
+├── repo-governance-setup.md           ← How to add governance to a new NLT repo
+└── incident-response.md               ← What to do when an agent goes off-rails
+```
+
+---
+
+## Multi-Agent Coordination
+
+When multiple agents may be active:
+
+1. **Check active-threads.md first** — do not begin work already in progress
+2. **Claim your thread** — update active-threads.md when starting a task
+3. **Write handoff records** — never leave a session without a handoff document
+4. **Do not overwrite peer work** — if conflict is detected, escalate
+
+---
+
+## Handoff Protocol
+
+Before ending any significant session:
+
+1. Update `docs/active-threads.md` in the working repo
+2. Write a handoff record to `docs/agent-log/handoffs/` using `templates/handoff-record.json`
+3. Document any open escalations in `docs/escalations/`
+4. Summarize decisions made and decisions pending
+
+---
+
+*Internal governance document — NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
