@@ -1,38 +1,58 @@
-# Intent Log
+# Intent Log Template
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
-**Repository**: NeuroLift-Technologies/rrt-advocate
+> Copy this template to `docs/agent-log/intent/[date]-[topic].md` in the working repo before taking a significant action.
+> Intent logging is required before any action with broad scope, architectural impact, or irreversibility.
 
 ---
 
-**Agent**: [AGENT_NAME]
-**Session ID**: [SESSION_ID]
-**Date**: [ISO-8601-DATE]
+## Intent Log Entry
 
-## Session Intent
+**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]
+**Agent:** [Agent name / platform]
+**Session:** [Branch or session ID]
+**OTOI Version:** ORG-DEV-OTOI-1.0.2
+**Working repo:** [e.g. NeuroLift-Technologies/some-repo]
 
-[What is this session trying to accomplish?]
+---
 
-## Scope (Confirmed with Human: Yes/No)
+### Action
 
-[Exact scope of work for this session]
+[Describe specifically what you intend to do. Be precise about files, functions, services, or data involved.]
 
-## Files in Scope
+---
 
-- [ ] [file path] — [reason]
+### Rationale
 
-## Files Explicitly Out of Scope
+[Why is this the right action? Connect to the task requirements, active threads, and any prior decisions.]
 
-- [file path] — [reason out of scope]
+---
 
-## Decisions Made
+### Risks
 
-| Decision | Rationale | Escalated? |
-|---|---|---|
-| [decision] | [why] | Yes/No |
+[What could go wrong? List potential downsides, unknowns, or unintended consequences.]
 
-## Intent Log Entries
+---
 
-| Time | Action | Outcome |
-|---|---|---|
-| [timestamp] | [what was done] | [result] |
+### Alternatives Considered
+
+1. **[Alternative A]** — [Why not chosen]
+2. **[Alternative B]** — [Why not chosen]
+
+---
+
+### Escalation Needed
+
+**[yes | no]**
+
+If yes: stop and escalate using `templates/escalation.md` before proceeding.
+If no: proceed after logging this intent.
+
+---
+
+### Outcome
+
+*(To be filled in after the action is taken)*
+
+**Date completed:** [ISO 8601]
+**Result:** [What actually happened]
+**Deviations from plan:** [Any differences from the stated intent]

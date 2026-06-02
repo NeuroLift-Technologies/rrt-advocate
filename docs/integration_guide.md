@@ -8,7 +8,7 @@ It intentionally avoids speculative architecture and focuses on behavior impleme
 - `src/crisis/assessors/crisis_assessor.py`
 - `config/crisis_thresholds.yaml`
 
-> Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.0. Do not modify crisis logic or thresholds without explicit approval.
+> Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.2. Do not modify crisis logic or thresholds without explicit approval.
 
 ---
 

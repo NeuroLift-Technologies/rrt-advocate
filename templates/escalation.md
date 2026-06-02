@@ -1,40 +1,68 @@
-# Escalation Notice
+# Escalation Record Template
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
-**Repository**: NeuroLift-Technologies/rrt-advocate
-**Escalation Target**: Joshua W. Dorsey, Sr. (`info@neuroliftsolutions.com`)
+> Copy this template to `docs/escalations/[date]-[topic].md` in the working repo.
+> Also file a GitHub issue using `ISSUE_TEMPLATE/agent-escalation.md` for tracking.
 
 ---
 
-**Agent**: [AGENT_NAME]
-**Session ID**: [SESSION_ID]
-**Date**: [ISO-8601-DATE]
-**Branch**: [BRANCH_NAME]
+## Escalation Record
 
-## Escalation Trigger (OTOI Section 8)
+**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]
+**Agent:** [Agent name / platform]
+**Session:** [Branch or session ID]
+**OTOI Version:** ORG-DEV-OTOI-1.0.2
+**Escalation Target:** Joshua W. Dorsey, Sr.
+**Priority:** [low | medium | high | critical]
 
-<!-- Check all that apply -->
-- [ ] Task scope is unclear or conflicts with existing work
-- [ ] Architectural or deployment decision required
-- [ ] Blocker cannot be resolved by agent alone
-- [ ] Ethical concern
-- [ ] LLM provider or external service integration needed
-- [ ] Production deployment being considered
-- [ ] Governance document amendment proposed
-- [ ] Safety-critical code change (crisis intervention logic)
+---
 
-## Description
+### Trigger
 
-[Describe the issue clearly and concisely]
+[What caused this escalation? Be specific. Which guardrail was triggered, which decision was required, or which blocker was hit?]
 
-## Context
+---
 
-[Relevant background, files involved, what has been tried]
+### Situation
 
-## Requested Decision
+[Describe the situation requiring escalation in full detail. Include relevant context from active-threads.md, the task at hand, and any constraints.]
 
-[What decision or approval is needed from Joshua]
+---
 
-## Work State
+### Decision Required
 
-[Current state of work — what's complete, what's pending, what's blocked]
+[What specific decision or input is needed from Joshua? State this as a clear question or list of questions.]
+
+---
+
+### Options Considered
+
+1. **[Option A]**
+   - Description: [What this would involve]
+   - Trade-offs: [Pros and cons]
+
+2. **[Option B]**
+   - Description: [What this would involve]
+   - Trade-offs: [Pros and cons]
+
+---
+
+### Recommendation
+
+[Agent's recommendation, if any. If you have no strong recommendation, say so and explain why.]
+
+---
+
+### Blockers
+
+[What cannot proceed until this escalation is resolved? List all blocked tasks or decisions.]
+
+---
+
+### Resolution
+
+*(To be filled in after Joshua responds)*
+
+**Date resolved:** [ISO 8601]
+**Decision:** [What was decided]
+**Decided by:** [Name]
+**Actions taken:** [What was done as a result]
