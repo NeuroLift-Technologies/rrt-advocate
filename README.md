@@ -22,6 +22,30 @@ Project tooling defaults are defined in `pyproject.toml`.
 
 ---
 
+## Cloudflare Workers AI Assistant
+
+This repo now includes a deployable **RRT AIdvocAIte chat assistant** adapted from the
+`nlt-chat-1` Cloudflare Workers AI template.
+
+The Worker adds:
+- `/api/chat` streaming chat responses through Workers AI.
+- An RRT-specific system prompt grounded in the five personas: Ash, Sol, Echo, Kai, and Myra.
+- A local text pre-check that labels stable, elevated, high, or critical distress signals before the
+  model responds.
+- A compact browser UI in `public/` for calm, consent-led support.
+
+```bash
+npm install
+npm run dev
+npm run check
+```
+
+The Python crisis engine remains the source implementation for local-first RRT behavior. The Worker
+surface is a hosted assistant layer and does not replace the Python CDE, TOI/OTOI, or intervention
+pipeline.
+
+---
+
 ## What This Is
 
 The RRT (Rapid Response Team) AIdvocAIte is the **Protective Layer** of the [Solidarity Framework](https://github.com/NeuroLift-Technologies) — a real-time crisis intervention system that detects when a user enters a state of burnout, distress, or emotional collapse and **actively intervenes** through a coordinated team of five specialized AI personas.
