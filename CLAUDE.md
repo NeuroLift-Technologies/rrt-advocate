@@ -2,8 +2,8 @@
 
 **Repository**: NeuroLift-Technologies/rrt-advocate
 **Purpose**: Rapid Response Team Advocate — Crisis intervention and immediate ADHD support agent within the NeuroLift HAIEF Solidarity Framework
-**Governance Standard**: ORG-DEV-OTOI-1.0.2
-**Last Updated**: 2026-06-01
+**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Last Updated**: 2026-04-04
 **Intended Audience**: Claude, Claude Code, Copilot, Cursor, Gemini, and all AI coding agents
 
 ---
@@ -20,7 +20,7 @@ You are working in the **rrt-advocate** repository. This agent is the **Protecti
 
 ## MANDATORY GOVERNANCE CONTRACT
 
-This repository operates under **ORG-DEV-OTOI-1.0.2**.
+This repository operates under **ORG-DEV-OTOI-1.0.0**.
 
 Before beginning any work, you MUST complete the 5-step session start protocol:
 
@@ -28,13 +28,7 @@ Before beginning any work, you MUST complete the 5-step session start protocol:
 2. Read `AGENTS.md` in this repository
 3. Read this file (`CLAUDE.md`) — you are here ✓
 4. Read `docs/active-threads.md` — check for in-progress work before starting
-5. Complete `templates/agent-registration.json` (or run `/register-session`) and confirm scope with Joshua
-
-**Claude Code session config (`.claude/`):** This repo carries the canonical `.claude/` template
-synced from `.github-private` under ORG-DEV-OTOI-1.0.2 — a `SessionStart` hook that prints this
-reading order, plus slash commands `/register-session`, `/handoff`, `/escalate`, `/intent-log`,
-`/governance-check`. **Do not edit `.claude/` here** — it is overwritten by
-`governance-auto-propagate.yml`; put repo-specific overrides in `.claude/settings.local.json`.
+5. Complete `templates/agent-registration.json` and confirm scope with Joshua
 
 **Commit Format (OTOI Section 4.4)**:
 ```
@@ -42,7 +36,7 @@ reading order, plus slash commands `/register-session`, `/handoff`, `/escalate`,
 ```
 Valid types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`, `ci`
 
-Example: `[CLAUDE] chore(governance): add OTOI governance scaffolding (ORG-DEV-OTOI-1.0.2)`
+Example: `[CLAUDE] chore(governance): add OTOI governance scaffolding (ORG-DEV-OTOI-1.0.0)`
 
 ---
 
@@ -89,15 +83,8 @@ rrt-advocate/
 │       ├── agent-escalation.md  # File escalations here
 │       └── governance-proposal.md
 ├── .nltotoi/
-│   ├── README.md
-│   ├── contracts/README.md
 │   ├── index/governance-files.md
-│   ├── proposals/validation-roadmap.md
 │   └── scripts/validate-governance.sh
-├── .claude/                     # Canonical Claude Code session config (synced; do not edit here)
-│   ├── settings.json            # wires the SessionStart hook
-│   ├── hooks/session-start.sh
-│   ├── agents/  skills/  commands/
 ├── GEMINI_TOPOGRAPHY.py         # Repo navigation guide (all AI agents read this)
 ├── CLAUDE.md                    # This file
 ├── AGENTS.md                    # Agent coordination protocol

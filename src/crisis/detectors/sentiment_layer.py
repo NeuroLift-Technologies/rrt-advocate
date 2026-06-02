@@ -9,7 +9,6 @@ well-suited for detecting distress in casual conversation.
 """
 
 import logging
-import re
 from collections import deque
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
@@ -17,18 +16,15 @@ from typing import List, Optional, Dict, Any
 logger = logging.getLogger(__name__)
 
 # Attempt to import vaderSentiment; fall back gracefully if not installed.
-# Note: do NOT log at import time — that is a global side effect that produces
-# noise in environments where the optional extra is intentionally omitted (and
-# even during tooling like `pip` inspection). The fallback notice is emitted
-# once, lazily, when a SentimentLayer is first instantiated without VADER.
 try:
     from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
     _VADER_AVAILABLE = True
 except ImportError:
-    SentimentIntensityAnalyzer = None
     _VADER_AVAILABLE = False
-
-_fallback_notice_emitted = False
+    logger.warning(
+        "vaderSentiment not installed. Layer 2 will use simple polarity heuristics. "
+        "Run: pip install vaderSentiment"
+    )
 
 
 @dataclass
@@ -84,14 +80,6 @@ class SentimentLayer:
         self.window_size = window_size
         self._window: deque = deque(maxlen=window_size)
         self._analyzer = SentimentIntensityAnalyzer() if _VADER_AVAILABLE else None
-        if self._analyzer is None:
-            global _fallback_notice_emitted
-            if not _fallback_notice_emitted:
-                logger.info(
-                    "vaderSentiment not installed; Layer 2 using heuristic fallback. "
-                    "Install the optional extra for better accuracy: pip install vaderSentiment"
-                )
-                _fallback_notice_emitted = True
 
     def analyze(self, text: str) -> SentimentAnalysisResult:
         """
@@ -234,3 +222,7 @@ class SentimentLayer:
             "average": sum(values) / len(values) if values else 0.0,
             "trend": self._window[-1] - self._window[0] if len(values) >= 2 else 0.0,
         }
+
+
+# Fix missing re import in fallback scorer
+import re
