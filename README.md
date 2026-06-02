@@ -9,16 +9,30 @@
 
 ## Local Development (Repository Snapshot)
 
-Because this repository references external NeuroLift modules that are not vendored here, runtime execution requires the broader ecosystem on `PYTHONPATH`. For this standalone snapshot, the fastest way to validate behavior is via the unit tests that use local stubs.
+The core runtime modules live under `src/` and are importable either through
+`src.rrt_advocate` or by putting `src` on `PYTHONPATH` for top-level imports such
+as `crisis.detectors.crisis_detector`.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -U pip pytest pytest-asyncio
+pip install -U pip pytest pytest-asyncio PyYAML
+# Optional: improves local sentiment scoring; otherwise a heuristic fallback is used.
+pip install vaderSentiment
 pytest
 ```
 
-Project tooling defaults are defined in `pyproject.toml`.
+Useful focused checks:
+
+```bash
+pytest tests/test_cde.py
+pytest tests/test_rrt_advocate.py
+PYTHONPATH=src python -c "from crisis.detectors.crisis_detector import CrisisDetector; print('cde import ok')"
+```
+
+Project tooling defaults are defined in `pyproject.toml`. See
+`docs/integration_guide.md` for the code-verified integration surface and
+operational runbook.
 
 ---
 
@@ -108,23 +122,36 @@ The CDE is **non-negotiably local-first** — all analysis occurs on the user's 
 **Layer 1 — Keyword & Semantic Field Analysis**
 High-speed on-device NLP scanning against distress libraries:
 - Negative Self-Talk patterns ("I'm worthless," "I can't do anything right")
-- Overwhelm indicators ("Everything hurts," "I'm drowning," "Too much")
 - Task Avoidance language ("I can't," "It's too hard," "I'm stuck")
+- Overwhelm indicators ("Everything hurts," "I'm drowning," "Too much")
+- Meltdown language ("meltdown," "falling apart," "can't stop panicking")
 - Shutdown language ("I can't think," "Nothing makes sense," "Going silent")
+- Hyperfocus loop language ("rabbit hole," "looping," "can't stop focusing")
+- Self-harm risk language, which forces maximum detector confidence and
+  emergency escalation handling
 
 **Layer 2 — Sentiment & Emotional Tone Analysis**
-Detects nuances like hopelessness, frustration, and apathy via:
-- Sentiment Polarity (-1 to +1)
-- Emotional Intensity scoring
+Tracks emotional polarity over a sliding window:
+- Uses `vaderSentiment` locally when installed
+- Falls back to a local heuristic lexicon when VADER is absent
+- Emits the fallback notice lazily at layer instantiation, not at import time
+- Classifies trends as `stable`, `declining`, `sharply_declining`, or `recovering`
 
 **Layer 3 — Behavioral Pattern Analysis**
-Tracks meta-patterns over time:
-- **Response Latency** — Sudden delays in replies
-- **Interaction Frequency** — Sharp message decreases
-- **Message Complexity** — Shift to one-word answers
-- **Looping Behavior** — Repetitive patterns indicating spiraling
+Tracks session-level metadata over time:
+- **Response Latency** — long gaps between messages
+- **Message Complexity** — shifts toward very short or fragmented messages
+- **Looping Behavior** — repeated word-overlap patterns indicating spiraling
+- **Privacy Constraint** — stores timestamps, counts, punctuation density, and
+  non-reversible hashed word tokens; it does not store raw message content
 
-When the cumulative **Crisis Score** breaches the user's defined threshold, the CDE fires an **Activation Trigger** to the Orchestration System.
+`CrisisDetector` aggregates the layers with source-defined weights
+(`keyword=0.45`, `sentiment=0.35`, `behavioral=0.20`) and returns
+`CrisisIndicators`. `CrisisAssessor` then maps aggregate confidence to crisis
+levels and recommended interventions. `config/crisis_thresholds.yaml` is loaded
+by the assessor for intervention mapping, but detector patterns, layer weights,
+and sensitivity thresholds are defined in code and must not be changed without
+explicit approval.
 
 ---
 
@@ -258,11 +285,17 @@ This report exists to:
 
 ## Privacy Architecture
 
-- **100% local processing** for crisis detection and initial response
-- **Zero data transmission** for assessment
-- **Encrypted crisis logs** with user-controlled keys
-- **User-controlled sharing** — complete control over crisis data
-- **Opt-in recovery tracking** — nothing stored without explicit consent
+- **100% local CDE processing** — detector layers make no external API calls.
+- **No supervisor transmission by default** — `LocalSupervisor` logs locally when
+  no custom supervisor is supplied.
+- **Behavioral metadata only** — Layer 3 stores timing/count metrics and hashed
+  word tokens for looping detection, not raw message text.
+- **Local pattern storage** — `PatternAnalyzer` persists aggregate metrics to
+  `data/patterns/{user_id}_patterns.json` when `shutdown()` calls
+  `save_patterns()`. Encryption is not implemented in this repository snapshot.
+- **Integration responsibility** — host applications must not persist or export
+  `CrisisIndicators.raw_text`, crisis assessments, or pattern files without
+  explicit user consent and an approved storage design.
 
 ---
 
@@ -288,68 +321,58 @@ The concept was designed for neurodivergent burnout but applies universally — 
 
 ```
 src/
-├── crisis/                  # Crisis Detection Engine
-│   ├── cde_pipeline.py      # 3-layer detection pipeline
-│   ├── keyword_scanner.py   # Layer 1: Semantic field analysis
-│   ├── sentiment_engine.py  # Layer 2: Emotional tone analysis
-│   └── pattern_tracker.py   # Layer 3: Behavioral pattern analysis
-├── personas/                # The Five Personas
-│   ├── fusion_engine.py     # Modular weighting & persona blending
-│   ├── ash.py               # Burnout & Validation
-│   ├── sol.py               # Executive Function Scaffolding
-│   ├── echo.py              # Cognitive Narrative
-│   ├── kai.py               # Focus & Drive Redirection
-│   └── myra.py              # Relational Safety & Co-regulation
-├── orchestration/           # Activation & Coordination
-│   ├── activation_tree.py   # Tiered activation (Stages 0-5)
-│   ├── persona_mapper.py    # State → persona mapping
-│   └── tone_profiles.py     # Configurable tone management
-├── intervention/            # Intervention Mechanics
-│   ├── soft_control.py      # Tempo reduction, load compression
-│   ├── silent_mode.py       # Shutdown recovery UI
-│   └── exit_protocol.py     # Gentle exit & Recovery Kit
-├── reporting/               # Post-Stabilization
-│   ├── distress_report.py   # User-visible event reporting
-│   └── recovery_thread.py   # Opt-in recovery logging
-└── governance/              # Solidarity Framework Integration
-    ├── toi_parser.py        # TOI preference enforcement
-    ├── otoi_rules.py        # OTOI behavioral governance
-    ├── agency_constraints.py # Hard constraint enforcement
-    └── escalation.py        # Human support escalation logic
+├── rrt_advocate.py                         # Main async orchestration entry point
+├── crisis/
+│   ├── detectors/
+│   │   ├── crisis_detector.py              # 3-layer CDE aggregator
+│   │   ├── keyword_layer.py                # Layer 1: semantic fields
+│   │   ├── sentiment_layer.py              # Layer 2: local sentiment trends
+│   │   └── behavioral_layer.py             # Layer 3: privacy-preserving metadata
+│   └── assessors/
+│       └── crisis_assessor.py              # Indicators -> crisis level/interventions
+├── dialogue/
+│   ├── dialogue_tree.py                    # Stage 0-5 dialogue state machine
+│   └── stages.py                           # Stage configuration and options
+├── personas/
+│   ├── fusion_engine.py                    # Modular weighting & persona blending
+│   ├── ash.py / sol.py / echo.py / kai.py / myra.py
+│   └── base_persona.py
+├── response/
+│   ├── interventions/intervention_manager.py
+│   └── de_escalation/de_escalation_engine.py
+├── coordination/supervisor/
+│   └── supervisor_interface.py             # Local/default supervisor contract
+├── learning/patterns/
+│   └── pattern_analyzer.py                 # Local aggregate pattern storage
+└── toi/
+    ├── toi_models.py
+    ├── toi_parser.py
+    └── otoi_middleware.py
 
 config/
-├── crisis_thresholds.yaml   # User-configurable detection parameters
-├── persona_weights.yaml     # Default persona weighting profiles
-├── tone_profiles.yaml       # Tone configuration
-├── escalation_rules.yaml    # Escalation decision logic
-└── privacy_settings.yaml    # Privacy & encryption configuration
+└── crisis_thresholds.yaml                   # Assessor/intervention configuration
 
 docs/
-├── architecture.md          # System architecture documentation
-├── personas.md              # Detailed persona specifications
-├── crisis_protocols.md      # Crisis response documentation
-├── integration_guide.md     # Solidarity Framework integration
-├── provenance.md            # Origin & lineage documentation
-└── research_foundation.md   # Clinical research base (81 sources)
+├── integration_guide.md                    # Code-verified integration/runbook
+├── active-threads.md                       # Agent coordination state
+├── agent-log/                              # Agent registration/handoff records
+└── escalations/                            # Escalation records
 ```
 
 ---
 
 ## Development Status
 
-**Current Phase**: Architecture Alignment
+**Current Phase**: Source implementation alignment
 
-- ✅ Five personas defined and mapped to crisis states
-- ✅ Crisis Detection Engine pipeline specified (3-layer)
-- ✅ Tiered activation tree designed (Stages 0-5)
-- ✅ Modular persona weighting system specified (0.0-1.0)
-- ✅ Comprehensive research foundation (81 cited sources)
-- ✅ Solidarity Framework integration defined
-- ✅ Agency preservation constraints documented
-- 🔄 Repository alignment to current architecture (in progress)
-- 📋 `fusion_engine.py` implementation (persona weighting logic)
-- 📋 CDE pipeline implementation
-- 📋 TOI parser integration
+- ✅ Five personas implemented under `src/personas/`
+- ✅ Crisis Detection Engine pipeline implemented under `src/crisis/detectors/`
+- ✅ Tiered dialogue tree implemented under `src/dialogue/`
+- ✅ Modular persona weighting implemented in `src/personas/fusion_engine.py`
+- ✅ TOI parser and OTOI middleware implemented under `src/toi/`
+- ✅ Local supervisor, intervention, de-escalation, and pattern modules present
+- ✅ Solidarity Framework integration and agency constraints documented
+- 🔄 Packaging/dependency declarations are still being aligned with runtime imports
 - 📋 CI/CD pipeline
 - 📋 Crisis simulation testing framework
 

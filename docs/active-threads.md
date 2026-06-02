@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-003 | Documentation follow-up for PR #18 CDE review fixes | Cursor Automation | `cursor/engineering-documentation-updates-cd75` | 🔄 In progress | 2026-06-02 |
 
 ---
 
