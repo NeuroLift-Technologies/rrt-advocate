@@ -72,8 +72,8 @@ export default {
 
 async function handleChatRequest(request: Request, env: Env): Promise<Response> {
   try {
-    const body = (await request.json()) as ChatRequestBody;
-    const messages = sanitizeMessages(body.messages ?? []);
+    const body = await parseRequestBody(request);
+    const messages = sanitizeMessages(body.messages);
     const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
     const risk = assessRisk(latestUserMessage?.content ?? "");
     const preparedMessages = buildMessages(messages, risk);
@@ -98,9 +98,28 @@ async function handleChatRequest(request: Request, env: Env): Promise<Response> 
   }
 }
 
-function sanitizeMessages(messages: ChatMessage[]): ChatMessage[] {
+async function parseRequestBody(request: Request): Promise<ChatRequestBody> {
+  try {
+    const body = await request.json();
+    return typeof body === "object" && body !== null ? (body as ChatRequestBody) : {};
+  } catch {
+    return {};
+  }
+}
+
+function sanitizeMessages(messages: unknown): ChatMessage[] {
+  if (!Array.isArray(messages)) {
+    return [];
+  }
+
   return messages
-    .filter((message) => ["system", "user", "assistant"].includes(message.role))
+    .filter(
+      (message): message is ChatMessage =>
+        typeof message === "object" &&
+        message !== null &&
+        "role" in message &&
+        ["system", "user", "assistant"].includes(String(message.role)),
+    )
     .map((message) => ({
       role: message.role,
       content: String(message.content ?? "").slice(0, 4000),

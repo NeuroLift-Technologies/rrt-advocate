@@ -30,7 +30,7 @@ def _hash_token(word: str) -> str:
     words while ensuring no plaintext message content is retained in memory or
     serialized records.
     """
-    return hashlib.sha1(word.encode("utf-8")).hexdigest()
+    return hashlib.sha256(word.encode("utf-8")).hexdigest()
 
 
 @dataclass
