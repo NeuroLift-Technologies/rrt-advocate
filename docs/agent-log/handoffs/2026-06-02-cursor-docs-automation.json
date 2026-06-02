@@ -54,6 +54,6 @@
       "python3 src/rrt_advocate.py"
     ],
     "tests_passing": false,
-    "pr_url": "pending"
+    "pr_url": "https://github.com/NeuroLift-Technologies/rrt-advocate/pull/23"
   }
 }
