@@ -10,14 +10,34 @@ Privacy note: Only message metadata (timing, length, word overlap) is
 stored — never message content in the behavioral record.
 """
 
+import hashlib
+import hmac
 import logging
+import os
 import re
+import secrets
 import time
 from collections import deque
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
+
+_TOKEN_HASH_KEY = (
+    os.environ["RRT_BEHAVIORAL_TOKEN_KEY"].encode("utf-8")
+    if os.environ.get("RRT_BEHAVIORAL_TOKEN_KEY")
+    else secrets.token_bytes(32)
+)
+
+
+def _hash_token(word: str) -> str:
+    """Return a non-reversible token for a normalized word.
+
+    Hashing keeps set-overlap (Jaccard) behaviour identical to using the raw
+    words while ensuring no plaintext message content is retained in memory or
+    serialized records.
+    """
+    return hmac.new(_TOKEN_HASH_KEY, word.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 @dataclass
@@ -85,7 +105,10 @@ class BehavioralLayer:
         """
         now = time.time()
         words = text.split() if text else []
-        word_set = frozenset(w.lower().strip(".,!?;:") for w in words if len(w) > 2)
+        normalized_words = (w.lower().strip(".,!?;:") for w in words)
+        word_set = frozenset(
+            _hash_token(word) for word in normalized_words if len(word) > 2
+        )
         sentences = re.split(r"[.!?]+", text)
         sentence_count = max(1, len([s for s in sentences if s.strip()]))
         punct_count = sum(1 for c in text if c in ".,!?;:()[]{}\"'")
