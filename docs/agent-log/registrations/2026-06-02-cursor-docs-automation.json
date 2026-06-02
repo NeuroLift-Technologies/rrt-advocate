@@ -1,0 +1,24 @@
+{
+  "agent_registration": {
+    "agent_name": "CURSOR",
+    "platform": "Cursor Cloud Automation",
+    "version": "GPT-5.5",
+    "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
+    "entry_date": "2026-06-02",
+    "entry_point": "Automation trigger for merged PR #19 documentation follow-up",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/rrt-advocate",
+    "working_branch": "cursor/engineering-documentation-updates-f20e",
+    "capabilities_self_reported": [
+      "Source-verified documentation updates",
+      "Governance runbook maintenance",
+      "Python project inspection and validation"
+    ],
+    "known_limitations": [
+      "Cannot obtain live human confirmation during automation-triggered execution",
+      "Will not modify crisis intervention logic, persona blending, or safety thresholds without explicit approval"
+    ],
+    "preferred_handoff_format": "Concise JSON handoff with files changed, verification commands, and remaining risks"
+  }
+}

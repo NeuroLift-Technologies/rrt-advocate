@@ -5,6 +5,9 @@ It intentionally avoids speculative architecture and focuses on behavior impleme
 
 - `src/rrt_advocate.py`
 - `config/crisis_thresholds.yaml`
+- `config/personas.yaml`
+- `config/toi_defaults.yaml`
+- `config/tone_profiles.yaml`
 
 > Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.2. Do not modify crisis logic or thresholds without explicit approval.
 
@@ -14,10 +17,11 @@ It intentionally avoids speculative architecture and focuses on behavior impleme
 
 `RRTAdvocate` is an async orchestration layer that:
 
-1. Runs continuous crisis assessments in a monitoring loop.
-2. Routes non-green assessments into tiered intervention flows.
-3. Escalates emergencies to a supervisor interface (if provided).
-4. Exposes status/reporting and manual intervention hooks for operators.
+1. Processes user messages through a local-first crisis detection pipeline.
+2. Enforces Terms of Interaction (TOI) consent before full RRT deployment.
+3. Routes user choices through the Stage 0-5 dialogue tree.
+4. Blends Ash/Sol/Echo/Kai/Myra responses through the persona fusion engine.
+5. Filters outputs through OTOI middleware and exposes operator lifecycle hooks.
 
 The core implementation is in `src/rrt_advocate.py`.
 
@@ -37,27 +41,60 @@ The core implementation is in `src/rrt_advocate.py`.
     `recommended_interventions`, and `context_factors`.
 - `InterventionResponse`
   - Tracks intervention lifecycle (`start_time`, `end_time`, `status`, `effectiveness_score`).
+- `TOIConfig`
+  - Controls `tone_profile`, `pacing`, `silent_mode_preferred`,
+    `allow_timers`, `allow_task_loops`, preferred/excluded personas, and consent state.
 
 ### Main class
 
-- `RRTAdvocate(user_id: str, config_path: str = "config/crisis_thresholds.yaml", supervisor_interface: Optional[SupervisorInterface] = None)`
+- `RRTAdvocate(user_id: str, config_path: str = "config/crisis_thresholds.yaml", toi_config: Optional[TOIConfig] = None, supervisor_interface: Optional[SupervisorInterface] = None)`
+- `await process_message(user_message: str) -> Dict[str, Any]`
+- `await select_stage_option(option_key: str, free_text: Optional[str] = None) -> Dict[str, Any]`
 - `await start_monitoring() -> bool`
 - `await stop_monitoring() -> bool`
-- `await assess_current_state() -> CrisisAssessment`
+- `await assess_current_state(message: str = "") -> CrisisAssessment`
 - `await get_status_report() -> Dict[str, Any]`
-- `await manual_intervention(intervention_type: str, context: Dict[str, Any] = None) -> bool`
+- `await manual_intervention(intervention_type: str, context: Optional[Dict[str, Any]] = None) -> bool`
 - `await shutdown()`
 
-### Factory
+### Helpers
 
 - `await create_rrt_advocate(...) -> RRTAdvocate`
-  - Creates an instance and performs one initial assessment.
+  - Creates and returns an initialized instance. It does **not** perform an initial assessment.
+- `create_toi_config(...) -> TOIConfig`
+  - Builds a TOI configuration with supported tone profiles:
+    `supportive_default`, `minimal`, `directive`, `therapeutic_reflective`.
 
 ---
 
-## 3) Runtime workflow
+## 3) Runtime workflows
 
-The runtime path in `RRTAdvocate` is:
+### Primary conversational workflow
+
+The main user-facing path is `process_message()`:
+
+1. `crisis_detector.detect_crisis_indicators(user_message)` runs the local
+   3-layer CDE: keyword, sentiment, and behavioral analysis.
+2. `crisis_assessor.assess_crisis(indicators)` maps aggregate confidence to
+   `GREEN`/`YELLOW`/`ORANGE`/`RED`/`BLACK`.
+3. If TOI consent has not been granted, the response is Stage 1 entry/consent
+   and includes `requires_consent=True`.
+4. If self-harm risk is detected, `_emergency_escalation()` runs and the
+   response includes emergency crisis resources.
+5. Non-green assessments call `_handle_crisis(assessment)`.
+6. The dialogue tree processes free text and returns a unified response with
+   `response_text`, `stage`, options, crisis level, confidence, and response time.
+
+Stage option selections are handled separately:
+
+```python
+response = await advocate.select_stage_option("yes")
+response = await advocate.select_stage_option("meltdown")
+```
+
+### Background monitoring workflow
+
+The monitoring path remains available for service-style integrations:
 
 1. `start_monitoring()` sets `is_monitoring=True` and starts `_monitoring_loop()` as a background task.
 2. `_monitoring_loop()`:
@@ -76,9 +113,9 @@ The runtime path in `RRTAdvocate` is:
 
 ---
 
-## 4) Expected external integration points
+## 4) Internal components and integration points
 
-`RRTAdvocate` imports the following modules from outside this repository snapshot:
+The orchestration layer imports these in-repo modules from `src/`:
 
 - `crisis.detectors.crisis_detector.CrisisDetector`
 - `crisis.assessors.crisis_assessor.CrisisAssessor`
@@ -87,7 +124,9 @@ The runtime path in `RRTAdvocate` is:
 - `coordination.supervisor.supervisor_interface.SupervisorInterface`
 - `learning.patterns.pattern_analyzer.PatternAnalyzer`
 
-This means standalone execution in this repo alone will fail unless those modules are available on `PYTHONPATH`.
+`src/rrt_advocate.py` inserts `src/` onto `sys.path` for direct execution, so run
+developer commands from the repository root unless your integration packages the
+modules differently.
 
 Minimal supervisor contract expected by `RRTAdvocate`:
 
@@ -100,9 +139,9 @@ class SupervisorInterface:
 
 ---
 
-## 5) Configuration runbook (`config/crisis_thresholds.yaml`)
+## 5) Configuration runbook (`config/`)
 
-The default config path is `config/crisis_thresholds.yaml`. It contains:
+The default crisis config path is `config/crisis_thresholds.yaml`. It contains:
 
 - crisis level ranges (`green`..`black`)
 - indicator weights and thresholds
@@ -111,12 +150,23 @@ The default config path is `config/crisis_thresholds.yaml`. It contains:
 - intervention mappings by severity
 - privacy/security/performance parameters
 
+Additional source-verified config files:
+
+- `config/personas.yaml` defines the five personas, activation signals, prompt
+  prefixes, and template responses.
+- `config/toi_defaults.yaml` defines default TOI values, consent prompt text,
+  pacing intervals, and scaffolding rules.
+- `config/tone_profiles.yaml` defines tone profile descriptions, token budgets,
+  prompt directives, sentence starters, and forbidden phrases.
+
 Important operational constraints:
 
 - `RRTAdvocate._monitoring_loop()` currently sleeps for a fixed `1` second interval.
   - It does **not** currently consume per-level `monitoring_interval` values from YAML.
 - Escalation behavior in code is driven by `assessment.user_safety_score` and `assessment.crisis_level`.
-  - YAML escalation thresholds are consumed by external components (for example, detector/assessor) rather than directly in `RRTAdvocate`.
+  - YAML escalation thresholds are consumed by assessor/supporting components rather than directly in `RRTAdvocate`.
+- `PatternAnalyzer.save_patterns()` writes local aggregate metrics to `data/patterns/{user_id}_patterns.json`.
+  Raw message text is not stored by `PatternAnalyzer`.
 
 ---
 
@@ -124,23 +174,34 @@ Important operational constraints:
 
 ### Prerequisites
 
-- Python 3.8+
-- Access to the external NeuroLift modules listed in Section 4
+- Python 3.10+
+- Runtime dependency for YAML parsing: `PyYAML`
 
 ### Suggested local workflow
 
 1. Create and activate a virtual environment.
-2. Ensure external dependency packages/modules are importable.
-3. Run a basic import check:
+2. Install local developer dependencies:
+
+```bash
+pip install -U pip pytest pytest-asyncio pyyaml
+```
+
+3. Run a basic import check from the repo root:
 
 ```bash
 python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
 ```
 
-4. Once dependencies are available, execute:
+4. Run the demo/smoke path:
 
 ```bash
 python src/rrt_advocate.py
+```
+
+5. Run tests:
+
+```bash
+pytest
 ```
 
 ---
@@ -149,9 +210,26 @@ python src/rrt_advocate.py
 
 ### `ModuleNotFoundError` for `crisis.*`, `response.*`, `coordination.*`, or `learning.*`
 
-Cause: those modules are referenced but not vendored in this repository snapshot.
+Cause: the command is not running with the repo's `src/` modules importable.
 
-Fix: install/provide the dependent NeuroLift packages or run in the full multi-repo/monorepo environment where they exist.
+Fix: run from the repository root, use `python src/rrt_advocate.py` for the demo
+path, or add `/path/to/rrt-advocate/src` to `PYTHONPATH` in your integration.
+
+### `ModuleNotFoundError: No module named 'yaml'`
+
+Cause: `src/crisis/assessors/crisis_assessor.py` loads `config/crisis_thresholds.yaml`
+with `yaml.safe_load`.
+
+Fix: install `PyYAML` in the active environment.
+
+### First conversational response keeps asking for consent
+
+Cause: `TOIConfig.consent_given` defaults to `False`; Stage 1 consent is required
+before full RRT deployment.
+
+Fix: route the user's choice through `select_stage_option("yes")`, or construct a
+TOI config with consent already granted only when your product flow has collected
+explicit consent.
 
 ### Duplicate log lines after creating multiple `RRTAdvocate` instances
 
@@ -184,6 +262,8 @@ Fix: if this metric is operationally important, persist completed interventions 
 ### During runtime
 
 - Poll or request `get_status_report()` for:
+  - TOI config and consent status
+  - dialogue stage/session summary
   - current crisis level/confidence
   - active intervention count
   - response performance metrics

@@ -1,6 +1,6 @@
 # Governance File Index — NeuroLift Technologies `rrt-advocate`
 
-**Last updated:** 2026-04-06  
+**Last updated:** 2026-06-02  
 **Maintained by:** `.nltotoi/` namespace tooling  
 **Scope:** `NeuroLift-Technologies/rrt-advocate`
 
@@ -58,21 +58,10 @@
 | File | Purpose | Trigger | SOP |
 |---|---|---|---|
 | `.github/workflows/validate-governance.yml` | Governance validation (runs validate-governance.sh) | push, pull_request | SOP-NLT-002 |
-| `.github/workflows/repo-governance-check.yml` | Reusable governance check for NLT repos | workflow_call | SOP-NLT-002 |
-| `.github/workflows/agent-commit-format.yml` | Validates agent commit message format on PRs | pull_request | SOP-NLT-001 |
-| `.github/workflows/agent-session-check.yml` | Verifies handoff records exist before PR merge | pull_request | SOP-NLT-001 |
-| `.github/workflows/incident-detection.yml` | Scans commits for credential exposure; opens incident issue | push | SOP-NLT-003 |
-| `.github/workflows/secret-scan-pr.yml` | Scans PR commits for credential exposure; fails check to block merge | pull_request | SOP-NLT-003 |
-| `.github/workflows/org-repo-compliance.yml` | Scans all org repos for mandatory governance files (weekly + manual) | schedule, workflow_dispatch | SOP-NLT-002 |
-| `.github/workflows/agent-profile-validation.yml` | Validates agents/*.md and .github/agents/*.agent.md NLT frontmatter fields | push, pull_request | SOP-NLT-002 |
-| `.github/workflows/org-runner-health.yml` | Monitors org self-hosted runner availability; opens issue if all offline | schedule, workflow_dispatch | SOP-NLT-003 |
-| `.github/workflows/org-actions-policy.yml` | Scans all org repo workflows for non-allowlisted GitHub Actions | schedule, workflow_dispatch | SOP-NLT-003 |
-| `.github/workflows/nltotoi-compliance.yml` | Scans all org repos for nltotoi.json; auto-opens PRs for missing ones | schedule, workflow_dispatch | SOP-NLT-002 |
-| `.github/workflows/nltotoi-check.yml` | Reusable workflow_call to validate nltotoi.json in any NLT repo | workflow_call | SOP-NLT-002 |
-| `.github/workflows/governance-remediation.yml` | Creates governance remediation PRs in non-compliant repos (missing CLAUDE.md/NLT-DEV-OTOI, active-threads.md, agent-log/) | workflow_dispatch | SOP-NLT-002 |
-| `.github/workflows/governance-auto-propagate.yml` | Scheduled org-wide governance propagation — scans all repos nightly and auto-opens remediation PRs | schedule, workflow_dispatch | SOP-NLT-002 |
-| `.github/workflows/issue-auto-assign.yml` | Rule-based issue routing to NLT agents using `agents/registry.json` | issues, workflow_dispatch | — |
-| `.github/workflows/cf-ai-issue-triage.yml` | Cloudflare Workers AI classifier — semantically routes issues to agents | issues, workflow_dispatch | — |
+
+Only the workflow above is present in this product repo. Broader org automation
+such as propagation, incident detection, and reusable checks belongs in the
+canonical governance repo unless explicitly synced here.
 
 ---
 
@@ -80,20 +69,18 @@
 
 | Path | Purpose |
 |---|---|
-| `.github/actions/cloudflare-workers-ai/action.yml` | Call Cloudflare Workers AI REST API (text gen, embeddings, classification) |
+| _None in this repo_ | Composite actions are not part of the current `rrt-advocate` governance overlay. |
 
 ---
 
-## Agent Profiles — GitHub Copilot Custom Agents (`agents/`)
+## Agent Profiles — Repo-local (`agents/`)
 
 | File | Purpose | Required |
 |---|---|---|
-| `agents/README.md` | NLT standards and instructions for creating/using custom agents | ✅ |
-| `agents/example-agent.md` | Commented-out starter template for new agent profiles | ✅ |
-| `agents/registry.json` | Machine-readable agent routing registry consumed by issue-assignment workflows | ✅ |
 | `agents/nlt-governance-steward.md` | Governance steward agent — enforces ORG-DEV-OTOI-1.0.2 | ✅ |
-| `agents/nlt-code-reviewer.md` | Code review agent — NLT security and governance standards | ✅ |
-| `agents/nlt-onboarding-assistant.md` | Onboarding agent — walks agents through SOP-NLT-001 | ✅ |
+
+This repo does not currently contain `agents/README.md`, `agents/registry.json`,
+or additional repo-local agent profiles.
 
 ---
 
@@ -101,9 +88,26 @@
 
 | File | Purpose | Required |
 |---|---|---|
-| `.github/agents/nlt-governance-steward.agent.md` | VS Code variant of governance steward with tool declarations and handoffs | ✅ |
-| `.github/agents/nlt-code-reviewer.agent.md` | VS Code variant of code reviewer with handoff to governance steward | ✅ |
-| `.github/agents/nlt-onboarding-assistant.agent.md` | VS Code variant of onboarding assistant with handoffs | ✅ |
+| _None in this repo_ | `.github/agents/` is not part of the current `rrt-advocate` file set. | — |
+
+---
+
+## Claude Code Session Config (`.claude/`)
+
+| Path | Purpose | Required |
+|---|---|---|
+| `.claude/README.md` | Claude Code template overview and repo-local override guidance | ✅ |
+| `.claude/settings.json` | Wires the `SessionStart` hook | ✅ |
+| `.claude/hooks/session-start.sh` | Prints the mandatory session-start reading order | ✅ |
+| `.claude/hooks/README.md` | Hook behavior notes | ✅ |
+| `.claude/agents/nlt-governance-steward.md` | Governance steward subagent profile | ✅ |
+| `.claude/agents/nlt-code-reviewer.md` | Code review subagent profile | ✅ |
+| `.claude/agents/swe-agent.md` | SWE implementation subagent profile | ✅ |
+| `.claude/commands/*.md` | Slash-command runbooks for registration, handoff, escalation, intent logs, and governance checks | ✅ |
+| `.claude/skills/*/SKILL.md` | NLT skill SOPs for OTOI, registration, handoff, escalation, intent logs, commit format, and incident response | ✅ |
+
+Do not edit `.claude/` here for org-wide behavior. It is a synced template; use
+`.claude/settings.local.json` for repo-local Claude Code overrides.
 
 ---
 
@@ -125,11 +129,12 @@
 | .nltotoi namespace | 5 |
 | Templates | 5 |
 | GitHub templates | 3 |
-| CI workflows | 10 |
+| CI workflows | 1 |
 | SOPs | 3 |
-| Agent profiles (Copilot) | 5 |
-| Agent profiles (VS Code) | 3 |
-| **Total** | **40** |
+| Agent profiles (`agents/`) | 1 |
+| Agent profiles (`.github/agents/`) | 0 |
+| Claude Code session config (`.claude/`) | 19 |
+| **Total indexed here** | **43** |
 
 ---
 

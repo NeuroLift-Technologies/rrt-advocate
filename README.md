@@ -17,16 +17,17 @@ ai_assistant_directive:
 
 ## Local Development (Repository Snapshot)
 
-Because this repository references external NeuroLift modules that are not vendored here, runtime execution requires the broader ecosystem on `PYTHONPATH`. For this standalone snapshot, the fastest way to validate behavior is via the unit tests that use local stubs.
+The core runtime modules are vendored under `src/`. Run commands from the repository root so `src/rrt_advocate.py` can resolve its local imports.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -U pip pytest pytest-asyncio
+pip install -U pip pytest pytest-asyncio pyyaml
 pytest
 ```
 
-Project tooling defaults are defined in `pyproject.toml`.
+Project tooling defaults are defined in `pyproject.toml` (`requires-python >=3.10`).
+For the current code-verified runtime interface, see [`docs/integration_guide.md`](docs/integration_guide.md).
 
 ---
 
@@ -296,70 +297,49 @@ The concept was designed for neurodivergent burnout but applies universally — 
 
 ```
 src/
-├── crisis/                  # Crisis Detection Engine
-│   ├── cde_pipeline.py      # 3-layer detection pipeline
-│   ├── keyword_scanner.py   # Layer 1: Semantic field analysis
-│   ├── sentiment_engine.py  # Layer 2: Emotional tone analysis
-│   └── pattern_tracker.py   # Layer 3: Behavioral pattern analysis
-├── personas/                # The Five Personas
-│   ├── fusion_engine.py     # Modular weighting & persona blending
-│   ├── ash.py               # Burnout & Validation
-│   ├── sol.py               # Executive Function Scaffolding
-│   ├── echo.py              # Cognitive Narrative
-│   ├── kai.py               # Focus & Drive Redirection
-│   └── myra.py              # Relational Safety & Co-regulation
-├── orchestration/           # Activation & Coordination
-│   ├── activation_tree.py   # Tiered activation (Stages 0-5)
-│   ├── persona_mapper.py    # State → persona mapping
-│   └── tone_profiles.py     # Configurable tone management
-├── intervention/            # Intervention Mechanics
-│   ├── soft_control.py      # Tempo reduction, load compression
-│   ├── silent_mode.py       # Shutdown recovery UI
-│   └── exit_protocol.py     # Gentle exit & Recovery Kit
-├── reporting/               # Post-Stabilization
-│   ├── distress_report.py   # User-visible event reporting
-│   └── recovery_thread.py   # Opt-in recovery logging
-└── governance/              # Solidarity Framework Integration
-    ├── toi_parser.py        # TOI preference enforcement
-    ├── otoi_rules.py        # OTOI behavioral governance
-    ├── agency_constraints.py # Hard constraint enforcement
-    └── escalation.py        # Human support escalation logic
+├── rrt_advocate.py          # Main async orchestration entry point
+├── crisis/                  # 3-layer local-first Crisis Detection Engine
+│   ├── detectors/           # Keyword, sentiment, behavioral, aggregate detector
+│   └── assessors/           # Crisis level and intervention mapping
+├── personas/                # The Five Personas + fusion engine
+├── dialogue/                # Stage 0-5 activation tree and transitions
+├── toi/                     # TOI models/parser and OTOI middleware
+├── response/                # Intervention and de-escalation managers
+├── coordination/            # Supervisor interface and local supervisor
+└── learning/                # Local aggregate pattern tracking
 
 config/
 ├── crisis_thresholds.yaml   # User-configurable detection parameters
-├── persona_weights.yaml     # Default persona weighting profiles
+├── personas.yaml            # Persona definitions and activation signals
 ├── tone_profiles.yaml       # Tone configuration
-├── escalation_rules.yaml    # Escalation decision logic
-└── privacy_settings.yaml    # Privacy & encryption configuration
+└── toi_defaults.yaml        # Default Terms of Interaction and consent prompt
 
 docs/
-├── architecture.md          # System architecture documentation
-├── personas.md              # Detailed persona specifications
-├── crisis_protocols.md      # Crisis response documentation
 ├── integration_guide.md     # Solidarity Framework integration
-├── provenance.md            # Origin & lineage documentation
-└── research_foundation.md   # Clinical research base (81 sources)
+├── active-threads.md        # Current agent work tracker
+├── agent-log/               # Agent registrations, handoffs, and audit notes
+└── escalations/             # Escalation documentation
+
+.nltotoi/                    # Governance validation namespace
+.claude/                     # Synced Claude Code session config (do not edit here)
+templates/                   # Agent registration, handoff, escalation, intent templates
 ```
 
 ---
 
 ## Development Status
 
-**Current Phase**: Architecture Alignment
+**Current Phase**: Source-backed architecture alignment
 
-- ✅ Five personas defined and mapped to crisis states
-- ✅ Crisis Detection Engine pipeline specified (3-layer)
-- ✅ Tiered activation tree designed (Stages 0-5)
-- ✅ Modular persona weighting system specified (0.0-1.0)
-- ✅ Comprehensive research foundation (81 cited sources)
-- ✅ Solidarity Framework integration defined
-- ✅ Agency preservation constraints documented
-- 🔄 Repository alignment to current architecture (in progress)
-- 📋 `fusion_engine.py` implementation (persona weighting logic)
-- 📋 CDE pipeline implementation
-- 📋 TOI parser integration
-- 📋 CI/CD pipeline
-- 📋 Crisis simulation testing framework
+- ✅ Five personas implemented under `src/personas/`
+- ✅ 3-layer local-first CDE implemented under `src/crisis/detectors/`
+- ✅ Crisis assessment implemented under `src/crisis/assessors/`
+- ✅ Stage 0-5 dialogue tree implemented under `src/dialogue/`
+- ✅ TOI parser and OTOI middleware implemented under `src/toi/`
+- ✅ `RRTAdvocate.process_message()` wires CDE -> TOI consent -> dialogue tree -> fusion -> OTOI
+- ✅ Governance overlay synced to ORG-DEV-OTOI-1.0.2 with validation via `.github/workflows/validate-governance.yml`
+- 🔄 Documentation and tests continue to be aligned to the current source contract
+- 📋 Broader ecosystem packaging and production integration remain outside this repo-local snapshot
 
 ---
 

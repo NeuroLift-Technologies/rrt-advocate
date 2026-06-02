@@ -1,7 +1,7 @@
 # Active Threads — `rrt-advocate`
 
 **Governance Standard**: ORG-DEV-OTOI-1.0.2
-**Last Updated**: 2026-06-01
+**Last Updated**: 2026-06-02
 
 > ⚠️ All agents MUST read this file before starting any work (OTOI Section 4.1 Step 4).
 > Do not start a thread that duplicates or conflicts with an in-progress item below.
@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-003 | Sync governance overlay to canonical ORG-DEV-OTOI-1.0.2 (add `.claude/`, flatten nested `.nltotoi/`+`templates/`, fix manifest repo-name) | Claude Code | `claude/rrt-advocate-sync-handoff-8uII8` | 🔵 PR open — awaiting Joshua review | 2026-06-01 |
+| THREAD-004 | Refresh engineering docs after merged PR #19 governance overlay sync | Cursor Automation | `cursor/engineering-documentation-updates-f20e` | 🔵 In progress | 2026-06-02 |
 
 ---
 
@@ -35,6 +35,7 @@
 |---|---|---|---|---|---|---|
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
+| THREAD-003 | Sync governance overlay to canonical ORG-DEV-OTOI-1.0.2 (add `.claude/`, flatten nested `.nltotoi/`+`templates/`, fix manifest repo-name) | Claude Code | `claude/rrt-advocate-sync-handoff-8uII8` | ✅ Merged (PR #19) | 2026-06-01 | 2026-06-02 |
 
 ---
 
