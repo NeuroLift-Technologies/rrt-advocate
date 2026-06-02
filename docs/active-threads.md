@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-003 | Documentation automation follow-up for PR #17 governance restoration | Cursor Automation | `cursor/engineering-documentation-updates-1872` | 🔄 In progress | 2026-06-02 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -35,6 +35,7 @@
 |---|---|---|---|---|---|---|
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
+| THREAD-003 | Documentation automation follow-up for PR #17 governance restoration | Cursor Automation | `cursor/engineering-documentation-updates-1872` | ✅ Completed | 2026-06-02 | 2026-06-02 |
 
 ---
 

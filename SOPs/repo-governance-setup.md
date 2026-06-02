@@ -1,7 +1,7 @@
 # SOP: Repository Governance Setup
 
 **SOP ID:** SOP-NLT-002  
-**Version:** 1.1.1  
+**Version:** 1.1.1
 **Scope:** Setting up governance stubs in a new or existing NLT repository  
 **Authority:** Joshua W. Dorsey, Sr.  
 **Governed by:** ORG-DEV-OTOI-1.0.0
