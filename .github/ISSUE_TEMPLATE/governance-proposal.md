@@ -1,6 +1,6 @@
 ---
 name: Governance Amendment Proposal
-about: Propose an amendment to ORG-DEV-OTOI-1.0.0 or a governance document (OTOI Section 9)
+about: Propose an amendment to ORG-DEV-OTOI-1.0.2 or a governance document (OTOI Section 9)
 title: "[GOVERNANCE] Proposed amendment: Brief description"
 labels: governance-proposal, needs-approval
 assignees: JDUB1216
