@@ -20,10 +20,10 @@ ai_assistant_directive:
 The core runtime modules are vendored under `src/`. Run commands from the repository root so `src/rrt_advocate.py` can resolve its local imports.
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip pytest pytest-asyncio pyyaml
-pytest
+python3 -m pytest
 ```
 
 Project tooling defaults are defined in `pyproject.toml` (`requires-python >=3.10`).

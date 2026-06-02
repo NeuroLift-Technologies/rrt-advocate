@@ -183,25 +183,25 @@ Important operational constraints:
 2. Install local developer dependencies:
 
 ```bash
-pip install -U pip pytest pytest-asyncio pyyaml
+python3 -m pip install -U pip pytest pytest-asyncio pyyaml
 ```
 
 3. Run a basic import check from the repo root:
 
 ```bash
-python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
+python3 -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
 ```
 
 4. Run the demo/smoke path:
 
 ```bash
-python src/rrt_advocate.py
+python3 src/rrt_advocate.py
 ```
 
 5. Run tests:
 
 ```bash
-pytest
+python3 -m pytest
 ```
 
 ---
@@ -212,8 +212,14 @@ pytest
 
 Cause: the command is not running with the repo's `src/` modules importable.
 
-Fix: run from the repository root, use `python src/rrt_advocate.py` for the demo
+Fix: run from the repository root, use `python3 src/rrt_advocate.py` for the demo
 path, or add `/path/to/rrt-advocate/src` to `PYTHONPATH` in your integration.
+
+### `python: command not found`
+
+Cause: some Linux images expose Python as `python3` only.
+
+Fix: use `python3` in local commands, or create a shell alias only in your local environment.
 
 ### `ModuleNotFoundError: No module named 'yaml'`
 
