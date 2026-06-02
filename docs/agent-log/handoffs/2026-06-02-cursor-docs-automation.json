@@ -1,0 +1,59 @@
+{
+  "handoff_record": {
+    "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
+    "agent_name": "CURSOR",
+    "date": "2026-06-02",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "NeuroLift-Technologies/rrt-advocate",
+    "branch": "cursor/engineering-documentation-updates-f20e",
+    "work_completed": [
+      "Refreshed README setup, repository structure, and development status to match current src/, config/, docs/, .nltotoi/, .claude/, and templates/ layout.",
+      "Updated docs/integration_guide.md with the current RRTAdvocate process_message/select_stage_option API, TOI consent workflow and caveats, config runbook, Python 3.10/PyYAML setup, and current testing boundary.",
+      "Labeled README Recovery Thread, Recovery Kit, host-interface takeover, distress event report, encrypted logs, and recovery-tracking statements as design intent or architecture goals where source does not currently implement them.",
+      "Updated docs/agent-log/README.md for ORG-DEV-OTOI-1.0.2 session records, intent logs, templates, and validation truthfulness.",
+      "Reconciled docs/active-threads.md after merged PR #19 and marked this documentation automation thread complete.",
+      "Updated .nltotoi/index/governance-files.md to list the actual repo-local workflow, agent profile, .claude template, and file counts instead of org-only workflows not present here.",
+      "Clarified CLAUDE.md to read the root synced NLT-DEV-OTOI.md while preserving .github-private as canonical upstream.",
+      "Added this session registration and intent log."
+    ],
+    "work_in_progress": [],
+    "blockers": [
+      "Full python3 -m pytest still collects tests/test_rrt_advocate.py, a legacy stub harness that shadows current vendored crisis modules and lacks CrisisIndicators. This is documented but not fixed because the task scope is documentation-only."
+    ],
+    "decisions_made": [
+      "Kept the PR documentation-only and did not modify crisis logic, persona blending, safety thresholds, or tests.",
+      "Documented focused component suites as the current green validation path instead of implying full-suite pytest is clean.",
+      "Updated existing docs rather than creating a redundant new engineering runbook."
+    ],
+    "decisions_pending": [
+      "A future implementation/test task should update or remove the legacy tests/test_rrt_advocate.py stub harness so full pytest can be restored."
+    ],
+    "escalations": [],
+    "next_agent_notes": "Docs were verified against source and PR #19 metadata. Do not treat the org-only workflow list from .github-private as present in this product repo unless the files are actually synced here.",
+    "files_modified": [
+      ".nltotoi/index/governance-files.md",
+      "CLAUDE.md",
+      "README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/README.md",
+      "docs/agent-log/handoffs/2026-06-02-cursor-docs-automation.json",
+      "docs/agent-log/intent/2026-06-02-docs-automation.md",
+      "docs/agent-log/registrations/2026-06-02-cursor-docs-automation.json",
+      "docs/integration_guide.md"
+    ],
+    "tests_run": [
+      "bash .nltotoi/scripts/validate-governance.sh",
+      "git diff --check origin/codex/rrt-aidvocaite-integration..HEAD",
+      "python3 -m json.tool docs/agent-log/registrations/2026-06-02-cursor-docs-automation.json",
+      "python3 -m json.tool docs/agent-log/handoffs/2026-06-01-rrt-advocate-sync-handoff.json",
+      "python3 -m json.tool templates/agent-registration.json",
+      "python3 -m json.tool templates/handoff-record.json",
+      "python3 -c \"from src.rrt_advocate import RRTAdvocate; print('import ok')\"",
+      "python3 -m pytest (expected current failure: tests/test_rrt_advocate.py legacy stub harness lacks CrisisIndicators; 110 other tests passed before the 3 harness failures)",
+      "python3 -m pytest tests/test_cde.py tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py",
+      "python3 src/rrt_advocate.py"
+    ],
+    "tests_passing": false,
+    "pr_url": "pending"
+  }
+}

@@ -79,8 +79,12 @@ The main user-facing path is `process_message()`:
    `GREEN`/`YELLOW`/`ORANGE`/`RED`/`BLACK`.
 3. If TOI consent has not been granted, the response is Stage 1 entry/consent
    and includes `requires_consent=True`.
-4. If self-harm risk is detected, `_emergency_escalation()` runs and the
-   response includes emergency crisis resources.
+   - Source-ordering caveat: this consent gate currently runs before the
+     self-harm emergency branch. A pre-consent self-harm indicator can therefore
+     return the consent prompt with an emergency crisis level rather than the
+     emergency resource payload.
+4. After consent is already granted, self-harm risk triggers
+   `_emergency_escalation()` and returns emergency crisis resources.
 5. Non-green assessments call `_handle_crisis(assessment)`.
 6. The dialogue tree processes free text and returns a unified response with
    `response_text`, `stage`, options, crisis level, confidence, and response time.
@@ -164,7 +168,9 @@ Important operational constraints:
 - `RRTAdvocate._monitoring_loop()` currently sleeps for a fixed `1` second interval.
   - It does **not** currently consume per-level `monitoring_interval` values from YAML.
 - Escalation behavior in code is driven by `assessment.user_safety_score` and `assessment.crisis_level`.
-  - YAML escalation thresholds are consumed by assessor/supporting components rather than directly in `RRTAdvocate`.
+  - `RRTAdvocate` directly checks `user_safety_score < 0.3` and `BLACK` crisis level.
+  - `CrisisAssessor` returns hard-coded per-level `escalation_threshold` values.
+  - YAML `escalation_rules` are present in config but are not currently wired into these runtime checks.
 - `PatternAnalyzer.save_patterns()` writes local aggregate metrics to `data/patterns/{user_id}_patterns.json`.
   Raw message text is not stored by `PatternAnalyzer`.
 

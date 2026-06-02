@@ -172,25 +172,31 @@ The blended composite persona responds based on selection, offering simple next 
 - *"Help Me Focus"*
 
 ### Stage 4: State Tracking
-Opt-in **Recovery Thread** logs interventions locally. User-controlled. Never silent logging.
+Design intent: opt-in **Recovery Thread** logs interventions locally. User-controlled. Never silent logging.
+Current source boundary: `PatternAnalyzer` stores aggregate local metrics only, not raw message content.
 
 ### Stage 5: Gentle Exit Protocol
-As the user stabilizes, they can save the flow as a personalized **Burnout Recovery Kit** for future use.
+Design intent: as the user stabilizes, they can save the flow as a personalized **Burnout Recovery Kit** for future use.
+The current repo-local implementation exposes the Stage 5 closure prompt but does not yet persist Recovery Kits.
 
 ---
 
 ## Intervention Mechanics
 
-When activated, the RRT AIdvocAIte:
+When activated, the RRT AIdvocAIte is designed to:
 
-- **Takes over the entire AI interface** for that user — it becomes the system, not a mode within it
-- Intercepts the conversational control channel
-- Temporarily mediates host AI output
-- Preserves full conversational context
-- Uses **soft control**: interaction tempo reduction, cognitive load compression, grounding primitives, suppression of optimization-driven or coercive responses
+- **Take over the entire AI interface** for that user — it becomes the system, not a mode within it
+- Intercept the conversational control channel
+- Temporarily mediate host AI output
+- Preserve full conversational context
+- Use **soft control**: interaction tempo reduction, cognitive load compression, grounding primitives, suppression of optimization-driven or coercive responses
 - **Never locks the user out**
 - **Never severs the host model**
 - Always frames itself as **temporary**
+
+Current source boundary: this repository implements the local dialogue, fusion,
+intervention, de-escalation, and supervisor hooks. Host-interface takeover and
+control-channel mediation must be implemented by an integrating product.
 
 ---
 
@@ -254,7 +260,8 @@ For nonverbal or shutdown states, the UI shifts entirely:
 
 ## Post-Stabilization: Distress Event Report
 
-After intervention, the RRT AIdvocAIte generates a **user-visible distress event report** containing:
+Roadmap/design intent: after intervention, the RRT AIdvocAIte generates a
+**user-visible distress event report** containing:
 - What occurred
 - Why the system activated
 - Which interventions were applied
@@ -268,15 +275,21 @@ This report exists to:
 
 **This is not silent logging.**
 
+Current source boundary: this repo does not yet generate or persist a user-visible
+distress event report.
+
 ---
 
 ## Privacy Architecture
 
-- **100% local processing** for crisis detection and initial response
-- **Zero data transmission** for assessment
-- **Encrypted crisis logs** with user-controlled keys
-- **User-controlled sharing** — complete control over crisis data
-- **Opt-in recovery tracking** — nothing stored without explicit consent
+- **Current source behavior:** crisis detection, dialogue routing, persona fusion,
+  and the default local supervisor run without external API calls.
+- **Current source behavior:** `PatternAnalyzer` stores local aggregate JSON
+  metrics only; it does not store raw message content.
+- **Architecture goal:** encrypted crisis logs with user-controlled keys.
+- **Architecture goal:** user-controlled sharing and opt-in recovery tracking.
+- **Constraint:** do not add external transmission, persistent crisis data storage,
+  or third-party integrations without explicit approval.
 
 ---
 

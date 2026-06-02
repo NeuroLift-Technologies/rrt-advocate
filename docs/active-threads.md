@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-004 | Refresh engineering docs after merged PR #19 governance overlay sync | Cursor Automation | `cursor/engineering-documentation-updates-f20e` | 🔵 In progress | 2026-06-02 |
+| _None_ | _No active documentation automation threads at session handoff._ | — | — | — | — |
 
 ---
 
@@ -36,6 +36,7 @@
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
 | THREAD-003 | Sync governance overlay to canonical ORG-DEV-OTOI-1.0.2 (add `.claude/`, flatten nested `.nltotoi/`+`templates/`, fix manifest repo-name) | Claude Code | `claude/rrt-advocate-sync-handoff-8uII8` | ✅ Merged (PR #19) | 2026-06-01 | 2026-06-02 |
+| THREAD-004 | Refresh engineering docs after merged PR #19 governance overlay sync | Cursor Automation | `cursor/engineering-documentation-updates-f20e` | ✅ Completed | 2026-06-02 | 2026-06-02 |
 
 ---
 
