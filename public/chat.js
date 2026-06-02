@@ -82,7 +82,7 @@ async function sendMessage() {
       assistantTextEl.textContent = "I hit a connection error. Take one breath with me, then try again.";
     }
   } finally {
-    const finalText = assistantTextEl.textContent.trim();
+    const finalText = responseText.trim();
     if (finalText) {
       chatHistory.push({ role: "assistant", content: finalText });
     }

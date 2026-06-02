@@ -75,7 +75,11 @@ async function handleChatRequest(request: Request, env: Env): Promise<Response> 
     const body = await parseRequestBody(request);
     const messages = sanitizeMessages(body.messages);
     const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
-    const risk = assessRisk(latestUserMessage?.content ?? "");
+    if (!latestUserMessage || latestUserMessage.content.trim().length === 0) {
+      return json({ error: "At least one user message is required" }, 400);
+    }
+
+    const risk = assessRisk(latestUserMessage.content);
     const preparedMessages = buildMessages(messages, risk);
 
     const stream = await env.AI.run(MODEL_ID, {
@@ -84,7 +88,7 @@ async function handleChatRequest(request: Request, env: Env): Promise<Response> 
       stream: true,
     });
 
-    return new Response(stream, {
+    return new Response(stream as ReadableStream, {
       headers: {
         "content-type": "text/event-stream; charset=utf-8",
         "cache-control": "no-cache",

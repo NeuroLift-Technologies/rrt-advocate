@@ -219,13 +219,13 @@
       <section class="chat-shell" aria-label="RRT AIdvocAIte chat">
         <div class="status-bar">
           <span>Protective Layer</span>
-          <span id="risk-status" class="status-pill">local pre-check: stable</span>
+          <span id="risk-status" class="status-pill" role="status" aria-live="polite" aria-atomic="true">local pre-check: stable</span>
         </div>
-        <div id="chat-messages">
+        <div id="chat-messages" role="log" aria-live="polite" aria-relevant="additions text">
           <div class="message assistant-message">I'm here. We can go slow. Tell me what is happening, and I will meet you where you are.</div>
         </div>
         <div class="input-row">
-          <textarea id="user-input" rows="1" placeholder="Type what is happening..."></textarea>
+          <textarea id="user-input" aria-label="Describe what is happening" rows="1" placeholder="Type what is happening..."></textarea>
           <button id="send-button">Send</button>
         </div>
       </section>
