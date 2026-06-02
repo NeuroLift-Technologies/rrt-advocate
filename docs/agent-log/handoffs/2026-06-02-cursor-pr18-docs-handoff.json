@@ -27,7 +27,7 @@
     "docs/agent-log/handoffs/2026-06-02-cursor-pr18-docs-handoff.json"
   ],
   "branch": "cursor/engineering-documentation-updates-cd75",
-  "pr_number": null,
+  "pr_number": 20,
   "next_agent_instructions": "Docs are source-verified against PR #18 CDE changes. Treat detector sensitivity, semantic fields, self-harm escalation behavior, and threshold code as safety-critical; do not alter without explicit approval.",
   "human_approval_needed": false,
   "human_approval_reason": null
