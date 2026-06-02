@@ -10,6 +10,7 @@ Privacy note: Only message metadata (timing, length, word overlap) is
 stored — never message content in the behavioral record.
 """
 
+import hashlib
 import logging
 import re
 import time
@@ -18,6 +19,16 @@ from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
+
+
+def _hash_token(word: str) -> str:
+    """Return a non-reversible token for a normalized word.
+
+    Hashing keeps set-overlap (Jaccard) behaviour identical to using the raw
+    words while ensuring no plaintext message content is retained in memory or
+    serialized records.
+    """
+    return hashlib.sha256(word.encode("utf-8")).hexdigest()
 
 
 @dataclass
@@ -85,7 +96,9 @@ class BehavioralLayer:
         """
         now = time.time()
         words = text.split() if text else []
-        word_set = frozenset(w.lower().strip(".,!?;:") for w in words if len(w) > 2)
+        word_set = frozenset(
+            _hash_token(w.lower().strip(".,!?;:")) for w in words if len(w) > 2
+        )
         sentences = re.split(r"[.!?]+", text)
         sentence_count = max(1, len([s for s in sentences if s.strip()]))
         punct_count = sum(1 for c in text if c in ".,!?;:()[]{}\"'")
