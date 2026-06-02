@@ -1,9 +1,9 @@
 # SOP: New Coding Agent Onboarding
 
-**SOP ID:** SOP-NLT-001  
-**Version:** 1.0.0  
-**Scope:** All coding agents beginning work in any NeuroLift Technologies repository  
-**Authority:** Joshua W. Dorsey, Sr.  
+**SOP ID:** SOP-NLT-001
+**Version:** 1.0.0
+**Scope:** All coding agents beginning work in any NeuroLift Technologies repository
+**Authority:** Joshua W. Dorsey, Sr.
 **Governed by:** ORG-DEV-OTOI-1.0.0
 
 ---

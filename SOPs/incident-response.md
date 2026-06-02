@@ -1,9 +1,9 @@
 # SOP: Incident Response — Agent Goes Off-Rails
 
-**SOP ID:** SOP-NLT-003  
-**Version:** 1.0.0  
-**Scope:** Responding to a coding agent that has deviated from governance protocols  
-**Authority:** Joshua W. Dorsey, Sr.  
+**SOP ID:** SOP-NLT-003
+**Version:** 1.0.0
+**Scope:** Responding to a coding agent that has deviated from governance protocols
+**Authority:** Joshua W. Dorsey, Sr.
 **Governed by:** ORG-DEV-OTOI-1.0.0
 
 ---

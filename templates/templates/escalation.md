@@ -1,17 +1,17 @@
 # Escalation Record Template
 
-> Copy this template to `docs/escalations/[date]-[topic].md` in the working repo.  
+> Copy this template to `docs/escalations/[date]-[topic].md` in the working repo.
 > Also file a GitHub issue using `ISSUE_TEMPLATE/agent-escalation.md` for tracking.
 
 ---
 
 ## Escalation Record
 
-**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]  
-**Agent:** [Agent name / platform]  
-**Session:** [Branch or session ID]  
-**OTOI Version:** ORG-DEV-OTOI-1.0.0  
-**Escalation Target:** Joshua W. Dorsey, Sr.  
+**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]
+**Agent:** [Agent name / platform]
+**Session:** [Branch or session ID]
+**OTOI Version:** ORG-DEV-OTOI-1.0.0
+**Escalation Target:** Joshua W. Dorsey, Sr.
 **Priority:** [low | medium | high | critical]
 
 ---
@@ -62,7 +62,7 @@
 
 *(To be filled in after Joshua responds)*
 
-**Date resolved:** [ISO 8601]  
-**Decision:** [What was decided]  
-**Decided by:** [Name]  
+**Date resolved:** [ISO 8601]
+**Decision:** [What was decided]
+**Decided by:** [Name]
 **Actions taken:** [What was done as a result]

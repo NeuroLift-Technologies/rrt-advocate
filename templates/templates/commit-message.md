@@ -1,6 +1,6 @@
 # Commit Message Template
 
-> Use this format for **every commit** made in any NeuroLift Technologies repository.  
+> Use this format for **every commit** made in any NeuroLift Technologies repository.
 > Required by `agent-commit-format.yml` CI workflow and OTOI Section 4.2.
 
 ---

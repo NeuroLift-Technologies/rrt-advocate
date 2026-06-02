@@ -1,7 +1,7 @@
 # Governance File Index — NeuroLift Technologies `rrt-advocate`
 
-**Last updated:** 2026-04-06  
-**Maintained by:** `.nltotoi/` namespace tooling  
+**Last updated:** 2026-04-06
+**Maintained by:** `.nltotoi/` namespace tooling
 **Scope:** `NeuroLift-Technologies/rrt-advocate`
 
 ---

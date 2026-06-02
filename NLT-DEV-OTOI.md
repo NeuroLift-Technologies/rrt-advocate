@@ -1,9 +1,9 @@
 # NLT-DEV-OTOI — Organization-Wide Developer Operations & Team Orientation Index
 
-**Document ID:** ORG-DEV-OTOI-1.0.0  
-**Scope:** Organization-Wide (NeuroLift Technologies)  
-**Repository:** `NeuroLift-Technologies/.github-private`  
-**Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions  
+**Document ID:** ORG-DEV-OTOI-1.0.0
+**Scope:** Organization-Wide (NeuroLift Technologies)
+**Repository:** `NeuroLift-Technologies/.github-private`
+**Maintained by:** Joshua W. Dorsey, Sr. — Final authority on all architectural, deployment, and strategic decisions
 **Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
 
 ---

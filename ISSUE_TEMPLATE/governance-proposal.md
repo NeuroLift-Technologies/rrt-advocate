@@ -8,10 +8,10 @@ assignees: JDUB1216
 
 ## Governance Proposal
 
-**Proposed by:** <!-- Your name or agent name -->  
-**Date:** <!-- ISO 8601 date -->  
-**Document to amend:** <!-- e.g. NLT-DEV-OTOI.md, AGENTS.md -->  
-**Current version:** <!-- e.g. ORG-DEV-OTOI-1.0.0 -->  
+**Proposed by:** <!-- Your name or agent name -->
+**Date:** <!-- ISO 8601 date -->
+**Document to amend:** <!-- e.g. NLT-DEV-OTOI.md, AGENTS.md -->
+**Current version:** <!-- e.g. ORG-DEV-OTOI-1.0.0 -->
 **Proposed new version:** <!-- e.g. ORG-DEV-OTOI-1.1.0 -->
 
 ---

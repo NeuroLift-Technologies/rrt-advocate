@@ -8,10 +8,10 @@ assignees: JDUB1216
 
 ## Agent Escalation
 
-**Agent:** <!-- Agent name / platform -->  
-**Session/Branch:** <!-- Branch or session ID -->  
-**Date:** <!-- ISO 8601 date -->  
-**OTOI Version:** ORG-DEV-OTOI-1.0.0  
+**Agent:** <!-- Agent name / platform -->
+**Session/Branch:** <!-- Branch or session ID -->
+**Date:** <!-- ISO 8601 date -->
+**OTOI Version:** ORG-DEV-OTOI-1.0.0
 **Priority:** <!-- low | medium | high | critical -->
 
 ---
@@ -37,12 +37,12 @@ assignees: JDUB1216
 ### Options Considered
 
 **Option A:**
-- Description: 
-- Trade-offs: 
+- Description:
+- Trade-offs:
 
 **Option B:**
-- Description: 
-- Trade-offs: 
+- Description:
+- Trade-offs:
 
 ---
 

@@ -1,16 +1,16 @@
 # Intent Log Template
 
-> Copy this template to `docs/agent-log/intent/[date]-[topic].md` in the working repo before taking a significant action.  
+> Copy this template to `docs/agent-log/intent/[date]-[topic].md` in the working repo before taking a significant action.
 > Intent logging is required before any action with broad scope, architectural impact, or irreversibility.
 
 ---
 
 ## Intent Log Entry
 
-**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]  
-**Agent:** [Agent name / platform]  
-**Session:** [Branch or session ID]  
-**OTOI Version:** ORG-DEV-OTOI-1.0.0  
+**Date:** [ISO 8601, e.g. 2026-03-31T15:00:00Z]
+**Agent:** [Agent name / platform]
+**Session:** [Branch or session ID]
+**OTOI Version:** ORG-DEV-OTOI-1.0.0
 **Working repo:** [e.g. NeuroLift-Technologies/some-repo]
 
 ---
@@ -44,7 +44,7 @@
 
 **[yes | no]**
 
-If yes: stop and escalate using `templates/escalation.md` before proceeding.  
+If yes: stop and escalate using `templates/escalation.md` before proceeding.
 If no: proceed after logging this intent.
 
 ---
@@ -53,6 +53,6 @@ If no: proceed after logging this intent.
 
 *(To be filled in after the action is taken)*
 
-**Date completed:** [ISO 8601]  
-**Result:** [What actually happened]  
+**Date completed:** [ISO 8601]
+**Result:** [What actually happened]
 **Deviations from plan:** [Any differences from the stated intent]
