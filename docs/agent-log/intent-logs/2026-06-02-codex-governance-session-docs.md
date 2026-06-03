@@ -46,3 +46,4 @@ Joshua requested: "create a new PR to add your docs." The scope is limited to go
 | 2026-06-02 | Read `AGENTS.md`, `NLT-DEV-OTOI.md`, `CLAUDE.md`, `docs/active-threads.md`, and templates | Confirmed required session-start and handoff obligations. |
 | 2026-06-02 | Create `codex/governance-session-docs` from `origin/main` | Separated this docs work from the feature PR branch. |
 | 2026-06-02 | Add registration, intent, escalation, handoff, and active-thread docs | Creates auditable records for review. |
+| 2026-06-03 | Open draft PR #26 against `main` | Published the docs-only branch for review without merging to `main`. |

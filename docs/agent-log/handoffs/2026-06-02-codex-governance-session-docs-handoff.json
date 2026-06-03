@@ -17,7 +17,6 @@
     "Updated active-thread tracker for this docs PR."
   ],
   "work_remaining": [
-    "Open the documentation PR against main.",
     "Joshua reviews the docs PR.",
     "Joshua decides whether PR #25 may proceed and under what architecture/provider constraints."
   ],
@@ -35,7 +34,7 @@
     "docs/agent-log/handoffs/2026-06-02-codex-governance-session-docs-handoff.json"
   ],
   "branch": "codex/governance-session-docs",
-  "pr_number": null,
+  "pr_number": 26,
   "next_agent_instructions": "Review this docs PR separately from PR #25. Do not merge PR #25 unless Joshua explicitly approves the architecture/provider direction and the safety-critical code impact.",
   "human_approval_needed": true,
   "human_approval_reason": "Joshua is the final authority for architecture, deployment, LLM provider/external service integration, and crisis-adjacent code changes."

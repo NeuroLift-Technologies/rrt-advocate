@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-003 | Add Codex governance/session docs after PR #25 process miss | CODEX | `codex/governance-session-docs` | Open — PR pending | 2026-06-02 |
+| THREAD-003 | Add Codex governance/session docs after PR #25 process miss | CODEX | `codex/governance-session-docs` | Open — draft PR #26 | 2026-06-02 |
 
 ---
 
