@@ -1,0 +1,21 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.0/agent-registration",
+  "agent_name": "CODEX",
+  "platform": "Codex desktop",
+  "session_id": "CODEX-2026-06-02-governance-session-docs",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "task_description": "Create a separate governance documentation pull request recording Codex's prior process miss, current session registration, intent, escalation note, and handoff.",
+  "scope_confirmed_by_human": true,
+  "session_started": "2026-06-02T00:00:00-04:00",
+  "otoi_version": "ORG-DEV-OTOI-1.0.0",
+  "steps_completed": {
+    "read_otoi_contract": true,
+    "read_agents_md": true,
+    "read_claude_md": true,
+    "read_active_threads": true,
+    "self_registered": true
+  },
+  "active_thread_conflicts_checked": true,
+  "escalation_needed": true,
+  "escalation_reason": "Prior PR #25 work touched crisis-adjacent behavioral token handling and introduced a Cloudflare Workers AI path without completing the required governance start protocol first. This docs PR records the governance correction and flags architecture/provider approval as pending human authority."
+}

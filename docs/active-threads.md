@@ -1,7 +1,7 @@
 # Active Threads — `rrt-advocate`
 
 **Governance Standard**: ORG-DEV-OTOI-1.0.0
-**Last Updated**: 2026-04-05
+**Last Updated**: 2026-06-02
 
 > ⚠️ All agents MUST read this file before starting any work (OTOI Section 4.1 Step 4).
 > Do not start a thread that duplicates or conflicts with an in-progress item below.
@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-003 | Add Codex governance/session docs after PR #25 process miss | CODEX | `codex/governance-session-docs` | Open — PR pending | 2026-06-02 |
 
 ---
 

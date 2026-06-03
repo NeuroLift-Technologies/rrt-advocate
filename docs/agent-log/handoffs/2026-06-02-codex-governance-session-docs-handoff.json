@@ -1,0 +1,42 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.0/handoff-record",
+  "agent_name": "CODEX",
+  "platform": "Codex desktop",
+  "session_id": "CODEX-2026-06-02-governance-session-docs",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "session_started": "2026-06-02T00:00:00-04:00",
+  "session_ended": "2026-06-02T00:00:00-04:00",
+  "otoi_version": "ORG-DEV-OTOI-1.0.0",
+  "task_description": "Add Codex governance/session documentation after a process miss on PR #25.",
+  "work_completed": [
+    "Read repository governance entrypoints and templates.",
+    "Created current Codex registration record.",
+    "Created intent log for the governance documentation PR.",
+    "Created escalation notice for PR #25 architecture/provider/safety approval needs.",
+    "Created handoff record for this documentation branch.",
+    "Updated active-thread tracker for this docs PR."
+  ],
+  "work_remaining": [
+    "Open the documentation PR against main.",
+    "Joshua reviews the docs PR.",
+    "Joshua decides whether PR #25 may proceed and under what architecture/provider constraints."
+  ],
+  "blockers": [
+    "PR #25 requires Joshua approval before merge because it includes Cloudflare Workers AI and crisis-adjacent behavior changes."
+  ],
+  "escalations_filed": [
+    "docs/escalations/2026-06-02-codex-pr25-governance-escalation.md"
+  ],
+  "files_modified": [
+    "docs/active-threads.md",
+    "docs/agent-log/registrations/2026-06-02-codex-governance-session-docs.json",
+    "docs/agent-log/intent-logs/2026-06-02-codex-governance-session-docs.md",
+    "docs/escalations/2026-06-02-codex-pr25-governance-escalation.md",
+    "docs/agent-log/handoffs/2026-06-02-codex-governance-session-docs-handoff.json"
+  ],
+  "branch": "codex/governance-session-docs",
+  "pr_number": null,
+  "next_agent_instructions": "Review this docs PR separately from PR #25. Do not merge PR #25 unless Joshua explicitly approves the architecture/provider direction and the safety-critical code impact.",
+  "human_approval_needed": true,
+  "human_approval_reason": "Joshua is the final authority for architecture, deployment, LLM provider/external service integration, and crisis-adjacent code changes."
+}
