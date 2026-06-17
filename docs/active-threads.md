@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-004 | Documentation automation follow-up for PR #28 TypeScript CDE package | GPT-5.5 | `cursor/engineering-documentation-updates-b0ac` | 🔄 In progress | 2026-06-17 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -35,7 +35,8 @@
 |---|---|---|---|---|---|---|
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
-| THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | 🔄 In review (draft PR) | 2026-06-17 | — |
+| THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package | Claude | `claude/asfdk-typescript-governance-v3waxj` | ✅ Merged (PR #28) | 2026-06-17 | 2026-06-17 |
+| THREAD-004 | Documentation automation follow-up for PR #28 TypeScript CDE package | GPT-5.5 | `cursor/engineering-documentation-updates-b0ac` | ✅ Completed | 2026-06-17 | 2026-06-17 |
 
 ---
 
