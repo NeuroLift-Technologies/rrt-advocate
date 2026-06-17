@@ -3,7 +3,7 @@
 **Repository**: NeuroLift-Technologies/rrt-advocate
 **Purpose**: Rapid Response Team Advocate — Crisis intervention and immediate ADHD support agent within the NeuroLift HAIEF Solidarity Framework
 **Governance Standard**: ORG-DEV-OTOI-1.0.2
-**Last Updated**: 2026-04-04
+**Last Updated**: 2026-06-17
 **Intended Audience**: Claude, Claude Code, Copilot, Cursor, Gemini, and all AI coding agents
 
 ---

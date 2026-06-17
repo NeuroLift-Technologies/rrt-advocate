@@ -76,7 +76,15 @@ export class CrisisAssessor {
     try {
       const raw = readFileSync(path, 'utf-8');
       return (yaml.load(raw) as ThresholdConfig) ?? {};
-    } catch {
+    } catch (error) {
+      // Safety-critical: never run silently on a missing/unreadable thresholds
+      // file. Mirror the Python source, which logs a warning, so operators know
+      // the assessor fell back to built-in default interventions.
+      console.warn(
+        `[rrt-advocate] Could not load crisis thresholds from "${path}"; ` +
+          `falling back to built-in default interventions. ` +
+          `${error instanceof Error ? error.message : String(error)}`,
+      );
       return {};
     }
   }

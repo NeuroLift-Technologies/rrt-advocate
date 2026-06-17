@@ -32,7 +32,7 @@
     "KNOWN_LIMITATIONS.md"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "build": "tsc",
