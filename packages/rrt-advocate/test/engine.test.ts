@@ -56,8 +56,15 @@ describe('CrisisEngine.assess', () => {
     expect(a.contextFactors.self_harm_risk).toBe(true);
   });
 
-  it('resets per-session state without error', () => {
+  it('clears per-session behavioral state on reset', async () => {
     const e = engine();
-    expect(() => e.resetSession()).not.toThrow();
+    await e.detect('i keep repeating the exact same worried thought');
+    const looped = await e.detect('i keep repeating the exact same worried thought');
+    expect(looped.loopingDetected).toBe(true);
+
+    e.resetSession();
+
+    const afterReset = await e.detect('i keep repeating the exact same worried thought');
+    expect(afterReset.loopingDetected).toBe(false);
   });
 });
