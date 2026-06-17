@@ -22,6 +22,22 @@ Project tooling defaults are defined in `pyproject.toml`.
 
 ---
 
+## Current Implementation Surfaces
+
+This repository now has four code-verified surfaces:
+
+| Surface | Path | Use |
+|---|---|---|
+| Python RRT runtime | `src/rrt_advocate.py` | Full advocate orchestration: CDE, TOI/OTOI, persona fusion, dialogue, intervention, supervisor hooks. |
+| Python CDE | `src/crisis/` | Canonical 3-layer crisis detection and assessment implementation. |
+| TypeScript CDE package | `packages/rrt-advocate/` | npm package for local-first detection and assessment in Node.js services. |
+| Cloudflare Worker assistant | `src/index.ts`, `public/` | Hosted chat assistant surface with a lightweight local risk pre-check. |
+
+For TypeScript package setup, API examples, privacy boundaries, and common
+pitfalls, see [`packages/rrt-advocate/README.md`](packages/rrt-advocate/README.md).
+
+---
+
 ## What This Is
 
 The RRT (Rapid Response Team) AIdvocAIte is the **Protective Layer** of the [Solidarity Framework](https://github.com/NeuroLift-Technologies) — a real-time crisis intervention system that detects when a user enters a state of burnout, distress, or emotional collapse and **actively intervenes** through a coordinated team of five specialized AI personas.

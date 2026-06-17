@@ -4,7 +4,10 @@ This guide documents the **current, code-verified integration surface** for this
 It intentionally avoids speculative architecture and focuses on behavior implemented in:
 
 - `src/rrt_advocate.py`
+- `src/crisis/detectors/*` and `src/crisis/assessors/*`
+- `packages/rrt-advocate/src/*`
 - `config/crisis_thresholds.yaml`
+- `packages/rrt-advocate/config/crisis_thresholds.yaml`
 
 > Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.2. Do not modify crisis logic or thresholds without explicit approval.
 
@@ -55,7 +58,77 @@ The core implementation is in `src/rrt_advocate.py`.
 
 ---
 
-## 3) Runtime workflow
+## 3) TypeScript CDE package (`packages/rrt-advocate`)
+
+PR #28 added `@neurolift-technologies/rrt-advocate`, a Node.js/TypeScript port
+of the Python Crisis Detection Engine. It is useful for JavaScript services that
+need local-first **detection and assessment** without importing the full Python
+orchestration stack.
+
+Scope boundary:
+
+- Included: keyword semantic fields, sentiment trend analysis, behavioral
+  pattern analysis, weighted aggregation, crisis-level assessment, and
+  recommended intervention names.
+- Not included: persona fusion, dialogue trees, de-escalation responses, TOI/OTOI
+  response filtering, supervisor coordination, or recovery reporting.
+
+Public TypeScript imports:
+
+```ts
+import {
+  CrisisEngine,
+  CrisisLevel,
+  CrisisDetector,
+  CrisisAssessor,
+  KeywordLayer,
+  SentimentLayer,
+  BehavioralLayer,
+} from "@neurolift-technologies/rrt-advocate";
+```
+
+Recommended integration path:
+
+```ts
+const engine = new CrisisEngine("user-123");
+const assessment = await engine.assess("everything feels impossible");
+
+if (assessment.crisisLevel !== CrisisLevel.GREEN) {
+  // Hand off to an approved support, routing, or response layer.
+}
+```
+
+Operational constraints:
+
+- Use one `CrisisEngine` per user session; sentiment and behavioral layers keep
+  short in-memory windows for trend detection.
+- Call `resetSession()` or create a new engine at conversation/session
+  boundaries.
+- Treat `CrisisIndicators` as sensitive if you call `detect()` directly: it
+  includes `rawText`, keyword matches, and sentiment snippets for local
+  explainability.
+- `sentimentAnalyzer: null` forces the deterministic fallback scorer and is the
+  preferred mode for exact-score tests.
+- `configPath` should only point to an approved copy of
+  `crisis_thresholds.yaml`; threshold edits remain safety-critical and require
+  escalation.
+
+Developer commands:
+
+```bash
+cd packages/rrt-advocate
+npm install
+npm run build
+npm test
+```
+
+See `packages/rrt-advocate/README.md` for API details and troubleshooting, and
+`packages/rrt-advocate/KNOWN_LIMITATIONS.md` for the documented apostrophe
+fail-open divergence from Python Layer 1 matching.
+
+---
+
+## 4) Runtime workflow
 
 The runtime path in `RRTAdvocate` is:
 
@@ -76,7 +149,7 @@ The runtime path in `RRTAdvocate` is:
 
 ---
 
-## 4) Expected external integration points
+## 5) Expected external integration points
 
 `RRTAdvocate` imports the following modules from outside this repository snapshot:
 
@@ -100,7 +173,7 @@ class SupervisorInterface:
 
 ---
 
-## 5) Configuration runbook (`config/crisis_thresholds.yaml`)
+## 6) Configuration runbook (`config/crisis_thresholds.yaml`)
 
 The default config path is `config/crisis_thresholds.yaml`. It contains:
 
@@ -120,12 +193,12 @@ Important operational constraints:
 
 ---
 
-## 6) Developer setup (current repository state)
+## 7) Developer setup (current repository state)
 
 ### Prerequisites
 
 - Python 3.8+
-- Access to the external NeuroLift modules listed in Section 4
+- Access to the external NeuroLift modules listed in Section 5
 
 ### Suggested local workflow
 
@@ -145,7 +218,7 @@ python src/rrt_advocate.py
 
 ---
 
-## 7) Troubleshooting and common pitfalls
+## 8) Troubleshooting and common pitfalls
 
 ### `ModuleNotFoundError` for `crisis.*`, `response.*`, `coordination.*`, or `learning.*`
 
@@ -171,9 +244,26 @@ Cause: success-rate updates are calculated from `active_interventions` entries w
 
 Fix: if this metric is operationally important, persist completed interventions in integration code or adjust implementation before relying on it for dashboards/alerts.
 
+### TypeScript package assessment differs between local machines
+
+Cause: `vader-sentiment` is optional. When installed, Layer 2 uses VADER; when
+absent or when `sentimentAnalyzer: null` is passed, it uses the deterministic
+heuristic fallback.
+
+Fix: force `sentimentAnalyzer: null` in exact-score tests, or install the same
+optional dependency set in all environments where VADER behavior is expected.
+
+### TypeScript behavioral signals do not fire on isolated messages
+
+Cause: sentiment trends, response latency, complexity trends, and looping require
+session history.
+
+Fix: reuse one `CrisisEngine` within a user session, then call `resetSession()`
+or create a fresh engine at session boundaries.
+
 ---
 
-## 8) Operational runbook for service owners
+## 9) Operational runbook for service owners
 
 ### Start sequence
 
@@ -196,7 +286,7 @@ Fix: if this metric is operationally important, persist completed interventions 
 
 ---
 
-## 9) Known documentation boundaries
+## 10) Known documentation boundaries
 
 This guide intentionally documents only behavior verifiable in this repository.
 For roadmap plans, ecosystem proposals, or architectural intent not yet implemented here, treat those artifacts as design references rather than runtime truth.
