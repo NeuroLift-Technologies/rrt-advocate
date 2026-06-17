@@ -1,6 +1,6 @@
 # Intent Log
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
 **Repository**: NeuroLift-Technologies/rrt-advocate
 
 ---

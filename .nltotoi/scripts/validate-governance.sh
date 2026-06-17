@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # validate-governance.sh
-# Validates ORG-DEV-OTOI-1.0.0 compliance for NeuroLift-Technologies/rrt-advocate
+# Validates ORG-DEV-OTOI-1.0.2 compliance for NeuroLift-Technologies/rrt-advocate
 # Usage: bash .nltotoi/scripts/validate-governance.sh
 
 set -euo pipefail
@@ -30,7 +30,7 @@ check_file() {
 
 echo ""
 echo "============================================="
-echo "  NLT Governance Validator — ORG-DEV-OTOI-1.0.0"
+echo "  NLT Governance Validator — ORG-DEV-OTOI-1.0.2"
 echo "  Repository: NeuroLift-Technologies/rrt-advocate"
 echo "============================================="
 echo ""
