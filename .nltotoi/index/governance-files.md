@@ -1,6 +1,6 @@
 # Governance File Registry — `rrt-advocate`
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
 **Last Updated**: 2026-04-04
 
 This file is the canonical index of all governance-required files in this repository.

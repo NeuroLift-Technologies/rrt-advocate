@@ -1,5 +1,5 @@
 {
-  "$schema": "ORG-DEV-OTOI-1.0.0/agent-registration",
+  "$schema": "ORG-DEV-OTOI-1.0.2/agent-registration",
   "agent_name": "CURSOR",
   "platform": "cursor",
   "session_id": "158b2152-7214-45b1-9efe-a458133e75b6",
@@ -7,7 +7,7 @@
   "task_description": "Refresh governance and integration documentation after PR #11 merge",
   "scope_confirmed_by_human": false,
   "session_started": "2026-04-05T08:16:42Z",
-  "otoi_version": "ORG-DEV-OTOI-1.0.0",
+  "otoi_version": "ORG-DEV-OTOI-1.0.2",
   "steps_completed": {
     "read_otoi_contract": false,
     "read_agents_md": true,

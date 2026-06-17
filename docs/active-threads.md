@@ -1,7 +1,7 @@
 # Active Threads — `rrt-advocate`
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
-**Last Updated**: 2026-04-05
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
+**Last Updated**: 2026-06-17
 
 > ⚠️ All agents MUST read this file before starting any work (OTOI Section 4.1 Step 4).
 > Do not start a thread that duplicates or conflicts with an in-progress item below.
@@ -35,6 +35,7 @@
 |---|---|---|---|---|---|---|
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
+| THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | 🔄 In review (draft PR) | 2026-06-17 | — |
 
 ---
 

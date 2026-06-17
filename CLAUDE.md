@@ -2,7 +2,7 @@
 
 **Repository**: NeuroLift-Technologies/rrt-advocate
 **Purpose**: Rapid Response Team Advocate — Crisis intervention and immediate ADHD support agent within the NeuroLift HAIEF Solidarity Framework
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
 **Last Updated**: 2026-04-04
 **Intended Audience**: Claude, Claude Code, Copilot, Cursor, Gemini, and all AI coding agents
 
@@ -20,7 +20,7 @@ You are working in the **rrt-advocate** repository. This agent is the **Protecti
 
 ## MANDATORY GOVERNANCE CONTRACT
 
-This repository operates under **ORG-DEV-OTOI-1.0.0**.
+This repository operates under **ORG-DEV-OTOI-1.0.2**.
 
 Before beginning any work, you MUST complete the 5-step session start protocol:
 
@@ -36,7 +36,7 @@ Before beginning any work, you MUST complete the 5-step session start protocol:
 ```
 Valid types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`, `ci`
 
-Example: `[CLAUDE] chore(governance): add OTOI governance scaffolding (ORG-DEV-OTOI-1.0.0)`
+Example: `[CLAUDE] chore(governance): add OTOI governance scaffolding (ORG-DEV-OTOI-1.0.2)`
 
 ---
 

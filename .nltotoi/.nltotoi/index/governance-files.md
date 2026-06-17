@@ -10,7 +10,7 @@
 
 | File | Type | Purpose | Required |
 |---|---|---|---|
-| `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.0) | ✅ |
+| `NLT-DEV-OTOI.md` | Contract | Org-level coding agent contract (ORG-DEV-OTOI-1.0.2) | ✅ |
 | `AGENTS.md` | Gateway | Internal agent coordination gateway | ✅ |
 | `nltotoi.json` | Manifest | Machine-readable discovery manifest | ✅ |
 | `README.md` | Overview | Repository overview and purpose | ✅ |
@@ -91,7 +91,7 @@
 | `agents/README.md` | NLT standards and instructions for creating/using custom agents | ✅ |
 | `agents/example-agent.md` | Commented-out starter template for new agent profiles | ✅ |
 | `agents/registry.json` | Machine-readable agent routing registry consumed by issue-assignment workflows | ✅ |
-| `agents/nlt-governance-steward.md` | Governance steward agent — enforces ORG-DEV-OTOI-1.0.0 | ✅ |
+| `agents/nlt-governance-steward.md` | Governance steward agent — enforces ORG-DEV-OTOI-1.0.2 | ✅ |
 | `agents/nlt-code-reviewer.md` | Code review agent — NLT security and governance standards | ✅ |
 | `agents/nlt-onboarding-assistant.md` | Onboarding agent — walks agents through SOP-NLT-001 | ✅ |
 
@@ -133,4 +133,4 @@
 
 ---
 
-*Generated from `.nltotoi/index/governance-files.md` | NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
+*Generated from `.nltotoi/index/governance-files.md` | NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*

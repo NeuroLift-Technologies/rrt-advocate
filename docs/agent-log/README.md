@@ -1,6 +1,6 @@
 # Agent Log — `rrt-advocate`
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
 
 This directory contains the auditable agent activity log for this repository, as required by OTOI Section 5.
 

@@ -30,7 +30,7 @@ The `.nltotoi/` namespace is the machine-readable and tooling-oriented layer of 
 
 The canonical governance contract is: **`NLT-DEV-OTOI.md`** (repository root)
 
-Document ID: `ORG-DEV-OTOI-1.0.0`
+Document ID: `ORG-DEV-OTOI-1.0.2`
 
 ## Discovery
 
@@ -48,4 +48,4 @@ This script checks that all required governance files exist and contain expected
 
 ---
 
-*Internal namespace — NeuroLift Technologies | ORG-DEV-OTOI-1.0.0*
+*Internal namespace — NeuroLift Technologies | ORG-DEV-OTOI-1.0.2*

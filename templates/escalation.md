@@ -1,6 +1,6 @@
 # Escalation Notice
 
-**Governance Standard**: ORG-DEV-OTOI-1.0.0
+**Governance Standard**: ORG-DEV-OTOI-1.0.2
 **Repository**: NeuroLift-Technologies/rrt-advocate
 **Escalation Target**: Joshua W. Dorsey, Sr. (`info@neuroliftsolutions.com`)
 
