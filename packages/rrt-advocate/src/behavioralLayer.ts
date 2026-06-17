@@ -25,6 +25,23 @@ function hashToken(word: string): string {
   return createHmac('sha256', TOKEN_HASH_KEY).update(word, 'utf-8').digest('hex');
 }
 
+/** Punctuation stripped from word edges (mirrors Python `str.strip(".,!?;:")`). */
+const EDGE_PUNCTUATION = new Set(['.', ',', '!', '?', ';', ':']);
+
+/**
+ * Trim leading/trailing edge punctuation from a word. Implemented as a linear
+ * character walk rather than a regex to avoid backtracking (ReDoS): the
+ * equivalent `^[.,!?;:]+|[.,!?;:]+$` form is a polynomial regex on attacker-
+ * controlled input (e.g. long runs of `!`).
+ */
+function stripEdgePunctuation(word: string): string {
+  let start = 0;
+  let end = word.length;
+  while (start < end && EDGE_PUNCTUATION.has(word[start]!)) start++;
+  while (end > start && EDGE_PUNCTUATION.has(word[end - 1]!)) end--;
+  return word.slice(start, end);
+}
+
 /** Metadata record for a single user message. No content stored. */
 interface MessageRecord {
   /** Unix timestamp in seconds. */
@@ -72,7 +89,7 @@ export class BehavioralLayer {
     const words = text ? text.split(/\s+/).filter((w) => w.length > 0) : [];
     const wordSet = new Set<string>();
     for (const w of words) {
-      const normalized = w.toLowerCase().replace(/^[.,!?;:]+|[.,!?;:]+$/g, '');
+      const normalized = stripEdgePunctuation(w.toLowerCase());
       if (normalized.length > 2) {
         wordSet.add(hashToken(normalized));
       }

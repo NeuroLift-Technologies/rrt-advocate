@@ -36,6 +36,17 @@ describe('SentimentLayer (heuristic fallback)', () => {
     expect(r.confidenceScore).toBe(0);
   });
 
+  it('scores via the auto-detected analyzer without throwing', () => {
+    // Default constructor auto-detects `vader-sentiment` (an optionalDependency,
+    // installed in CI) and otherwise uses the heuristic fallback. Either path
+    // must return a finite compound and never throw — this exercises the live
+    // VADER static-method call so a broken loader would fail CI.
+    const r = new SentimentLayer().analyze('I am so happy and calm today');
+    expect(Number.isFinite(r.currentReading.compound)).toBe(true);
+    expect(r.currentReading.compound).toBeGreaterThanOrEqual(-1);
+    expect(r.currentReading.compound).toBeLessThanOrEqual(1);
+  });
+
   it('resets the sliding window', () => {
     const layer = makeLayer();
     layer.analyze('hopeless broken');

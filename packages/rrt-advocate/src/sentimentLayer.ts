@@ -50,11 +50,16 @@ const NEGATIVE_WORDS: ReadonlySet<string> = new Set([
 function tryLoadVader(): PolarityAnalyzer | null {
   try {
     const require = createRequire(import.meta.url);
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const vader = require('vader-sentiment') as {
-      SentimentIntensityAnalyzer: PolarityAnalyzer;
+      SentimentIntensityAnalyzer?: PolarityAnalyzer;
     };
-    return vader.SentimentIntensityAnalyzer ?? null;
+    // NOTE: in the JS `vader-sentiment` port, `SentimentIntensityAnalyzer`
+    // exposes `polarity_scores` as a STATIC method — it is NOT an instantiable
+    // class like Python's `vaderSentiment`. Do NOT `new` it: an instance has no
+    // `polarity_scores` and would throw. We use the object directly, and guard
+    // that the static method is actually present before trusting it.
+    const analyzer = vader?.SentimentIntensityAnalyzer;
+    return analyzer && typeof analyzer.polarity_scores === 'function' ? analyzer : null;
   } catch {
     return null;
   }
