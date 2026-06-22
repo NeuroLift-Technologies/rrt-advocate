@@ -6,8 +6,11 @@ This file provides comprehensive guidance for Gemini AI on the repository struct
 development context, and integration with the NeuroLift Technologies ecosystem.
 The RRT (Rapid Response Team) Advocate is a specialized crisis intervention AI agent.
 
-Repository: https://github.com/JDUB1216/rrt-advocate
-Notion Project: [To be created during Phase 4]
+Repository: https://github.com/NeuroLift-Technologies/rrt-advocate
+
+Source-of-truth note: use README.md and docs/integration_guide.md for the
+current code-verified runtime interfaces. Planning dictionaries in this file are
+context, not production deployment promises.
 """
 
 import os
@@ -24,15 +27,19 @@ REPOSITORY_INFO = {
     "name": "rrt-advocate",
     "full_name": "Rapid Response Team Advocate",
     "description": "Specialized AI agent for crisis intervention and immediate ADHD support within the NeuroLift ecosystem",
-    "github_url": "https://github.com/JDUB1216/rrt-advocate",
+    "github_url": "https://github.com/NeuroLift-Technologies/rrt-advocate",
     "notion_project": "https://www.notion.so/27a555e42dea8153b5eddae9b4c85ef3",  # To be created in Phase 4
     "created_date": "2025-09-26",
-    "current_date": "2025-09-26",
-    "age_days": 0,
+    "current_date": "2026-06-22",
     "visibility": "Private",
-    "status": "Initial Development",
+    "status": "Runtime/documentation alignment",
     "purpose": "Crisis intervention and immediate ADHD support",
-    "ecosystem_role": "Specialized Advocate within NeuroLift AI-fusion framework"
+    "ecosystem_role": "Protective Layer within the Solidarity Framework",
+    "current_runtime_surfaces": [
+        "Python protective layer in src/rrt_advocate.py and local src/* modules",
+        "TypeScript CDE package in packages/rrt-advocate/",
+        "Cloudflare Worker assistant in src/index.ts and public/"
+    ]
 }
 
 # ============================================================================
@@ -149,58 +156,99 @@ class DirectoryInfo:
 REPOSITORY_STRUCTURE = {
     "src/": DirectoryInfo(
         name="Source Code",
-        purpose="Core RRT Advocate implementation",
-        key_files=["__init__.py", "rrt_advocate.py", "crisis_manager.py"],
-        dependencies=["config/", "docs/"],
-        integration_points=["NeuroLift Supervisor AI", "Other Advocates"]
+        purpose="Python protective layer plus root Cloudflare Worker entrypoint",
+        key_files=["rrt_advocate.py", "index.ts", "types.ts"],
+        dependencies=["config/", "public/", "docs/"],
+        integration_points=["Host Python services", "Cloudflare Workers"]
     ),
     "src/crisis/": DirectoryInfo(
         name="Crisis Detection & Assessment",
-        purpose="Real-time crisis pattern recognition and severity assessment",
-        key_files=["detector.py", "assessor.py", "triggers.py"],
+        purpose="Python 3-layer crisis pattern recognition and severity assessment",
+        key_files=[
+            "detectors/keyword_layer.py",
+            "detectors/sentiment_layer.py",
+            "detectors/behavioral_layer.py",
+            "detectors/crisis_detector.py",
+            "assessors/crisis_assessor.py"
+        ],
         dependencies=["config/crisis_thresholds.yaml"],
-        integration_points=["User monitoring systems", "Biometric data sources"]
+        integration_points=["RRTAdvocate.assess_current_state", "RRTAdvocate.process_message"]
+    ),
+    "src/dialogue/": DirectoryInfo(
+        name="Tiered Dialogue Tree",
+        purpose="Stage 0-5 activation journey and option selection",
+        key_files=["stages.py", "dialogue_tree.py"],
+        dependencies=["src/toi/", "src/personas/"],
+        integration_points=["RRTAdvocate.process_message", "RRTAdvocate.select_stage_option"]
+    ),
+    "src/personas/": DirectoryInfo(
+        name="Persona Fusion",
+        purpose="Ash/Sol/Echo/Kai/Myra persona weighting and blended responses",
+        key_files=["fusion_engine.py", "ash.py", "sol.py", "echo.py", "kai.py", "myra.py"],
+        dependencies=["config/personas.yaml", "config/tone_profiles.yaml", "src/toi/"],
+        integration_points=["DialogueTree", "InterventionManager", "DeEscalationEngine"]
+    ),
+    "src/toi/": DirectoryInfo(
+        name="TOI/OTOI Governance",
+        purpose="Terms of Interaction parsing, consent gate, and response filtering",
+        key_files=["toi_models.py", "toi_parser.py", "otoi_middleware.py"],
+        dependencies=["config/toi_defaults.yaml", "config/tone_profiles.yaml"],
+        integration_points=["RRTAdvocate", "DialogueTree", "FusionEngine"]
     ),
     "src/response/": DirectoryInfo(
         name="Crisis Response Protocols",
-        purpose="Immediate intervention and stabilization strategies",
-        key_files=["interventions.py", "de_escalation.py", "stabilization.py"],
-        dependencies=["config/response_protocols.yaml"],
-        integration_points=["External crisis resources", "Professional support systems"]
+        purpose="Intervention deployment and de-escalation orchestration",
+        key_files=["interventions/intervention_manager.py", "de_escalation/de_escalation_engine.py"],
+        dependencies=["src/personas/", "src/toi/"],
+        integration_points=["RRTAdvocate.manual_intervention", "RRTAdvocate._handle_crisis"]
     ),
     "src/coordination/": DirectoryInfo(
         name="System Coordination",
-        purpose="Integration with NeuroLift ecosystem and external resources",
-        key_files=["supervisor_interface.py", "advocate_coordination.py", "external_resources.py"],
-        dependencies=["config/escalation_rules.yaml"],
-        integration_points=["Supervisor AI", "Other Advocates", "Crisis hotlines"]
+        purpose="Supervisor callback contract and local supervisor implementation",
+        key_files=["supervisor/supervisor_interface.py"],
+        dependencies=["src/crisis/"],
+        integration_points=["RRTAdvocate.start_monitoring", "RRTAdvocate._emergency_escalation"]
     ),
     "src/learning/": DirectoryInfo(
         name="Continuous Learning",
-        purpose="Crisis pattern analysis and response optimization",
-        key_files=["pattern_analyzer.py", "effectiveness_tracker.py", "adaptation_engine.py"],
-        dependencies=["Historical crisis data", "Response outcome data"],
-        integration_points=["Personal data manager", "User feedback systems"]
+        purpose="Local session pattern analysis and persistence hooks",
+        key_files=["patterns/pattern_analyzer.py"],
+        dependencies=["RRTAdvocate user_id"],
+        integration_points=["RRTAdvocate._monitoring_loop", "RRTAdvocate.shutdown"]
     ),
     "config/": DirectoryInfo(
         name="Configuration",
-        purpose="Crisis detection parameters and response protocols",
-        key_files=["crisis_thresholds.yaml", "response_protocols.yaml", "escalation_rules.yaml", "privacy_settings.yaml"],
-        dependencies=["User preferences", "Clinical guidelines"],
-        integration_points=["User profile system", "Privacy framework"]
+        purpose="Crisis thresholds, TOI defaults, persona definitions, and tone profiles",
+        key_files=["crisis_thresholds.yaml", "toi_defaults.yaml", "personas.yaml", "tone_profiles.yaml"],
+        dependencies=["Governance approval for safety-critical changes"],
+        integration_points=["Python protective layer", "TypeScript CDE package threshold sync"]
+    ),
+    "packages/rrt-advocate/": DirectoryInfo(
+        name="TypeScript CDE Package",
+        purpose="@neurolift-technologies/rrt-advocate detection and assessment library",
+        key_files=["package.json", "src/index.ts", "README.md", "KNOWN_LIMITATIONS.md"],
+        dependencies=["Node >=20", "packages/rrt-advocate/config/crisis_thresholds.yaml"],
+        integration_points=["npm consumers needing local detection/assessment only"]
+    ),
+    "public/": DirectoryInfo(
+        name="Worker Browser UI",
+        purpose="Static chat interface served by the Cloudflare Worker",
+        key_files=["index.html", "chat.js"],
+        dependencies=["src/index.ts", "wrangler.jsonc"],
+        integration_points=["/api/chat", "/api/health"]
     ),
     "docs/": DirectoryInfo(
         name="Documentation",
         purpose="Crisis protocols, integration guides, and methodology documentation",
-        key_files=["crisis_protocols.md", "integration_guide.md", "training_methodology.md", "privacy_security.md"],
-        dependencies=["Clinical research", "ADHD best practices"],
+        key_files=["integration_guide.md", "rrt-aidvocaite-worker.md", "active-threads.md", "agent-log/README.md"],
+        dependencies=["Source code", "OTOI governance"],
         integration_points=["Developer resources", "Training materials"]
     ),
     "tests/": DirectoryInfo(
         name="Testing Suite",
-        purpose="Crisis simulation and response validation testing",
-        key_files=["crisis_simulation.py", "response_validation.py", "integration_tests.py"],
-        dependencies=["Test scenarios", "Validation criteria"],
+        purpose="Python unit/integration tests for CDE, TOI, dialogue, fusion, and RRT facade behavior",
+        key_files=["test_cde.py", "test_toi.py", "test_dialogue_tree.py", "test_fusion_engine.py", "test_rrt_advocate.py"],
+        dependencies=["pytest", "pytest-asyncio", "pyyaml"],
         integration_points=["CI/CD pipeline", "Quality assurance"]
     )
 }
@@ -550,10 +598,15 @@ def validate_repository_structure() -> Dict[str, bool]:
     required_paths = [
         "src/",
         "src/crisis/",
+        "src/dialogue/",
+        "src/personas/",
+        "src/toi/",
         "src/response/",
         "src/coordination/",
         "src/learning/",
         "config/",
+        "packages/rrt-advocate/",
+        "public/",
         "docs/",
         "tests/"
     ]

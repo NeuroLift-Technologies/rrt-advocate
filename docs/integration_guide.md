@@ -1,95 +1,81 @@
 # NeuroLift Ecosystem Integration Guide
 
-This guide documents the **current, code-verified integration surface** for this repository.
-It intentionally avoids speculative architecture and focuses on behavior implemented in:
+This guide documents the **current, code-verified integration surface** for this
+repository. It intentionally avoids speculative architecture and focuses on
+behavior implemented in source.
 
-- `src/rrt_advocate.py`
-- `config/crisis_thresholds.yaml`
-
-> Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.2. Do not modify crisis logic or thresholds without explicit approval.
-
----
-
-## 1) What this repository currently provides
-
-`RRTAdvocate` is an async orchestration layer that:
-
-1. Runs continuous crisis assessments in a monitoring loop.
-2. Routes non-green assessments into tiered intervention flows.
-3. Escalates emergencies to a supervisor interface (if provided).
-4. Exposes status/reporting and manual intervention hooks for operators.
-
-The core implementation is in `src/rrt_advocate.py`.
+> Safety-critical note: this repository is governed by ORG-DEV-OTOI-1.0.2. Do
+> not modify crisis logic, crisis thresholds, persona blending, or safety
+> response text without explicit approval from Joshua W. Dorsey, Sr.
 
 ---
 
-## 2) Public interfaces (codepaths you can integrate with)
+## 1) Runtime surfaces
 
-### Enums
+| Surface | Source | Integration purpose | Local-first? |
+|---|---|---|---|
+| Python protective layer | `src/rrt_advocate.py` plus `src/crisis/`, `src/toi/`, `src/dialogue/`, `src/personas/`, `src/response/`, `src/coordination/`, `src/learning/` | Full TOI/OTOI, dialogue-tree, persona-fusion, intervention, monitoring, status, and shutdown orchestration. | Yes |
+| TypeScript CDE package | `packages/rrt-advocate/` | npm package for detection and assessment only via `CrisisEngine`, `CrisisDetector`, and `CrisisAssessor`. | Yes |
+| Cloudflare Worker assistant | root `package.json`, `wrangler.jsonc`, `src/index.ts`, `public/` | Hosted chat UI/API using Workers AI and a lightweight route-local distress pre-check. | No; model responses use Workers AI |
 
-- `CrisisLevel`: `GREEN`, `YELLOW`, `ORANGE`, `RED`, `BLACK`
-- `ResponseStatus`: `PENDING`, `ACTIVE`, `SUCCESSFUL`, `ESCALATED`, `FAILED`
-
-### Data models
-
-- `CrisisAssessment`
-  - Includes `crisis_level`, `confidence_score`, `user_safety_score`,
-    `recommended_interventions`, and `context_factors`.
-- `InterventionResponse`
-  - Tracks intervention lifecycle (`start_time`, `end_time`, `status`, `effectiveness_score`).
-
-### Main class
-
-- `RRTAdvocate(user_id: str, config_path: str = "config/crisis_thresholds.yaml", supervisor_interface: Optional[SupervisorInterface] = None)`
-- `await start_monitoring() -> bool`
-- `await stop_monitoring() -> bool`
-- `await assess_current_state() -> CrisisAssessment`
-- `await get_status_report() -> Dict[str, Any]`
-- `await manual_intervention(intervention_type: str, context: Dict[str, Any] = None) -> bool`
-- `await shutdown()`
-
-### Factory
-
-- `await create_rrt_advocate(...) -> RRTAdvocate`
-  - Creates an instance and performs one initial assessment.
+Use the Python protective layer when an integration needs the full RRT response
+workflow. Use the TypeScript package when an integration only needs local crisis
+detection/assessment. Use the Worker for the hosted browser assistant described
+in [`docs/rrt-aidvocaite-worker.md`](rrt-aidvocaite-worker.md).
 
 ---
 
-## 3) Runtime workflow
+## 2) Python public interfaces
 
-The runtime path in `RRTAdvocate` is:
+### Main class and factories
 
-1. `start_monitoring()` sets `is_monitoring=True` and starts `_monitoring_loop()` as a background task.
-2. `_monitoring_loop()`:
-   - calls `assess_current_state()`
-   - if level is not `GREEN`, calls `_handle_crisis(assessment)`
-   - updates pattern analysis via `pattern_analyzer.update_patterns(assessment)`
-3. `_handle_crisis()` routes by severity:
-   - `YELLOW`/`ORANGE` -> `_deploy_standard_interventions()`
-   - `RED` -> `_deploy_intensive_interventions()`
-   - `BLACK` or low `user_safety_score` -> `_emergency_escalation()`
-4. Supervisor callbacks fire when configured:
-   - `notify_advocate_status(...)` on start/stop
-   - `handle_crisis(...)` for detected crises
-   - `emergency_escalation(...)` for emergency states
-5. `shutdown()` stops monitoring, persists patterns (`save_patterns()`), and logs final status.
+```python
+from src.rrt_advocate import RRTAdvocate, create_rrt_advocate, create_toi_config
 
----
+toi = create_toi_config(tone_profile="supportive_default", pacing="slow")
+advocate = await create_rrt_advocate("user-123", toi_config=toi)
+```
 
-## 4) Expected external integration points
+`RRTAdvocate(...)` accepts:
 
-`RRTAdvocate` imports the following modules from outside this repository snapshot:
+- `user_id`
+- `config_path="config/crisis_thresholds.yaml"`
+- optional `toi_config`
+- optional `supervisor_interface`
 
-- `crisis.detectors.crisis_detector.CrisisDetector`
-- `crisis.assessors.crisis_assessor.CrisisAssessor`
-- `response.interventions.intervention_manager.InterventionManager`
-- `response.de_escalation.de_escalation_engine.DeEscalationEngine`
-- `coordination.supervisor.supervisor_interface.SupervisorInterface`
-- `learning.patterns.pattern_analyzer.PatternAnalyzer`
+Primary methods:
 
-This means standalone execution in this repo alone will fail unless those modules are available on `PYTHONPATH`.
+| Method | Purpose |
+|---|---|
+| `await process_message(user_message)` | Runs CDE analysis, checks TOI consent, routes through the dialogue tree and persona fusion, then returns response/stage/crisis metadata. |
+| `await select_stage_option(option_key, free_text=None)` | Advances the Stage 0-5 dialogue tree from a user option. |
+| `await assess_current_state(message="")` | Runs crisis detection and assessment for an optional message. |
+| `await start_monitoring()` / `await stop_monitoring()` | Starts or stops the background one-second monitoring loop. |
+| `await manual_intervention(intervention_type, context=None)` | Calls the intervention manager with `urgency_level="manual"`. |
+| `await get_status_report()` | Returns TOI config, current crisis state, dialogue summary, OTOI summary, active intervention count, performance, and pattern summary. |
+| `await shutdown()` | Stops monitoring, saves patterns, logs final status, and completes shutdown. |
 
-Minimal supervisor contract expected by `RRTAdvocate`:
+### Conversation flow
+
+`process_message(...)` follows this path:
+
+1. `CrisisDetector.detect_crisis_indicators(...)`
+2. `CrisisAssessor.assess_crisis(...)`
+3. Stage 1 consent gate via `OTOIMiddleware.check_consent()`
+4. Immediate emergency response when `indicators.self_harm_risk` is true
+5. Crisis handling for non-`GREEN` assessments
+6. `DialogueTree.process_free_text(...)`
+7. Persona-fusion/OTOI-filtered response metadata
+
+`select_stage_option(...)` delegates to the dialogue tree. Implemented stage
+option keys include `yes`, `not_now`, `silent`, `meltdown`, `cant_task`,
+`self_blame`, `hyperfocus`, `shutdown`, `skip`, `helped`, `more`, `stay`,
+`done`, `better`, `same`, `worse`, and `goodbye`.
+
+### Supervisor callbacks
+
+Pass a `SupervisorInterface` implementation when a host service needs lifecycle
+or escalation hooks:
 
 ```python
 class SupervisorInterface:
@@ -98,105 +84,160 @@ class SupervisorInterface:
     async def emergency_escalation(self, advocate_id: str, crisis_assessment, user_id: str): ...
 ```
 
----
-
-## 5) Configuration runbook (`config/crisis_thresholds.yaml`)
-
-The default config path is `config/crisis_thresholds.yaml`. It contains:
-
-- crisis level ranges (`green`..`black`)
-- indicator weights and thresholds
-- crisis pattern definitions
-- escalation rules
-- intervention mappings by severity
-- privacy/security/performance parameters
-
-Important operational constraints:
-
-- `RRTAdvocate._monitoring_loop()` currently sleeps for a fixed `1` second interval.
-  - It does **not** currently consume per-level `monitoring_interval` values from YAML.
-- Escalation behavior in code is driven by `assessment.user_safety_score` and `assessment.crisis_level`.
-  - YAML escalation thresholds are consumed by external components (for example, detector/assessor) rather than directly in `RRTAdvocate`.
+If omitted, `LocalSupervisor` logs status/crisis events locally.
 
 ---
 
-## 6) Developer setup (current repository state)
+## 3) TypeScript CDE package interface
 
-### Prerequisites
+The package under `packages/rrt-advocate/` is named
+`@neurolift-technologies/rrt-advocate` and requires Node 20+.
 
-- Python 3.8+
-- Access to the external NeuroLift modules listed in Section 4
+```ts
+import { CrisisEngine, CrisisLevel } from "@neurolift-technologies/rrt-advocate";
 
-### Suggested local workflow
+const engine = new CrisisEngine("user-123");
+const assessment = await engine.assess("I can't cope, everything is too much");
 
-1. Create and activate a virtual environment.
-2. Ensure external dependency packages/modules are importable.
-3. Run a basic import check:
-
-```bash
-python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
+if (assessment.crisisLevel !== CrisisLevel.GREEN) {
+  // Route to appropriate support in the host application.
+}
 ```
 
-4. Once dependencies are available, execute:
+Package scope boundaries:
+
+- Ports detection and assessment only.
+- Exports lower-level `KeywordLayer`, `SentimentLayer`, `BehavioralLayer`,
+  `CrisisDetector`, and `CrisisAssessor`.
+- Uses a vendored `config/crisis_thresholds.yaml` that must stay synced with the
+  root canonical thresholds file.
+- Documents one intentional Layer 1 divergence in
+  `packages/rrt-advocate/KNOWN_LIMITATIONS.md`: apostrophe-insensitive matching
+  fails open for dictated/smart-quote input.
+
+---
+
+## 4) Cloudflare Worker assistant interface
+
+The root Worker serves:
+
+- static UI routes from `public/`
+- `GET /api/health`
+- `POST /api/chat`
+
+`/api/chat` keeps valid recent chat messages, truncates each message to 4,000
+characters, keeps the latest 16 messages, replaces caller-supplied system
+messages, streams a Workers AI response, and sets `x-rrt-risk-level` to
+`stable`, `elevated`, `high`, or `critical`.
+
+See [`docs/rrt-aidvocaite-worker.md`](rrt-aidvocaite-worker.md) for curl
+examples, Wrangler commands, auth pitfalls, and deployment guardrails.
+
+---
+
+## 5) Configuration runbook
+
+| File | Runtime role | Guardrail |
+|---|---|---|
+| `config/crisis_thresholds.yaml` | Canonical Python CDE levels, layer weights, crisis patterns, intervention mappings, privacy/performance settings. | Safety-critical; do not edit without escalation. |
+| `packages/rrt-advocate/config/crisis_thresholds.yaml` | Vendored package copy of the canonical thresholds. | Must stay synced; threshold changes require escalation. |
+| `config/toi_defaults.yaml` | Default Terms of Interaction, consent prompt, pacing intervals, scaffolding rules. | Preserve agency-first defaults. |
+| `config/personas.yaml` | Persona roles, activation signals, prompts, and template responses. | Persona routing/blending changes require escalation. |
+| `config/tone_profiles.yaml` | Tone directives, max token guidance, sentence starters, forbidden phrases. | Avoid shame-inducing or coercive phrasing. |
+
+Operational constraints verified in source:
+
+- `RRTAdvocate._monitoring_loop()` sleeps for a fixed one-second interval and
+  does not currently consume YAML `monitoring_interval` values directly.
+- `RRTAdvocate` triggers emergency escalation when `user_safety_score < 0.3`,
+  `crisis_level == BLACK`, or `indicators.self_harm_risk` is true.
+- `create_toi_config(...)` always sets `allow_task_loops` to `False`.
+
+---
+
+## 6) Developer setup
+
+### Python
 
 ```bash
-python src/rrt_advocate.py
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip pyyaml pytest pytest-asyncio
+pytest
+python3 src/rrt_advocate.py
 ```
+
+### TypeScript CDE package
+
+```bash
+cd packages/rrt-advocate
+npm install
+npm run build
+npm test
+```
+
+### Worker assistant
+
+```bash
+npm install
+npm run check
+npm run dev
+```
+
+`npm run deploy` publishes the Worker and requires explicit human approval under
+OTOI. In unauthenticated cloud environments, `npm run dev` may open Wrangler
+OAuth; use the Worker runbook's local-mode `/api/health` smoke test when model
+responses cannot be exercised.
 
 ---
 
 ## 7) Troubleshooting and common pitfalls
 
-### `ModuleNotFoundError` for `crisis.*`, `response.*`, `coordination.*`, or `learning.*`
+### `ModuleNotFoundError: No module named 'yaml'`
 
-Cause: those modules are referenced but not vendored in this repository snapshot.
+Cause: `src/toi/toi_parser.py` imports PyYAML, but `pyproject.toml` currently
+does not declare runtime dependencies.
 
-Fix: install/provide the dependent NeuroLift packages or run in the full multi-repo/monorepo environment where they exist.
+Fix: install `pyyaml` in the local environment before running Python demos or
+tests.
 
 ### Duplicate log lines after creating multiple `RRTAdvocate` instances
 
-Cause: `_setup_logging()` always adds a new `StreamHandler` to the same logger name for a given `user_id`.
+Cause: `_setup_logging()` adds a new `StreamHandler` to the logger for the
+`user_id`.
 
-Fix: guard handler registration in your fork/integration layer or reuse advocate instances per user.
+Fix: reuse advocate instances per user or guard handler registration in the host
+integration.
 
-### Monitoring appears active after caller scope exits
+### Monitoring remains active after caller scope exits
 
-Cause: `start_monitoring()` launches `_monitoring_loop()` as a background task via `asyncio.create_task`.
+Cause: `start_monitoring()` launches `_monitoring_loop()` via
+`asyncio.create_task`.
 
-Fix: always call `await shutdown()` (or at minimum `await stop_monitoring()`) in service teardown paths.
+Fix: always call `await shutdown()` or `await stop_monitoring()` in teardown.
 
-### `intervention_success_rate` remains low/zero unexpectedly
+### `intervention_success_rate` remains low or zero
 
-Cause: success-rate updates are calculated from `active_interventions` entries with completion data; completed interventions are then removed from that list.
+Cause: success-rate updates are calculated from `active_interventions` entries
+with completion data, and completed interventions are removed from that list.
 
-Fix: if this metric is operationally important, persist completed interventions in integration code or adjust implementation before relying on it for dashboards/alerts.
+Fix: persist completed intervention outcomes in integration code before using
+this value for dashboards or alerts.
 
----
+### Worker `/api/chat` cannot be tested locally
 
-## 8) Operational runbook for service owners
+Cause: normal Wrangler development uses remote Workers AI and requires
+Cloudflare authentication with Workers AI access.
 
-### Start sequence
-
-1. Instantiate via `create_rrt_advocate(...)` (per user session).
-2. Call `start_monitoring()`.
-3. Verify `monitoring_active` via `get_status_report()`.
-
-### During runtime
-
-- Poll or request `get_status_report()` for:
-  - current crisis level/confidence
-  - active intervention count
-  - response performance metrics
-- Use `manual_intervention(...)` for operator-assisted recovery workflows.
-
-### Stop sequence
-
-1. Call `shutdown()`.
-2. Confirm monitoring is inactive and final status has been logged.
+Fix: verify `/api/health` with local mode, then run authenticated
+`npm run dev` before testing streamed model responses.
 
 ---
 
-## 9) Known documentation boundaries
+## 8) Known documentation boundaries
 
-This guide intentionally documents only behavior verifiable in this repository.
-For roadmap plans, ecosystem proposals, or architectural intent not yet implemented here, treat those artifacts as design references rather than runtime truth.
+This guide documents behavior verifiable in this repository. Treat broader
+host-interface takeover, rich Silent Mode UI, Burnout Recovery Kit creation, and
+post-stabilization report generation as product/host-application intent unless
+the host application implements those experiences around the current Python or
+Worker surfaces.

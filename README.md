@@ -9,16 +9,42 @@
 
 ## Local Development (Repository Snapshot)
 
-Because this repository references external NeuroLift modules that are not vendored here, runtime execution requires the broader ecosystem on `PYTHONPATH`. For this standalone snapshot, the fastest way to validate behavior is via the unit tests that use local stubs.
+This repository currently exposes three developer surfaces. Run commands from the
+directory shown for each surface.
+
+| Surface | Source paths | Purpose |
+|---|---|---|
+| Python protective layer | `src/rrt_advocate.py`, `src/crisis/`, `src/toi/`, `src/dialogue/`, `src/personas/`, `src/response/`, `src/coordination/`, `src/learning/` | Local-first TOI/OTOI, CDE, dialogue, persona fusion, intervention, status, and monitoring orchestration. |
+| TypeScript CDE package | `packages/rrt-advocate/` | Local-first detection and assessment library only; no response generation or persona-blended output. |
+| Cloudflare Worker assistant | root `package.json`, `wrangler.jsonc`, `src/index.ts`, `public/` | Hosted browser chat assistant using Workers AI plus a lightweight route-local distress pre-check. |
+
+Python requires 3.10+ (`pyproject.toml`). The source imports PyYAML for local
+TOI/config parsing, while tests use `pytest` and `pytest-asyncio`:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -U pip pytest pytest-asyncio
+pip install -U pip pyyaml pytest pytest-asyncio
 pytest
 ```
 
-Project tooling defaults are defined in `pyproject.toml`.
+To run the Python demo path directly:
+
+```bash
+python3 src/rrt_advocate.py
+```
+
+For the package-local TypeScript CDE:
+
+```bash
+cd packages/rrt-advocate
+npm install
+npm run build
+npm test
+```
+
+Project tooling defaults are defined in `pyproject.toml` and
+`packages/rrt-advocate/package.json`.
 
 ### Cloudflare Worker assistant
 
@@ -34,6 +60,18 @@ commands, API examples, and deployment constraints, see
 The RRT (Rapid Response Team) AIdvocAIte is the **Protective Layer** of the [Solidarity Framework](https://github.com/NeuroLift-Technologies) — a real-time crisis intervention system that detects when a user enters a state of burnout, distress, or emotional collapse and **actively intervenes** through a coordinated team of five specialized AI personas.
 
 This is not a resource list. This is not a hotline redirect. This is **active crisis management** — the system detects the threshold, takes over the AI interface, and provides immediate, personalized intervention until the user stabilizes.
+
+Current source-verified runtime behavior is split across:
+
+- `RRTAdvocate.process_message(...)` and `select_stage_option(...)` for the
+  Python TOI/OTOI + dialogue + persona-fusion conversation path.
+- `RRTAdvocate.start_monitoring()`, `assess_current_state(...)`,
+  `manual_intervention(...)`, `get_status_report()`, and `shutdown()` for
+  background monitoring and operator/service integration.
+- `@neurolift-technologies/rrt-advocate` for the package-local TypeScript CDE
+  detection/assessment facade (`CrisisEngine`).
+- The Cloudflare Worker assistant for hosted chat UX. Its `x-rrt-risk-level`
+  header is a route-local framing hint, not the full Python or package CDE.
 
 ---
 
@@ -108,7 +146,7 @@ All personas are:
 
 ## Crisis Detection Engine (CDE)
 
-The CDE is **non-negotiably local-first** — all analysis occurs on the user's device. Zero cloud dependency for crisis detection.
+The Python CDE and package-local TypeScript CDE are **non-negotiably local-first** — analysis occurs in-process without calling external model APIs. The Cloudflare Worker assistant is different: it runs a lightweight local text pre-check in the route, then streams the assistant response through Cloudflare Workers AI.
 
 ### 3-Layer Pipeline
 
@@ -265,8 +303,10 @@ This report exists to:
 
 ## Privacy Architecture
 
-- **100% local processing** for crisis detection and initial response
-- **Zero data transmission** for assessment
+- **Local-first processing** for the Python CDE and TypeScript CDE package.
+- **Hosted Worker exception**: `/api/chat` sends sanitized recent chat messages
+  to Workers AI for response generation; see the Worker runbook before using it
+  for local-only workflows.
 - **Encrypted crisis logs** with user-controlled keys
 - **User-controlled sharing** — complete control over crisis data
 - **Opt-in recovery tracking** — nothing stored without explicit consent
@@ -295,70 +335,63 @@ The concept was designed for neurodivergent burnout but applies universally — 
 
 ```
 src/
-├── crisis/                  # Crisis Detection Engine
-│   ├── cde_pipeline.py      # 3-layer detection pipeline
-│   ├── keyword_scanner.py   # Layer 1: Semantic field analysis
-│   ├── sentiment_engine.py  # Layer 2: Emotional tone analysis
-│   └── pattern_tracker.py   # Layer 3: Behavioral pattern analysis
-├── personas/                # The Five Personas
-│   ├── fusion_engine.py     # Modular weighting & persona blending
-│   ├── ash.py               # Burnout & Validation
-│   ├── sol.py               # Executive Function Scaffolding
-│   ├── echo.py              # Cognitive Narrative
-│   ├── kai.py               # Focus & Drive Redirection
-│   └── myra.py              # Relational Safety & Co-regulation
-├── orchestration/           # Activation & Coordination
-│   ├── activation_tree.py   # Tiered activation (Stages 0-5)
-│   ├── persona_mapper.py    # State → persona mapping
-│   └── tone_profiles.py     # Configurable tone management
-├── intervention/            # Intervention Mechanics
-│   ├── soft_control.py      # Tempo reduction, load compression
-│   ├── silent_mode.py       # Shutdown recovery UI
-│   └── exit_protocol.py     # Gentle exit & Recovery Kit
-├── reporting/               # Post-Stabilization
-│   ├── distress_report.py   # User-visible event reporting
-│   └── recovery_thread.py   # Opt-in recovery logging
-└── governance/              # Solidarity Framework Integration
-    ├── toi_parser.py        # TOI preference enforcement
-    ├── otoi_rules.py        # OTOI behavioral governance
-    ├── agency_constraints.py # Hard constraint enforcement
-    └── escalation.py        # Human support escalation logic
+├── rrt_advocate.py          # Python orchestration entrypoint
+├── index.ts                 # Cloudflare Worker API/static routing entrypoint
+├── types.ts                 # Worker request/response/env types
+├── crisis/                  # Python CDE detectors and assessor
+│   ├── detectors/           # Keyword, sentiment, behavioral layers
+│   └── assessors/           # Crisis-level mapping and recommendations
+├── dialogue/                # Stage 0-5 dialogue tree and selectable options
+├── personas/                # Ash, Sol, Echo, Kai, Myra + fusion engine
+├── toi/                     # TOI parser/models and OTOI middleware
+├── response/                # Intervention and de-escalation managers
+├── coordination/            # Supervisor interface and local supervisor
+└── learning/                # Pattern analyzer for local session signals
 
 config/
 ├── crisis_thresholds.yaml   # User-configurable detection parameters
-├── persona_weights.yaml     # Default persona weighting profiles
-├── tone_profiles.yaml       # Tone configuration
-├── escalation_rules.yaml    # Escalation decision logic
-└── privacy_settings.yaml    # Privacy & encryption configuration
+├── toi_defaults.yaml        # Default Terms of Interaction contract
+├── personas.yaml            # Persona roles, activation signals, templates
+└── tone_profiles.yaml       # Tone directives and forbidden phrases
+
+packages/
+└── rrt-advocate/            # @neurolift-technologies/rrt-advocate CDE package
+
+public/
+├── index.html               # Worker browser chat UI
+└── chat.js                  # SSE client and risk-level display
 
 docs/
-├── architecture.md          # System architecture documentation
-├── personas.md              # Detailed persona specifications
-├── crisis_protocols.md      # Crisis response documentation
 ├── integration_guide.md     # Solidarity Framework integration
-├── provenance.md            # Origin & lineage documentation
-└── research_foundation.md   # Clinical research base (81 sources)
+├── rrt-aidvocaite-worker.md # Worker assistant runbook
+└── agent-log/               # OTOI session records
 ```
 
 ---
 
 ## Development Status
 
-**Current Phase**: Architecture Alignment
+**Current Phase**: Runtime/documentation alignment
 
 - ✅ Five personas defined and mapped to crisis states
-- ✅ Crisis Detection Engine pipeline specified (3-layer)
-- ✅ Tiered activation tree designed (Stages 0-5)
-- ✅ Modular persona weighting system specified (0.0-1.0)
+- ✅ Python Crisis Detection Engine implemented (3-layer)
+- ✅ Tiered activation tree implemented (Stages 0-5)
+- ✅ Modular persona weighting system implemented (0.0-1.0)
+- ✅ TOI parser, OTOI middleware, and consent gate implemented
+- ✅ Intervention, de-escalation, local supervisor, and pattern analyzer modules present
+- ✅ TypeScript CDE package implemented for detection/assessment only
+- ✅ Cloudflare Worker assistant runbook documented
 - ✅ Comprehensive research foundation (81 cited sources)
 - ✅ Solidarity Framework integration defined
 - ✅ Agency preservation constraints documented
-- 🔄 Repository alignment to current architecture (in progress)
-- 📋 `fusion_engine.py` implementation (persona weighting logic)
-- 📋 CDE pipeline implementation
-- 📋 TOI parser integration
-- 📋 CI/CD pipeline
-- 📋 Crisis simulation testing framework
+- 🔄 Documentation alignment to current architecture (in progress)
+- 📋 Production deployment decisions require explicit Joshua W. Dorsey, Sr. approval
+- 📋 Any crisis-threshold or persona-blending changes require escalation
+
+Some narrative concepts in this README (for example, full host-interface
+takeover, rich Silent Mode UI, Burnout Recovery Kits, and post-stabilization
+reports) remain product/architecture intent unless a host application implements
+them around the current Python or Worker surfaces.
 
 ---
 

@@ -64,11 +64,27 @@ Use `.github/ISSUE_TEMPLATE/agent-escalation.md` to file escalations as GitHub i
 ```
 rrt-advocate/
 ├── src/
-│   └── rrt_advocate.py          # Core crisis intervention engine
+│   ├── rrt_advocate.py          # Python protective-layer orchestration entrypoint
+│   ├── index.ts                 # Cloudflare Worker assistant entrypoint
+│   ├── types.ts                 # Worker request/response/env types
+│   ├── crisis/                  # Python Crisis Detection Engine
+│   ├── dialogue/                # Stage 0-5 activation dialogue tree
+│   ├── personas/                # Ash/Sol/Echo/Kai/Myra + fusion engine
+│   ├── toi/                     # TOI parser/models and OTOI middleware
+│   ├── response/                # Intervention and de-escalation managers
+│   ├── coordination/            # Supervisor interface and local supervisor
+│   └── learning/                # Local pattern analyzer
 ├── config/
-│   └── crisis_thresholds.yaml   # Crisis detection thresholds (safety-critical)
+│   ├── crisis_thresholds.yaml   # Crisis detection thresholds (safety-critical)
+│   ├── toi_defaults.yaml        # Default TOI contract and consent prompt
+│   ├── personas.yaml            # Persona definitions and activation signals
+│   └── tone_profiles.yaml       # Tone directives and forbidden phrases
+├── packages/
+│   └── rrt-advocate/            # TypeScript CDE npm package
+├── public/                      # Worker browser chat UI
 ├── docs/
 │   ├── integration_guide.md     # Integration documentation
+│   ├── rrt-aidvocaite-worker.md # Cloudflare Worker assistant runbook
 │   ├── active-threads.md        # ⚠️ Active work tracker — READ BEFORE STARTING
 │   └── agent-log/               # Agent session records
 │       ├── registrations/       # Agent self-registration files
@@ -85,9 +101,10 @@ rrt-advocate/
 ├── .nltotoi/
 │   ├── index/governance-files.md
 │   └── scripts/validate-governance.sh
-├── GEMINI_TOPOGRAPHY.py         # Repo navigation guide (all AI agents read this)
 ├── CLAUDE.md                    # This file
 ├── AGENTS.md                    # Agent coordination protocol
+├── package.json                 # Root Worker scripts
+├── wrangler.jsonc               # Worker config
 └── README.md                    # Project overview
 ```
 
@@ -105,7 +122,9 @@ rrt-advocate/
 
 ## TECHNOLOGY STACK
 
-- **Python 3.8+**: Core implementation language
+- **Python 3.10+**: Core protective-layer implementation language
+- **TypeScript / Node 20+**: Package-local CDE and root Cloudflare Worker
+- **Cloudflare Workers / Workers AI**: Hosted assistant surface (`src/index.ts`, `public/`)
 - **YAML**: Configuration (`config/crisis_thresholds.yaml`)
 - **JSON**: Templates and agent records
 - **Markdown**: Documentation
