@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-004 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | 🔄 In progress | 2026-06-22 |
 
 ---
 
