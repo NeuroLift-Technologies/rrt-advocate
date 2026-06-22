@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-005 | Document mixed license surfaces after PR #32 Apache-2.0 metadata update | Cursor Automation (GPT-5.5) | `cursor/engineering-documentation-updates-d03e` | 🔄 In progress | 2026-06-22 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -34,6 +34,7 @@
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
 | THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | ✅ Merged (PR #28) | 2026-06-17 | 2026-06-17 |
 | THREAD-004 | Add Apache-2.0 LICENSE for code components + license metadata; PR/branch cleanup | Claude (Claude Code) | `chore/add-license-apache-2.0` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-005 | Document mixed license surfaces after PR #32 Apache-2.0 metadata update | Cursor Automation (GPT-5.5) | `cursor/engineering-documentation-updates-d03e` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 
 ---
 
