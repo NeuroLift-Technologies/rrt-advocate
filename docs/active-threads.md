@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | 🔄 In progress | 2026-06-22 |
 
 ---
 
