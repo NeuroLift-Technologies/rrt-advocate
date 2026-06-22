@@ -1,0 +1,45 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-22-claude-add-apache-license",
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "date": "2026-06-22",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "rrt-advocate",
+    "branch": "chore/add-license-apache-2.0",
+    "work_completed": [
+      "PR triage: closed 7 stale/overlapping Cursor/Codex docs PRs (#13, #15, #20, #21, #23, #26, #29) with a reopenable comment; merged the clean Dependabot wrangler bump (#27).",
+      "Branch cleanup: deleted 9 stale remote branches; rrt-advocate is now main-only.",
+      "Added a LICENSE file: verbatim Apache License 2.0 (apache.org, 202 lines) for the repository's code components.",
+      "Set license metadata: package.json \"license\": \"Apache-2.0\"; pyproject.toml classifier \"License :: OSI Approved :: Apache Software License\".",
+      "Updated the README License section: code components now cite Apache-2.0 with a link to LICENSE. Left CC BY-SA 4.0 (Solidarity Framework governance docs) and the proprietary AI-Fusion methodology terms unchanged.",
+      "Recorded this session in docs/active-threads.md (THREAD-004) per the AGENTS.md Handoff Protocol."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Per Joshua, the code license is Apache-2.0 (changed from the README's prior 'MPL 2.0' wording). Scope was limited to the code license; docs (CC BY-SA 4.0) and the proprietary methodology were intentionally not relicensed.",
+      "Surfaced the pre-existing README licensing scheme (MPL/CC-BY-SA/proprietary) before acting rather than silently overriding it with a blanket license."
+    ],
+    "decisions_pending": [
+      "Joshua W. Dorsey, Sr.: the active-threads 'Pending Review' table still lists architectural PRs #7–#10 as open, but they are no longer open — worth reconciling in a future governance pass (out of scope here)."
+    ],
+    "escalations": [],
+    "next_agent_notes": "Safety-critical repo: crisis logic untouched. Only the code license (Apache-2.0) was added; the repo's docs remain CC BY-SA 4.0 and the AI-Fusion methodology remains proprietary per the README. Delivered via PR on branch chore/add-license-apache-2.0.",
+    "files_modified": [
+      "LICENSE",
+      "package.json",
+      "pyproject.toml",
+      "README.md",
+      "docs/active-threads.md",
+      "docs/agent-log/registrations/2026-06-22-claude-add-apache-license.json",
+      "docs/agent-log/handoffs/2026-06-22-claude-add-apache-license.json"
+    ],
+    "tests_run": [
+      "curl line-count + header integrity on LICENSE (verbatim Apache-2.0, no HTML)",
+      "python3 -m json.tool on package.json + new records (valid)",
+      "bash .nltotoi/scripts/validate-governance.sh"
+    ],
+    "tests_passing": true,
+    "pr_url": "pending-open"
+  }
+}
