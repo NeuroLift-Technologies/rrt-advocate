@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-008 | Documentation follow-up for merged PR #33 mixed-license docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-2891` | 🔄 Active | 2026-06-22 |
 
 ---
 

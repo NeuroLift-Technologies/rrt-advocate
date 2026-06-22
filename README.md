@@ -418,6 +418,7 @@ When changing distributable code, keep license metadata aligned across:
 - `packages/rrt-advocate/package.json` (`"license": "Apache-2.0"` for the npm package)
 - `pyproject.toml` (`License :: OSI Approved :: Apache Software License`)
 - the root [`LICENSE`](LICENSE) file
+- the package-scoped [`packages/rrt-advocate/LICENSE`](packages/rrt-advocate/LICENSE) file that ships with the npm package
 
 Do not unilaterally relicense governance documents, methodology descriptions, crisis logic, or safety thresholds. Any licensing or safety-boundary change needs explicit approval from Joshua W. Dorsey, Sr.
 

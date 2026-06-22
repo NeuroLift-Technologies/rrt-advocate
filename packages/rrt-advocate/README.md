@@ -80,4 +80,10 @@ npm test        # vitest
 
 ## License
 
-Apache-2.0 © NeuroLift Technologies, LLC
+The implementation code in this npm package is licensed under Apache-2.0; see
+[`LICENSE`](./LICENSE).
+
+The broader repository uses a mixed licensing model: Solidarity Framework
+governance/process documentation remains CC BY-SA 4.0, and NeuroLift
+methodology, brand, and specialized development processes remain proprietary.
+See the repository root README License section for the full boundary.
