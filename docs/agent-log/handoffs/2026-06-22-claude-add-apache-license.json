@@ -40,6 +40,6 @@
       "bash .nltotoi/scripts/validate-governance.sh"
     ],
     "tests_passing": true,
-    "pr_url": "pending-open"
+    "pr_url": "https://github.com/NeuroLift-Technologies/rrt-advocate/pull/32"
   }
 }
