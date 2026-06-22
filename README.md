@@ -396,7 +396,23 @@ The RRT AIdvocAIte is positioned as **essential safety infrastructure** — not 
 
 ## License
 
-This repository contains intellectual property of NeuroLift Technologies, LLC. The Solidarity Framework governance documents are licensed under CC BY-SA 4.0. Code components are licensed under Apache-2.0 (see [`LICENSE`](LICENSE)). The AI-Fusion methodology and specialized development processes are proprietary.
+This repository contains intellectual property of NeuroLift Technologies, LLC.
+It uses a mixed licensing model:
+
+| Surface | License / terms | Notes |
+|---|---|---|
+| Code components | Apache-2.0 (see [`LICENSE`](LICENSE)) | Covers distributable implementation code and package metadata for the Python, TypeScript, and Worker surfaces. |
+| Solidarity Framework governance documents | CC BY-SA 4.0 | Covers governance/agent-process documentation such as OTOI materials, active-thread records, templates, and related runbooks. |
+| AI-Fusion methodology and specialized development processes | Proprietary | Do not treat the code license as a grant to reuse NeuroLift methodology, brand, or process IP. |
+
+When changing distributable code, keep license metadata aligned across:
+
+- root `package.json` (`"license": "Apache-2.0"` for the Worker package metadata)
+- `packages/rrt-advocate/package.json` (`"license": "Apache-2.0"` for the npm package)
+- `pyproject.toml` (`License :: OSI Approved :: Apache Software License`)
+- the root [`LICENSE`](LICENSE) file
+
+Do not unilaterally relicense governance documents, methodology descriptions, crisis logic, or safety thresholds. Any licensing or safety-boundary change needs explicit approval from Joshua W. Dorsey, Sr.
 
 ---
 

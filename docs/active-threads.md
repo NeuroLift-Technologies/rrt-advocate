@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-005 | Document mixed license surfaces after PR #32 Apache-2.0 metadata update | Cursor Automation (GPT-5.5) | `cursor/engineering-documentation-updates-d03e` | 🔄 In progress | 2026-06-22 |
 
 ---
 
