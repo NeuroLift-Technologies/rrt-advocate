@@ -1,0 +1,25 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "platform": "Claude Code",
+    "version": "claude-opus-4-8",
+    "session_id": "2026-06-22-claude-add-apache-license",
+    "entry_date": "2026-06-22",
+    "entry_point": "User (Joshua W. Dorsey, Sr.) request: maintenance pass on rrt-advocate — close stale docs PRs, merge the Dependabot bump, branch cleanup, and add a LICENSE (Apache-2.0).",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/rrt-advocate",
+    "working_branch": "chore/add-license-apache-2.0",
+    "capabilities_self_reported": [
+      "GitHub PR triage + branch cleanup",
+      "Read and write files",
+      "Fetching canonical license texts",
+      "Create GitHub pull requests"
+    ],
+    "known_limitations": [
+      "This is a safety-critical repo; no changes to crisis-detection logic, thresholds, or persona blending. Scope limited to PR/branch hygiene and a LICENSE file for the code components.",
+      "The README already declared MPL-2.0 (code) / CC BY-SA 4.0 (docs) / proprietary (AI-Fusion methodology); per Joshua the code license was set to Apache-2.0. CC BY-SA 4.0 (docs) and the proprietary methodology terms were left unchanged."
+    ],
+    "preferred_handoff_format": "JSON handoff record per OTOI Section 5"
+  }
+}

@@ -20,12 +20,9 @@
 
 | PR | Title | Agent | Status | Notes |
 |---|---|---|---|---|
-| #10 | rrt-advocate protective layer | Cursor/JDUB1216 | ⏸️ Draft — Awaiting architectural sign-off | Significant refactor; needs escalation review |
-| #9 | rrt-advocate protective layer | Cursor/JDUB1216 | ⏸️ Draft — Awaiting architectural sign-off | Duplicate of #10 intent |
-| #8 | rrt-advocate protective layer | Cursor/JDUB1216 | ⏸️ Superseded | Superseded by #9/#10 |
-| #7 | rrt-advocate protective layer | Cursor/JDUB1216 | ⏸️ Draft — Awaiting review | Earliest iteration |
+| _None currently._ |  |  |  |  |
 
-> ⚠️ **Architectural PRs #7–#10**: These represent significant architectural changes to the crisis intervention engine. Per OTOI Section 8, architectural decisions require Joshua W. Dorsey, Sr.'s explicit approval before merge. No agent should merge these unilaterally.
+> **Architectural PRs #7–#10** (crisis-intervention protective layer) are all resolved: **#10 ✅ merged** (2026-04-21); **#7, #8, #9 ❌ closed** (superseded). No architectural PRs are currently pending review. Per OTOI Section 8, any future architectural change still requires Joshua W. Dorsey, Sr.'s explicit approval before merge.
 
 ---
 
@@ -35,8 +32,9 @@
 |---|---|---|---|---|---|---|
 | THREAD-001 | Add governance scaffolding (OTOI compliance) | Copilot | `copilot/review-repo-and-prs` | ✅ Merged (PR #11) | 2026-04-04 | 2026-04-05 |
 | THREAD-002 | Refresh governance and integration docs post-PR #11 | Cursor Automation | `cursor/documentation-automation-system-da4b` | ✅ Completed | 2026-04-05 | 2026-04-05 |
-| THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | 🔄 In review (draft PR) | 2026-06-17 | — |
-| THREAD-004 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | ✅ Merged (PR #28) | 2026-06-17 | 2026-06-17 |
+| THREAD-004 | Add Apache-2.0 LICENSE for code components + license metadata; PR/branch cleanup | Claude (Claude Code) | `chore/add-license-apache-2.0` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-005 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 
 ---
 

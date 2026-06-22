@@ -403,7 +403,7 @@ The RRT AIdvocAIte is positioned as **essential safety infrastructure** — not 
 
 ## License
 
-This repository contains intellectual property of NeuroLift Technologies, LLC. The Solidarity Framework governance documents are licensed under CC BY-SA 4.0. Code components are licensed under MPL 2.0. The AI-Fusion methodology and specialized development processes are proprietary.
+This repository contains intellectual property of NeuroLift Technologies, LLC. The Solidarity Framework governance documents are licensed under CC BY-SA 4.0. Code components are licensed under Apache-2.0 (see [`LICENSE`](LICENSE)). The AI-Fusion methodology and specialized development processes are proprietary.
 
 ---
 

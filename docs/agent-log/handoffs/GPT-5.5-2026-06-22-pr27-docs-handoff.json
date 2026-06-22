@@ -11,7 +11,7 @@
   "work_completed": [
     "Expanded docs/rrt-aidvocaite-worker.md with the root Worker source map, local Wrangler workflow, API contract, package boundary, lockfile pitfall, and safety constraints.",
     "Added a README pointer from the local development section to the Worker assistant runbook.",
-    "Registered the session and closed THREAD-004 in docs/active-threads.md."
+    "Registered the session and closed THREAD-005 in docs/active-threads.md."
   ],
   "work_remaining": [],
   "blockers": [],
