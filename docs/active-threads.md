@@ -20,7 +20,7 @@
 
 | PR | Title | Agent | Status | Notes |
 |---|---|---|---|---|
-| _None currently._ |  |  |  |  |
+| #34 | [GPT-5.5] docs(worker): expand assistant workflow runbook | GPT-5.5/Cursor | Pending review | Documentation-only follow-up for PR #31; covers Worker runbook and local Wrangler pitfalls. |
 
 > **Architectural PRs #7–#10** (crisis-intervention protective layer) are all resolved: **#10 ✅ merged** (2026-04-21); **#7, #8, #9 ❌ closed** (superseded). No architectural PRs are currently pending review. Per OTOI Section 8, any future architectural change still requires Joshua W. Dorsey, Sr.'s explicit approval before merge.
 

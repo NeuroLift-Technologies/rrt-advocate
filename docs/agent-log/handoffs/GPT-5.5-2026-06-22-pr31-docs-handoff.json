@@ -27,7 +27,7 @@
     "docs/agent-log/handoffs/GPT-5.5-2026-06-22-pr31-docs-handoff.json"
   ],
   "branch": "cursor/engineering-documentation-updates-ea95",
-  "pr_number": null,
+  "pr_number": 34,
   "next_agent_instructions": "Review docs/rrt-aidvocaite-worker.md against src/index.ts, public/chat.js, public/index.html, wrangler.jsonc, and package.json. If Cloudflare auth is available, run normal npm run dev and the documented /api/chat curl example to verify the streamed response and x-rrt-risk-level header end-to-end.",
   "human_approval_needed": false,
   "human_approval_reason": null,
