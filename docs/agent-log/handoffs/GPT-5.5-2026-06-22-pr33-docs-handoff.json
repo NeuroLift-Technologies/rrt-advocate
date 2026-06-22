@@ -25,7 +25,7 @@
     "docs/agent-log/handoffs/GPT-5.5-2026-06-22-pr33-docs-handoff.json"
   ],
   "branch": "cursor/engineering-documentation-updates-2891",
-  "pr_number": null,
+  "pr_number": 35,
   "next_agent_instructions": "If future licensing docs change, verify against root package.json, packages/rrt-advocate/package.json, pyproject.toml, LICENSE, packages/rrt-advocate/LICENSE, and the package README before updating published guidance.",
   "human_approval_needed": false,
   "human_approval_reason": null,
