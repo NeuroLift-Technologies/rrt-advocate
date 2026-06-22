@@ -12,7 +12,7 @@
     "Inspected merged PR #32 and confirmed it added Apache-2.0 LICENSE and aligned root package.json/pyproject.toml metadata without touching crisis logic.",
     "Expanded the README License section into a concise mixed-license map covering Apache-2.0 code components, CC BY-SA 4.0 governance documents, and proprietary AI-Fusion methodology/process terms.",
     "Added a maintainer checklist for keeping license metadata aligned across root package.json, packages/rrt-advocate/package.json, pyproject.toml, and LICENSE.",
-    "Recorded session registration and moved THREAD-005 from active to completed."
+    "Recorded session registration and moved THREAD-006 from active to completed (renumbered from THREAD-005 to avoid collision with the merged Dependabot-PR-#27 follow-up thread on main)."
   ],
   "work_remaining": [],
   "blockers": [],
