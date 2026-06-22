@@ -163,7 +163,7 @@ Operational constraints verified in source:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip pyyaml pytest pytest-asyncio
-pytest
+python3 -m pytest tests/test_cde.py tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py
 python3 src/rrt_advocate.py
 ```
 
@@ -200,6 +200,17 @@ does not declare runtime dependencies.
 
 Fix: install `pyyaml` in the local environment before running Python demos or
 tests.
+
+### Full `python3 -m pytest` fails in `tests/test_rrt_advocate.py`
+
+Cause: `tests/test_rrt_advocate.py` still installs legacy stub modules for the
+RRT facade. Those stubs do not expose the current `CrisisIndicators` import used
+by `src/rrt_advocate.py`, so the full suite can fail after the source-backed CDE,
+dialogue, fusion, and TOI tests pass.
+
+Fix: use the focused test command in Section 6 for current source-backed
+validation, or update the legacy stubs before relying on the full suite as a
+green CI signal.
 
 ### Duplicate log lines after creating multiple `RRTAdvocate` instances
 

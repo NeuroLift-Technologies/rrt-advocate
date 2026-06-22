@@ -25,7 +25,7 @@ TOI/config parsing, while tests use `pytest` and `pytest-asyncio`:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip pyyaml pytest pytest-asyncio
-pytest
+python3 -m pytest tests/test_cde.py tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py
 ```
 
 To run the Python demo path directly:
@@ -45,6 +45,12 @@ npm test
 
 Project tooling defaults are defined in `pyproject.toml` and
 `packages/rrt-advocate/package.json`.
+
+Known test boundary: the full `python3 -m pytest` suite currently reaches the
+source-backed tests, but `tests/test_rrt_advocate.py` still uses legacy local
+stubs that do not export the current `CrisisIndicators` interface. Until those
+stubs are updated, use the focused command above for CDE, dialogue, fusion, and
+TOI validation.
 
 ### Cloudflare Worker assistant
 
