@@ -1,0 +1,55 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.2/handoff-record",
+  "agent_name": "GPT-5.5",
+  "platform": "cursor",
+  "session_id": "158b2152-7214-45b1-9efe-a458133e75b6-pr34-docs-20260622",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "session_started": "2026-06-22T12:50:00Z",
+  "session_ended": "2026-06-22T13:12:00Z",
+  "otoi_version": "ORG-DEV-OTOI-1.0.2",
+  "task_description": "Documentation automation follow-up after PR #34 merged the Worker assistant runbook updates.",
+  "work_completed": [
+    "Updated README.md with the current source-verified runtime surfaces: Python protective layer, TypeScript CDE package, and Cloudflare Worker assistant.",
+    "Rewrote docs/integration_guide.md to document the current RRTAdvocate interfaces, TypeScript CDE package, Worker assistant contract, configuration files, setup commands, and troubleshooting boundaries.",
+    "Added docs/troubleshooting/github-app-access.md for the governance link referenced by AGENTS.md and SOPs/repo-governance-setup.md.",
+    "Updated CLAUDE.md and GEMINI_TOPOGRAPHY.py repository maps so future agents see the current layout.",
+    "Removed stale PR #34 pending-review tracking and closed THREAD-007 in docs/active-threads.md.",
+    "Added the session registration record for this automation run."
+  ],
+  "work_remaining": [
+    "tests/test_rrt_advocate.py still uses legacy local stubs that do not export CrisisIndicators; the docs now call out this full-suite boundary.",
+    "Root npm install reports existing audit findings (2 moderate, 2 high); no dependency changes were made in this documentation-only follow-up."
+  ],
+  "blockers": [],
+  "escalations_filed": [],
+  "files_modified": [
+    "README.md",
+    "docs/integration_guide.md",
+    "docs/troubleshooting/github-app-access.md",
+    "CLAUDE.md",
+    "GEMINI_TOPOGRAPHY.py",
+    "docs/active-threads.md",
+    "docs/agent-log/registrations/GPT-5.5-CURSOR-158b2152-pr34-docs.json",
+    "docs/agent-log/handoffs/GPT-5.5-2026-06-22-pr34-docs-handoff.json"
+  ],
+  "branch": "cursor/engineering-documentation-updates-79ad",
+  "source_pr_number": 34,
+  "next_agent_instructions": "If updating tests, bring tests/test_rrt_advocate.py stubs in line with src/rrt_advocate.py imports and constructor signatures before treating full python3 -m pytest as a green signal. Do not edit crisis thresholds, persona blending, or safety-critical response text without Joshua W. Dorsey, Sr.'s explicit approval.",
+  "human_approval_needed": false,
+  "human_approval_reason": null,
+  "tests_run": [
+    "git diff --check origin/main..HEAD",
+    "bash .nltotoi/scripts/validate-governance.sh",
+    "python3 -m json.tool docs/agent-log/registrations/GPT-5.5-CURSOR-158b2152-pr34-docs.json",
+    "python3 -m py_compile GEMINI_TOPOGRAPHY.py",
+    "source-doc contract marker check for README.md, docs/integration_guide.md, CLAUDE.md, GEMINI_TOPOGRAPHY.py, and docs/troubleshooting/github-app-access.md",
+    "python3 -m pytest tests/test_cde.py tests/test_dialogue_tree.py tests/test_fusion_engine.py tests/test_toi.py",
+    "python3 -m pytest (documented as expected partial failure: 110 passed, 3 failed in tests/test_rrt_advocate.py due legacy stubs missing CrisisIndicators)",
+    "cd packages/rrt-advocate && npm install",
+    "cd packages/rrt-advocate && npm run build && npm test",
+    "npm install --no-package-lock",
+    "npm run check",
+    "python3 src/rrt_advocate.py"
+  ],
+  "tests_passing": true
+}

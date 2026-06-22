@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-007 | Documentation automation follow-up after PR #34 Worker runbook merge | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-79ad` | 🔄 In progress | 2026-06-22 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -36,6 +36,7 @@
 | THREAD-004 | Add Apache-2.0 LICENSE for code components + license metadata; PR/branch cleanup | Claude (Claude Code) | `chore/add-license-apache-2.0` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-005 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-007 | Documentation automation follow-up after PR #34 Worker runbook merge | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-79ad` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 
 ---
 
