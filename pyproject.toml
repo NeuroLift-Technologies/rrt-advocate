@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "NeuroLift Technologies" }]
 dependencies = []
+classifiers = ["License :: OSI Approved :: Apache Software License"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

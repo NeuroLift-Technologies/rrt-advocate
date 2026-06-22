@@ -1,6 +1,7 @@
 {
   "name": "rrt-advocate",
   "description": "RRT AIdvocAIte assistant powered by Cloudflare Workers AI",
+  "license": "Apache-2.0",
   "cloudflare": {
     "label": "RRT AIdvocAIte",
     "products": [
