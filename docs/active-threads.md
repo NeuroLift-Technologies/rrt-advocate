@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | 🔄 In progress | 2026-06-22 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -35,6 +35,7 @@
 | THREAD-003 | OTOI 1.0.2 governance upgrade + TypeScript Crisis Detection Engine npm package (prepare-only) | Claude | `claude/asfdk-typescript-governance-v3waxj` | ✅ Merged (PR #28) | 2026-06-17 | 2026-06-17 |
 | THREAD-004 | Add Apache-2.0 LICENSE for code components + license metadata; PR/branch cleanup | Claude (Claude Code) | `chore/add-license-apache-2.0` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-005 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 
 ---
 
