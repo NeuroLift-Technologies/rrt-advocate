@@ -72,6 +72,17 @@ Expected response:
 { "ok": true, "assistant": "RRT AIdvocAIte" }
 ```
 
+If `npm run dev` opens a Wrangler OAuth flow in an unauthenticated environment,
+you can still exercise the non-model health route with local mode:
+
+```bash
+npx wrangler dev --local --ip 127.0.0.1
+```
+
+In local mode the `ASSETS` binding is available, but the `AI` binding is not
+supported. Use authenticated normal `wrangler dev` before testing `/api/chat` or
+browser model responses.
+
 Then verify the chat route with a short prompt:
 
 ```bash
@@ -139,6 +150,7 @@ the user's control.
 | Symptom | Likely cause | Check |
 |---|---|---|
 | `npm run check` creates a root `package-lock.json` | `npm install` was run without `--no-package-lock` | Remove the lockfile for docs-only work unless the dependency change is intentional. |
+| `npm run dev` opens a browser-based OAuth prompt | Wrangler needs Cloudflare authentication before remote Workers AI dev can start | Complete `npx wrangler login`, or use `npx wrangler dev --local --ip 127.0.0.1` for `/api/health` only. |
 | `wrangler dev` starts but `/api/chat` fails | The Cloudflare account is not authenticated or Workers AI is not enabled | Run `npx wrangler whoami`; confirm the account has Workers AI access. |
 | Browser UI shows a connection error | `/api/chat` returned a non-2xx response or the SSE stream closed before content arrived | Test `/api/health`, then call `/api/chat` with `curl -i` to inspect status and headers. |
 | `x-rrt-risk-level` is missing | The request did not reach the successful streaming path | Check for `400`, `405`, `404`, or `500` responses first. |
