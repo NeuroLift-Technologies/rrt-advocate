@@ -201,6 +201,15 @@ does not declare runtime dependencies.
 Fix: install `pyyaml` in the local environment before running Python demos or
 tests.
 
+### `vaderSentiment not installed` warning during Python runs
+
+Cause: `src/crisis/detectors/sentiment_layer.py` prefers VADER for Layer 2
+polarity scoring but falls back to a deterministic built-in heuristic when the
+optional package is absent.
+
+Fix: no action is required for the fallback path. Install `vaderSentiment` only
+when you need to exercise the optional VADER-backed scoring path locally.
+
 ### Full `python3 -m pytest` fails in `tests/test_rrt_advocate.py`
 
 Cause: `tests/test_rrt_advocate.py` still installs legacy stub modules for the
