@@ -57,7 +57,7 @@ Primary methods:
 
 ### Conversation flow
 
-`process_message(...)` follows this path:
+`RRTAdvocate.process_message(...)` follows this path:
 
 1. `CrisisDetector.detect_crisis_indicators(...)`
 2. `CrisisAssessor.assess_crisis(...)`
