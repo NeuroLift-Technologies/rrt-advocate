@@ -24,7 +24,8 @@
     "docs/agent-log/handoffs/2026-06-22-cursor-license-docs-followup.json"
   ],
   "branch": "cursor/engineering-documentation-updates-d03e",
-  "pr_number": null,
+  "pr_number": 33,
+  "pr_url": "https://github.com/NeuroLift-Technologies/rrt-advocate/pull/33",
   "next_agent_instructions": "No active documentation thread remains. If future licensing changes are requested, verify against LICENSE, root package.json, packages/rrt-advocate/package.json, and pyproject.toml before updating docs.",
   "human_approval_needed": false,
   "human_approval_reason": null,
