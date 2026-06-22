@@ -20,6 +20,13 @@ pytest
 
 Project tooling defaults are defined in `pyproject.toml`.
 
+### Cloudflare Worker assistant
+
+The hosted chat assistant lives alongside the Python engine and is configured by
+the root `package.json` plus `wrangler.jsonc`. For source paths, local Wrangler
+commands, API examples, and deployment constraints, see
+[`docs/rrt-aidvocaite-worker.md`](docs/rrt-aidvocaite-worker.md).
+
 ---
 
 ## What This Is
