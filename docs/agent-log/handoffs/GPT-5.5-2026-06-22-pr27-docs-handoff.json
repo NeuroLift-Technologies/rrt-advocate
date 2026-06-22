@@ -24,7 +24,7 @@
     "docs/agent-log/handoffs/GPT-5.5-2026-06-22-pr27-docs-handoff.json"
   ],
   "branch": "cursor/engineering-documentation-updates-bb4d",
-  "pr_number": null,
+  "pr_number": 31,
   "next_agent_instructions": "No follow-up is required for this documentation-only session. If Worker dependencies or wrangler.jsonc bindings change again, keep docs/rrt-aidvocaite-worker.md aligned with package.json scripts, src/index.ts routes, and wrangler.jsonc bindings.",
   "human_approval_needed": false,
   "human_approval_reason": null,
