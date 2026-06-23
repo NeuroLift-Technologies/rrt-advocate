@@ -2,21 +2,62 @@ import asyncio
 import importlib
 import sys
 import types
+from dataclasses import dataclass, field
 from datetime import datetime
+from enum import Enum
+from typing import List
 
 
 def _install_stub_modules():
     """Provide local stand-ins for external NeuroLift modules used by rrt_advocate."""
 
+    class CrisisLevel(Enum):
+        """Stand-in for crisis.assessors.crisis_assessor.CrisisLevel.
+
+        rrt_advocate re-exports this enum, and the orchestrator branches on its
+        members, so the stub must mirror the real five-level scale exactly.
+        """
+
+        GREEN = "stable"
+        YELLOW = "elevated"
+        ORANGE = "high"
+        RED = "critical"
+        BLACK = "emergency"
+
+    @dataclass
+    class CrisisIndicators:
+        """Minimal stand-in for crisis.detectors.crisis_detector.CrisisIndicators.
+
+        Mirrors the real dataclass's public, orchestrator-facing fields closely
+        enough that src.rrt_advocate can import it and exercise the
+        CDE -> TOI -> dialogue -> fusion -> OTOI path. Only the attributes the
+        orchestrator actually reads (notably ``self_harm_risk``) need to behave
+        like the production type; the rest carry the real defaults for fidelity.
+        """
+
+        timestamp: datetime = None
+        raw_text: str = ""
+        self_harm_risk: bool = False
+        detected_semantic_fields: List[str] = field(default_factory=list)
+        sentiment_trend: str = "stable"
+        looping_detected: bool = False
+        behavioral_complexity: float = 1.0
+        aggregate_confidence: float = 0.0
+
     class CrisisDetector:
         def __init__(self, config_path):
             self.config_path = config_path
 
-        async def detect_crisis_indicators(self):
-            return {"signal": "ok"}
+        async def detect_crisis_indicators(self, message=""):
+            return CrisisIndicators(
+                timestamp=datetime.now(),
+                raw_text=message,
+                self_harm_risk=False,
+            )
 
     class CrisisAssessor:
-        def __init__(self, user_id):
+        # Orchestrator constructs this as CrisisAssessor(user_id, config_path).
+        def __init__(self, user_id, *_args, **_kwargs):
             self.user_id = user_id
 
         async def assess_crisis(self, _indicators):
@@ -34,8 +75,23 @@ def _install_stub_modules():
                 user_safety_score=1.0,
             )
 
+    class ResponseStatus(Enum):
+        """Stand-in for response.interventions.intervention_manager.ResponseStatus.
+
+        rrt_advocate re-exports this enum (on InterventionResponse.status) and
+        compares against ResponseStatus.ACTIVE, so the members must match.
+        """
+
+        PENDING = "pending"
+        ACTIVE = "active"
+        SUCCESSFUL = "successful"
+        ESCALATED = "escalated"
+        FAILED = "failed"
+
     class InterventionManager:
-        def __init__(self, user_id):
+        # Orchestrator constructs this as
+        # InterventionManager(user_id, toi_config, fusion_engine); accept extras.
+        def __init__(self, user_id, *_args, **_kwargs):
             self.user_id = user_id
 
         async def deploy_intervention(self, **_kwargs):
@@ -48,18 +104,29 @@ def _install_stub_modules():
             return None
 
     class DeEscalationEngine:
+        # Orchestrator constructs this as
+        # DeEscalationEngine(toi_config, fusion_engine); accept extras.
+        def __init__(self, *_args, **_kwargs):
+            pass
+
         async def start_de_escalation(self, _assessment):
             return None
 
     class SupervisorInterface:
-        async def notify_advocate_status(self, **_kwargs):
+        async def notify_advocate_status(self, *_args, **_kwargs):
             return None
 
-        async def handle_crisis(self, **_kwargs):
+        async def handle_crisis(self, *_args, **_kwargs):
             return None
 
-        async def emergency_escalation(self, **_kwargs):
+        async def emergency_escalation(self, *_args, **_kwargs):
             return None
+
+    class LocalSupervisor(SupervisorInterface):
+        """Default supervisor the orchestrator instantiates with LocalSupervisor()."""
+
+        def __init__(self, *_args, **_kwargs):
+            pass
 
     class PatternAnalyzer:
         def __init__(self, user_id):
@@ -70,6 +137,15 @@ def _install_stub_modules():
 
         async def save_patterns(self):
             return None
+
+        def get_summary(self):
+            # Mirror the real PatternAnalyzer.get_summary() shape so
+            # get_status_report() can serialize a pattern_summary block.
+            return {
+                "session_count": 0,
+                "total_crisis_events": 0,
+                "crisis_level_distribution": {},
+            }
 
     module_defs = {
         "crisis": types.ModuleType("crisis"),
@@ -97,10 +173,14 @@ def _install_stub_modules():
     }
 
     module_defs["crisis.detectors.crisis_detector"].CrisisDetector = CrisisDetector
+    module_defs["crisis.detectors.crisis_detector"].CrisisIndicators = CrisisIndicators
     module_defs["crisis.assessors.crisis_assessor"].CrisisAssessor = CrisisAssessor
+    module_defs["crisis.assessors.crisis_assessor"].CrisisLevel = CrisisLevel
     module_defs["response.interventions.intervention_manager"].InterventionManager = InterventionManager
+    module_defs["response.interventions.intervention_manager"].ResponseStatus = ResponseStatus
     module_defs["response.de_escalation.de_escalation_engine"].DeEscalationEngine = DeEscalationEngine
     module_defs["coordination.supervisor.supervisor_interface"].SupervisorInterface = SupervisorInterface
+    module_defs["coordination.supervisor.supervisor_interface"].LocalSupervisor = LocalSupervisor
     module_defs["learning.patterns.pattern_analyzer"].PatternAnalyzer = PatternAnalyzer
 
     sys.modules.update(module_defs)
