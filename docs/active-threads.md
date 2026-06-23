@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-008 | Documentation automation follow-up for PR #38 prototype/not-medical-advice package release metadata | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-cbe9` | 🔄 In progress | 2026-06-23 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -37,6 +37,7 @@
 | THREAD-005 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-007 | Document mixed license surfaces after PR #32 Apache-2.0 metadata update | Cursor Automation (GPT-5.5) | `cursor/engineering-documentation-updates-d03e` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-008 | Documentation automation follow-up for PR #38 prototype/not-medical-advice package release metadata | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-cbe9` | ✅ Completed | 2026-06-23 | 2026-06-23 |
 
 ---
 
