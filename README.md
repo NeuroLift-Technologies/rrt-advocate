@@ -27,6 +27,15 @@ the root `package.json` plus `wrangler.jsonc`. For source paths, local Wrangler
 commands, API examples, and deployment constraints, see
 [`docs/rrt-aidvocaite-worker.md`](docs/rrt-aidvocaite-worker.md).
 
+### TypeScript CDE npm package
+
+The local-first TypeScript Crisis Detection Engine package is under
+`packages/rrt-advocate/` and publishes as
+`@neurolift-technologies/rrt-advocate`. It is separate from the root Wrangler
+Worker package: run package build/test/release checks from
+`packages/rrt-advocate/`, and keep its published README disclaimer and
+`package.json` safety metadata aligned before npm releases.
+
 ---
 
 ## What This Is

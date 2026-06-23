@@ -18,7 +18,11 @@ The Worker adds:
 | `src/types.ts` | Worker `Env`, chat message, request body, and risk-level interfaces. |
 | `public/index.html`, `public/chat.js` | Static chat UI that calls `/api/chat` and displays the `x-rrt-risk-level` header. |
 
-The package under `packages/rrt-advocate/` is the local-first TypeScript Crisis Detection Engine library. It is not the Wrangler Worker package; run its build/test commands from `packages/rrt-advocate/`, and run Worker commands from the repository root.
+The package under `packages/rrt-advocate/` is the local-first TypeScript Crisis
+Detection Engine library. It is not the Wrangler Worker package; run its
+build/test commands from `packages/rrt-advocate/`, run Worker commands from the
+repository root, and use the package README for npm release/disclaimer
+maintenance.
 
 ## Runtime shape
 

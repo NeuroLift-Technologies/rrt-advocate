@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-008 | Documentation automation follow-up for PR #38 prototype/not-medical-advice package release metadata | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-cbe9` | 🔄 In progress | 2026-06-23 |
 
 ---
 

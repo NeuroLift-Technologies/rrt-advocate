@@ -86,6 +86,33 @@ npm run build   # tsc → dist/
 npm test        # vitest
 ```
 
+### Maintainer release checklist
+
+This README and `KNOWN_LIMITATIONS.md` are included in the npm `files`
+allowlist, so safety disclaimers and limitation notes ship with the package.
+When preparing a package release:
+
+1. Keep the prototype / not-medical-advice banner at the very top of this file.
+   If the package description or keywords change, keep the same safety boundary
+   visible in `package.json` metadata.
+2. Do not change `config/crisis_thresholds.yaml` or crisis scoring behavior
+   without explicit repository-authority approval; thresholds are safety-
+   critical and vendored from the canonical repo config.
+3. Validate from `packages/rrt-advocate/`:
+
+   ```bash
+   npm ci
+   npm run typecheck
+   npm test
+   npm run build
+   npm pack --dry-run
+   ```
+
+4. For patch metadata releases, use `npm version patch --no-git-tag-version`
+   so `package.json` and `package-lock.json` stay version-aligned without
+   creating a git tag.
+5. Publishing to npm is a human-approved release action under OTOI governance.
+
 ## License
 
 Apache-2.0 © NeuroLift Technologies, LLC
