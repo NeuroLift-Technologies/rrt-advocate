@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| _None currently._ |  |  |  |  |  |
+| THREAD-008 | Documentation automation follow-up for PR #37 orchestrator integration-test stub repair | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-2054` | 🔄 In progress | 2026-06-23 |
 
 ---
 

@@ -18,6 +18,17 @@ pip install -U pip pytest pytest-asyncio
 pytest
 ```
 
+For the Python orchestrator specifically, run:
+
+```bash
+pytest tests/test_rrt_advocate.py -q
+```
+
+That target installs in-test stand-ins for the external `crisis.*`,
+`response.*`, `coordination.*`, and `learning.*` imports used by
+`src/rrt_advocate.py`. The focused contract is documented in
+[`docs/integration_guide.md`](docs/integration_guide.md#standalone-orchestrator-test-harness).
+
 Project tooling defaults are defined in `pyproject.toml`.
 
 ### Cloudflare Worker assistant

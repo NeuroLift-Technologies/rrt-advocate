@@ -81,10 +81,14 @@ The runtime path in `RRTAdvocate` is:
 `RRTAdvocate` imports the following modules from outside this repository snapshot:
 
 - `crisis.detectors.crisis_detector.CrisisDetector`
+- `crisis.detectors.crisis_detector.CrisisIndicators`
 - `crisis.assessors.crisis_assessor.CrisisAssessor`
+- `crisis.assessors.crisis_assessor.CrisisLevel`
 - `response.interventions.intervention_manager.InterventionManager`
+- `response.interventions.intervention_manager.ResponseStatus`
 - `response.de_escalation.de_escalation_engine.DeEscalationEngine`
 - `coordination.supervisor.supervisor_interface.SupervisorInterface`
+- `coordination.supervisor.supervisor_interface.LocalSupervisor`
 - `learning.patterns.pattern_analyzer.PatternAnalyzer`
 
 This means standalone execution in this repo alone will fail unless those modules are available on `PYTHONPATH`.
@@ -97,6 +101,33 @@ class SupervisorInterface:
     async def handle_crisis(self, advocate_id: str, crisis_assessment, user_id: str): ...
     async def emergency_escalation(self, advocate_id: str, crisis_assessment, user_id: str): ...
 ```
+
+### Standalone orchestrator test harness
+
+`tests/test_rrt_advocate.py` is the standalone validation path for
+`src/rrt_advocate.py` when the full NeuroLift runtime packages are not present.
+The test installs in-memory stand-ins in `sys.modules` for the external imports
+listed above, then imports `src.rrt_advocate`.
+
+That harness currently verifies:
+
+- `get_status_report()` returns the expected status, TOI/OTOI, dialogue, and
+  pattern-summary shape.
+- `assess_current_state()` returns a safe `CrisisLevel.GREEN` assessment if the
+  detector call fails.
+- `manual_intervention(...)` returns `False` and does not track an active
+  intervention when the stub manager returns no record.
+
+When changing `src/rrt_advocate.py`, keep the stub contracts aligned with the
+orchestrator's import names, constructor calls, and attributes it reads. Common
+drift points are enum exports (`CrisisLevel`, `ResponseStatus`), dataclass fields
+on `CrisisIndicators` such as `self_harm_risk`, `LocalSupervisor()` as the
+default supervisor, and `PatternAnalyzer.get_summary()` for status reports.
+
+This harness is intentionally not a substitute for running the real
+`crisis.*`, `response.*`, `coordination.*`, and `learning.*` implementations in
+the broader runtime environment. It only protects the local orchestration
+contract from import-time and call-shape regressions.
 
 ---
 
@@ -130,14 +161,24 @@ Important operational constraints:
 ### Suggested local workflow
 
 1. Create and activate a virtual environment.
-2. Ensure external dependency packages/modules are importable.
-3. Run a basic import check:
+2. Run the standalone orchestrator tests:
+
+```bash
+python -m pytest tests/test_rrt_advocate.py -q
+```
+
+These tests use the stub harness described in Section 4, so they can run without
+the external NeuroLift runtime packages.
+
+3. For full runtime execution, ensure external dependency packages/modules are
+   importable.
+4. Run a basic import check:
 
 ```bash
 python -c "from src.rrt_advocate import RRTAdvocate; print('import ok')"
 ```
 
-4. Once dependencies are available, execute:
+5. Once dependencies are available, execute:
 
 ```bash
 python src/rrt_advocate.py
