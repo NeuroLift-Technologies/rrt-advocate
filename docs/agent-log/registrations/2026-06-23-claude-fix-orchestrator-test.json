@@ -1,0 +1,25 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "platform": "Claude Code",
+    "version": "claude-opus-4-8",
+    "session_id": "2026-06-23-claude-fix-orchestrator-test",
+    "entry_date": "2026-06-23",
+    "entry_point": "User (Joshua W. Dorsey, Sr.) request: repair the broken orchestrator integration test (tests/test_rrt_advocate.py) without modifying production code.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/rrt-advocate",
+    "working_branch": "claude/fix-orchestrator-test",
+    "capabilities_self_reported": [
+      "Read and write files",
+      "Run Python (pytest/pytest-asyncio) and Node (vitest) test suites",
+      "Diagnose ImportError/TypeError chains in test stubs",
+      "Create GitHub pull requests"
+    ],
+    "known_limitations": [
+      "This is a safety-critical repo; no changes to crisis-detection logic, thresholds, or persona blending. Scope is strictly test-only: completing tests/test_rrt_advocate.py's in-test stub modules so the orchestrator import path resolves. Production code under src/ was NOT modified.",
+      "Local python3 is 3.14 without ensurepip; the venv was created with `python3 -m venv --without-pip .venv` and populated via `python3 -m pip --python .venv/bin/python install ...`. The .venv was removed before committing and is now gitignored."
+    ],
+    "preferred_handoff_format": "JSON handoff record per OTOI Section 5"
+  }
+}
