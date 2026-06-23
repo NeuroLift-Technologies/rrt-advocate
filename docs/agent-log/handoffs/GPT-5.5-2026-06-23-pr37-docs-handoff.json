@@ -1,0 +1,44 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.2/handoff-record",
+  "agent_name": "GPT-5.5",
+  "platform": "cursor",
+  "session_id": "158b2152-7214-45b1-9efe-a458133e75b6-pr37-docs",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "session_started": "2026-06-23T06:53:00Z",
+  "session_ended": "2026-06-23T07:20:00Z",
+  "otoi_version": "ORG-DEV-OTOI-1.0.2",
+  "task_description": "Documentation automation follow-up for PR #37 orchestrator integration-test stub repair",
+  "work_completed": [
+    "Updated docs/integration_guide.md with the source-verified standalone orchestrator test harness contract for tests/test_rrt_advocate.py.",
+    "Updated README.md local development guidance with the focused pytest command and link to the harness contract.",
+    "Recorded this documentation automation in docs/agent-log/registrations/.",
+    "Updated docs/active-threads.md to mark THREAD-008 complete and add PR #39 to pending review."
+  ],
+  "work_remaining": [
+    "Joshua W. Dorsey, Sr. review/approval of PR #39."
+  ],
+  "blockers": [],
+  "escalations_filed": [],
+  "files_modified": [
+    "README.md",
+    "docs/integration_guide.md",
+    "docs/active-threads.md",
+    "docs/agent-log/registrations/GPT-5.5-CURSOR-158b2152-pr37-docs.json",
+    "docs/agent-log/handoffs/GPT-5.5-2026-06-23-pr37-docs-handoff.json"
+  ],
+  "branch": "cursor/engineering-documentation-updates-2054",
+  "pr_number": 39,
+  "pr_url": "https://github.com/NeuroLift-Technologies/rrt-advocate/pull/39",
+  "tests_run": [
+    "python3 -m pytest tests/test_rrt_advocate.py -q (failed before environment setup: pytest was not installed)",
+    ".venv/bin/python -m pytest tests/test_rrt_advocate.py -q (3 passed)",
+    ".venv/bin/python -m pytest tests/ -q (113 passed)",
+    "bash .nltotoi/scripts/validate-governance.sh (15 passed, 0 failed, 0 warnings)",
+    ".venv/bin/python -m json.tool docs/agent-log/registrations/GPT-5.5-CURSOR-158b2152-pr37-docs.json",
+    "source-doc marker check for src/rrt_advocate.py, tests/test_rrt_advocate.py, docs/integration_guide.md, and README.md",
+    "git diff --check"
+  ],
+  "next_agent_instructions": "This PR is documentation-only. The local .venv/ directory was created for validation and remains ignored by .gitignore. No production code, crisis thresholds, crisis detection logic, or persona blending changed.",
+  "human_approval_needed": true,
+  "human_approval_reason": "OTOI requires Joshua W. Dorsey, Sr. approval before merge."
+}

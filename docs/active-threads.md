@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-008 | Documentation automation follow-up for PR #37 orchestrator integration-test stub repair | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-2054` | 🔄 In progress | 2026-06-23 |
+| _None currently._ |  |  |  |  |  |
 
 ---
 
@@ -21,6 +21,7 @@
 | PR | Title | Agent | Status | Notes |
 |---|---|---|---|---|
 | #34 | [GPT-5.5] docs(worker): expand assistant workflow runbook | GPT-5.5/Cursor | Pending review | Documentation-only follow-up for PR #31; covers Worker runbook and local Wrangler pitfalls. |
+| #39 | [GPT-5.5] docs(test): document orchestrator stub harness | GPT-5.5/Cursor | Pending review | Documentation-only follow-up for PR #37; covers the standalone `tests/test_rrt_advocate.py` stub harness and orchestrator integration pitfalls. |
 
 > **Architectural PRs #7–#10** (crisis-intervention protective layer) are all resolved: **#10 ✅ merged** (2026-04-21); **#7, #8, #9 ❌ closed** (superseded). No architectural PRs are currently pending review. Per OTOI Section 8, any future architectural change still requires Joshua W. Dorsey, Sr.'s explicit approval before merge.
 
@@ -37,6 +38,7 @@
 | THREAD-005 | Documentation automation follow-up for Dependabot Wrangler PR #27 | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-bb4d` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-006 | Documentation automation follow-up for PR #31 Worker assistant workflow docs | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-ea95` | ✅ Completed | 2026-06-22 | 2026-06-22 |
 | THREAD-007 | Document mixed license surfaces after PR #32 Apache-2.0 metadata update | Cursor Automation (GPT-5.5) | `cursor/engineering-documentation-updates-d03e` | ✅ Completed | 2026-06-22 | 2026-06-22 |
+| THREAD-008 | Documentation automation follow-up for PR #37 orchestrator integration-test stub repair | GPT-5.5/Cursor | `cursor/engineering-documentation-updates-2054` | ✅ Completed | 2026-06-23 | 2026-06-23 |
 
 ---
 
