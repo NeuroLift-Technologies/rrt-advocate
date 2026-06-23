@@ -26,7 +26,7 @@
     "docs/agent-log/handoffs/GPT-5.5-2026-06-23-pr38-docs-handoff.json"
   ],
   "branch": "cursor/engineering-documentation-updates-cbe9",
-  "pr_number": null,
+  "pr_number": 40,
   "next_agent_instructions": "Review package release documentation against packages/rrt-advocate/package.json, package-lock.json, README.md, KNOWN_LIMITATIONS.md, and docs/rrt-aidvocaite-worker.md. npm publish remains a human-approved release action; do not publish from automation.",
   "human_approval_needed": false,
   "human_approval_reason": null,
