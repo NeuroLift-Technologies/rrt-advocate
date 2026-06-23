@@ -1,3 +1,11 @@
+> ## ⚠️ PROTOTYPE — NOT A SAFETY SYSTEM
+>
+> This is an **experimental** crisis-detection library with **stubbed/placeholder intervention layers**. It is **NOT medical advice, NOT a crisis service**, and performs **no real-time monitoring**. It **can miss real crisis signals** (known detection/recall gaps) — **do not rely on it as a safety net or as the sole safety mechanism**.
+>
+> **If you or someone else needs help now:** in the US, call or text **988** (Suicide & Crisis Lifeline) or chat [988lifeline.org](https://988lifeline.org); in an emergency call **911**. Outside the US: [findahelpline.com](https://findahelpline.com).
+>
+> Provided **AS-IS, without warranty**.
+
 # @neurolift-technologies/rrt-advocate
 
 TypeScript port of the RRT Advocate **Crisis Detection Engine (CDE)** — a

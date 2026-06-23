@@ -1,0 +1,26 @@
+{
+  "agent_registration": {
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "platform": "Claude Code",
+    "version": "claude-opus-4-8 (1M context)",
+    "session_id": "2026-06-23-claude-disclaimer-0-1-1",
+    "entry_date": "2026-06-23",
+    "entry_point": "User (Joshua W. Dorsey, Sr.) request: add the prototype / not-medical-advice disclaimer to the already-published npm package @neurolift-technologies/rrt-advocate (currently 0.1.0) as a patch release (0.1.1), working in an isolated git worktree so the concurrently-building main checkout is not disturbed.",
+    "acknowledged_otoi": true,
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "working_repo": "NeuroLift-Technologies/rrt-advocate",
+    "working_branch": "claude/disclaimer-0-1-1",
+    "capabilities_self_reported": [
+      "Read and write files",
+      "Edit Markdown + JSON metadata",
+      "Run npm version (no-git-tag)",
+      "Create GitHub pull requests"
+    ],
+    "known_limitations": [
+      "This is a safety-critical repo. Scope strictly limited to the publishable package's README.md banner and package.json metadata (description + keywords) plus a no-tag patch version bump (0.1.0 -> 0.1.1). No changes to src, dist, LICENSE, crisis-detection logic, thresholds, or CI/.github/workflows.",
+      "Worked entirely inside an isolated worktree (/tmp/nlt-wt-rrta) off origin/main; the main checkout was untouched because a separate process is building it.",
+      "Disclaimer is docs/metadata only — it does not change runtime behavior. The package remains a prototype with stubbed intervention layers; banner makes that explicit and points users to 988/911/findahelpline.com."
+    ],
+    "preferred_handoff_format": "JSON handoff record per OTOI Section 5"
+  }
+}

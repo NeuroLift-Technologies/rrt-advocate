@@ -1,0 +1,42 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-claude-disclaimer-0-1-1",
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "rrt-advocate",
+    "branch": "claude/disclaimer-0-1-1",
+    "work_completed": [
+      "Added a prototype / not-medical-advice safety banner at the VERY TOP of the publishable package README (packages/rrt-advocate/README.md), above the title and existing 'Safety-critical' blockquote. Banner states it is experimental with stubbed intervention layers, NOT medical advice / NOT a crisis service, can miss real crisis signals, and routes to 988 / 988lifeline.org / 911 / findahelpline.com; provided AS-IS without warranty.",
+      "Prefixed packages/rrt-advocate/package.json \"description\" with '⚠️ PROTOTYPE / not medical advice — ' (rest unchanged) and added keywords 'prototype', 'experimental', 'not-medical-advice'.",
+      "Patch version bump via `npm version patch --no-git-tag-version` (0.1.0 -> 0.1.1) — applied to both package.json and package-lock.json (root + packages[''] entries), no git tag created.",
+      "Confirmed README.md is in the package \"files\" allowlist so the banner ships to npm.",
+      "Recorded this session (registration + handoff) under docs/agent-log/."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Scope held to docs + metadata only. Did not touch src, dist, LICENSE, crisis thresholds, or any .github/workflows file (per OTOI guardrails and repo CLAUDE.md 'safety-critical' rules).",
+      "Worked in an isolated worktree (/tmp/nlt-wt-rrta) off origin/main and set a local git identity 'Claude (Opus 4.8 1M)' <noreply@anthropic.com> (NOT the human) so the concurrently-building main checkout was never modified."
+    ],
+    "decisions_pending": [
+      "Joshua W. Dorsey, Sr.: publish @neurolift-technologies/rrt-advocate@0.1.1 to npm with 2FA OTP after merging this PR. The live 0.1.0 currently has no disclaimer banner; 0.1.1 adds it."
+    ],
+    "escalations": [],
+    "next_agent_notes": "Docs/metadata patch only — no runtime change. After merge, the package must be republished (npm publish, 2FA OTP) to push the README banner and metadata to the npm registry. The package remains a prototype with stubbed/placeholder intervention layers; the banner now makes that explicit. Delivered via DRAFT PR on branch claude/disclaimer-0-1-1.",
+    "files_modified": [
+      "packages/rrt-advocate/README.md",
+      "packages/rrt-advocate/package.json",
+      "packages/rrt-advocate/package-lock.json",
+      "docs/agent-log/registrations/2026-06-23-claude-disclaimer-0-1-1.json",
+      "docs/agent-log/handoffs/2026-06-23-claude-disclaimer-0-1-1.json"
+    ],
+    "tests_run": [
+      "python3 json.load on package.json + package-lock.json + both new records (valid JSON)",
+      "version consistency check: package.json == package-lock.json root == packages[''] == 0.1.1",
+      "files-allowlist check: README.md present"
+    ],
+    "tests_passing": true,
+    "pr_url": "PENDING"
+  }
+}
