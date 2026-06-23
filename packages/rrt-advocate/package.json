@@ -1,7 +1,7 @@
 {
   "name": "@neurolift-technologies/rrt-advocate",
-  "version": "0.1.0",
-  "description": "Crisis Detection Engine (CDE) — TypeScript port of the RRT Advocate 3-layer, local-first crisis detection & assessment pipeline. NeuroLift HAIEF Solidarity Framework.",
+  "version": "0.1.1",
+  "description": "⚠️ PROTOTYPE / not medical advice — Crisis Detection Engine (CDE) — TypeScript port of the RRT Advocate 3-layer, local-first crisis detection & assessment pipeline. NeuroLift HAIEF Solidarity Framework.",
   "keywords": [
     "ai",
     "crisis-detection",
@@ -11,7 +11,10 @@
     "trauma-informed",
     "solidarity-framework",
     "haief",
-    "local-first"
+    "local-first",
+    "prototype",
+    "experimental",
+    "not-medical-advice"
   ],
   "license": "Apache-2.0",
   "author": "NeuroLift Technologies <info@neuroliftsolutions.com>",
