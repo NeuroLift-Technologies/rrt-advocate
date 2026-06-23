@@ -1,0 +1,40 @@
+{
+  "handoff_record": {
+    "session_id": "2026-06-23-claude-fix-orchestrator-test",
+    "agent_name": "Claude Code (CLAUDE-CODE)",
+    "date": "2026-06-23",
+    "otoi_version": "ORG-DEV-OTOI-1.0.2",
+    "repo": "rrt-advocate",
+    "branch": "claude/fix-orchestrator-test",
+    "work_completed": [
+      "Diagnosed the broken orchestrator integration test: tests/test_rrt_advocate.py's _install_stub_modules() faked crisis.detectors.crisis_detector with CrisisDetector but not CrisisIndicators, so src/rrt_advocate.py's `from crisis.detectors.crisis_detector import CrisisDetector, CrisisIndicators` raised ImportError and the 3 orchestrator tests failed at import time.",
+      "Completed the in-test stub (test-only) so the orchestrator import + construction path resolves, mirroring the real types: added CrisisIndicators dataclass (incl. self_harm_risk) on crisis_detector; CrisisLevel enum on crisis_assessor; ResponseStatus enum on intervention_manager; LocalSupervisor on supervisor_interface.",
+      "Widened stub constructor signatures (CrisisAssessor, InterventionManager, DeEscalationEngine) to accept the orchestrator's positional args, and added PatternAnalyzer.get_summary() so get_status_report() serializes a pattern_summary block.",
+      "Added .venv/ and venv/ to .gitignore.",
+      "Ran full pytest suite (113 passed, was 110 passed / 3 failed) and the TS vitest suite (24 passed) to confirm the fix and no regression.",
+      "Opened draft PR #37 (base main)."
+    ],
+    "work_in_progress": [],
+    "blockers": [],
+    "decisions_made": [
+      "Fixed the test stub only; did NOT modify any production code under src/ (safety-critical repo, per CLAUDE.md/AGENTS.md).",
+      "Mirrored the real dataclass/enum field names and the five-level CrisisLevel/ResponseStatus scales so the orchestrator's assertions stay honest rather than papering over them with bare Mocks."
+    ],
+    "decisions_pending": [],
+    "escalations": [],
+    "next_agent_notes": "Safety-critical repo: crisis logic untouched. Change is test-only (tests/test_rrt_advocate.py) plus a .gitignore entry. The 3 repaired tests are the only coverage of the CDE -> TOI -> dialogue -> fusion -> OTOI safety path; keep them green. Note: tracked .pyc files (cpython-312) still live in src/**/__pycache__ in the repo history (pre-existing, force-added before the ignore rule) — left as-is, out of scope. Local python3 is 3.14 without ensurepip; bootstrap a venv with `python3 -m venv --without-pip .venv` then `python3 -m pip --python .venv/bin/python install -r requirements.txt pytest pytest-asyncio`.",
+    "files_modified": [
+      "tests/test_rrt_advocate.py",
+      ".gitignore",
+      "docs/agent-log/registrations/2026-06-23-claude-fix-orchestrator-test.json",
+      "docs/agent-log/handoffs/2026-06-23-claude-fix-orchestrator-test.json"
+    ],
+    "tests_run": [
+      "python3 -m pytest tests/ -q  (113 passed, 0 failed)",
+      "python3 -m pytest tests/test_rrt_advocate.py -v  (3 passed)",
+      "cd packages/rrt-advocate && npm ci && npx vitest run  (24 passed, 4 files)"
+    ],
+    "tests_passing": true,
+    "pr_url": "https://github.com/NeuroLift-Technologies/rrt-advocate/pull/37"
+  }
+}
