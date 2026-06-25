@@ -1,6 +1,0 @@
-"""Test configuration — adds src/ to path for all tests."""
-import sys
-import os
-
-# Add src/ to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
