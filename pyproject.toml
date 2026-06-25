@@ -67,9 +67,17 @@ Issues = "https://github.com/NeuroLift-Technologies/rrt-advocate/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["src/rrt_advocate"]
 
-# Lean sdist: only what the package and its conformance suite need.
+# Lean sdist: only what the package and its conformance suite need. Scope to the
+# Python package (not all of src/) so the coexisting Cloudflare Worker entrypoint
+# (src/index.ts, src/types.ts) is never published in the Python artifact.
 [tool.hatch.build.targets.sdist]
-only-include = ["src", "tests", "PYPI_README.md", "KNOWN_LIMITATIONS.md", "LICENSE"]
+only-include = [
+    "src/rrt_advocate",
+    "tests",
+    "PYPI_README.md",
+    "KNOWN_LIMITATIONS.md",
+    "LICENSE",
+]
 
 # --- Test config ---------------------------------------------------------------
 [tool.pytest.ini_options]

@@ -47,7 +47,6 @@ NEGATIVE_WORDS = frozenset(
 )
 
 _NON_ALPHA = re.compile(r"[^a-z\s]")
-_WHITESPACE = re.compile(r"\s+")
 
 # Sentinel distinguishing "auto-detect VADER" from an explicit ``None`` analyzer.
 _AUTO = object()
@@ -139,7 +138,9 @@ class SentimentLayer:
         """
         text_lower = text.lower()
         cleaned = _NON_ALPHA.sub("", text_lower)
-        words = {w for w in _WHITESPACE.split(cleaned) if len(w) > 0}
+        # ``str.split()`` matches the TS ``split(/\s+/).filter(w => w)``: split on
+        # whitespace runs, dropping empties.
+        words = set(cleaned.split())
 
         pos_count = 0
         neg_count = 0

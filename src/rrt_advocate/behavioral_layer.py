@@ -30,11 +30,13 @@ _TOKEN_HASH_KEY: bytes = (
     else os.urandom(32)
 )
 
-_WHITESPACE = re.compile(r"\s+")
 _SENTENCE_SPLIT = re.compile(r"[.!?]+")
 
-#: Punctuation stripped from word edges (mirrors Python ``str.strip(".,!?;:")``).
-_EDGE_PUNCTUATION = frozenset(".,!?;:")
+#: Punctuation stripped from word edges. The TS source walks the string
+#: character-by-character to avoid regex backtracking (ReDoS); Python's
+#: ``str.strip`` is a C-level character-set trim with no backtracking, so the
+#: idiomatic form below is byte-equivalent and just as safe.
+_EDGE_PUNCTUATION = ".,!?;:"
 
 #: Punctuation chars counted toward density.
 _DENSITY_PUNCTUATION = frozenset(".,!?;:()[]{}\"'")
@@ -45,14 +47,12 @@ def _hash_token(word: str) -> str:
 
 
 def _strip_edge_punctuation(word: str) -> str:
-    """Trim leading/trailing edge punctuation from a word."""
-    start = 0
-    end = len(word)
-    while start < end and word[start] in _EDGE_PUNCTUATION:
-        start += 1
-    while end > start and word[end - 1] in _EDGE_PUNCTUATION:
-        end -= 1
-    return word[start:end]
+    """Trim leading/trailing edge punctuation from a word.
+
+    Equivalent to the TS ``stripEdgePunctuation`` character walk over the same
+    ``.,!?;:`` set, expressed with ``str.strip``.
+    """
+    return word.strip(_EDGE_PUNCTUATION)
 
 
 def _round3(value: float) -> float:
@@ -65,12 +65,8 @@ def _round3(value: float) -> float:
 
 
 def _jaccard(a: Set[str], b: Set[str]) -> float:
-    intersection = 0
-    for t in a:
-        if t in b:
-            intersection += 1
-    union = len(a) + len(b) - intersection
-    return intersection / union if union > 0 else 0.0
+    union = len(a | b)
+    return len(a & b) / union if union > 0 else 0.0
 
 
 class _MessageRecord:
@@ -117,7 +113,9 @@ class BehavioralLayer:
     def record_message(self, text: str) -> _MessageRecord:
         """Parse a message and record its behavioral metadata."""
         now = time.time()
-        words = [w for w in _WHITESPACE.split(text) if len(w) > 0] if text else []
+        # ``str.split()`` with no argument splits on runs of whitespace and drops
+        # leading/trailing empties, matching the TS ``split(/\s+/).filter(w => w)``.
+        words = text.split() if text else []
         word_set: Set[str] = set()
         for w in words:
             normalized = _strip_edge_punctuation(w.lower())
