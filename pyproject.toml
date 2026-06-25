@@ -1,24 +1,85 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
 
 [project]
 name = "rrt-advocate"
-version = "0.1.0"
-description = "Rapid Response Team Advocate orchestration layer"
-readme = "README.md"
-requires-python = ">=3.10"
-authors = [{ name = "NeuroLift Technologies" }]
-dependencies = []
-classifiers = ["License :: OSI Approved :: Apache Software License"]
+version = "0.1.1"
+description = "PROTOTYPE / not medical advice — Crisis Detection Engine (CDE): Python port of the RRT Advocate 3-layer, local-first crisis detection & assessment pipeline. NeuroLift HAIEF Solidarity Framework."
+readme = "PYPI_README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "NeuroLift Technologies, LLC", email = "info@neuroliftsolutions.com" }]
+keywords = [
+    "ai",
+    "crisis-detection",
+    "mental-health",
+    "neurodivergent",
+    "adhd",
+    "trauma-informed",
+    "solidarity-framework",
+    "haief",
+    "local-first",
+    "prototype",
+    "experimental",
+    "not-medical-advice",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "PyYAML>=6.0",
+]
 
+[project.optional-dependencies]
+# Optional VADER analyzer for Layer 2 (mirrors the npm `vader-sentiment`
+# optionalDependency). When absent, Layer 2 uses its deterministic heuristic.
+vader = [
+    "vaderSentiment>=3.3.2",
+]
+dev = [
+    "pytest>=7.0",
+    "PyYAML>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/NeuroLift-Technologies/rrt-advocate#readme"
+Repository = "https://github.com/NeuroLift-Technologies/rrt-advocate"
+Issues = "https://github.com/NeuroLift-Technologies/rrt-advocate/issues"
+
+# --- Build backend (Hatchling) -------------------------------------------------
+# src/ layout: the importable package is src/rrt_advocate, published as
+# ``rrt_advocate``. The safety-critical crisis_thresholds.yaml lives inside the
+# package (src/rrt_advocate/config/), so it is bundled automatically.
+[tool.hatch.build.targets.wheel]
+packages = ["src/rrt_advocate"]
+
+# Lean sdist: only what the package and its conformance suite need. Scope to the
+# Python package (not all of src/) so the coexisting Cloudflare Worker entrypoint
+# (src/index.ts, src/types.ts) is never published in the Python artifact.
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "src/rrt_advocate",
+    "tests",
+    "PYPI_README.md",
+    "KNOWN_LIMITATIONS.md",
+    "LICENSE",
+]
+
+# --- Test config ---------------------------------------------------------------
 [tool.pytest.ini_options]
-pythonpath = ["."]
+pythonpath = ["src"]
 testpaths = ["tests"]
-
-[tool.ruff]
-line-length = 100
-target-version = "py310"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP"]

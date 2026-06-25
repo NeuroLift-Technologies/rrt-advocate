@@ -1,4 +1,8 @@
+# Runtime dependency for the rrt-advocate Python CDE port.
 PyYAML>=6.0
+# Optional: VADER analyzer for Layer 2 (auto-detected when installed; the engine
+# falls back to a deterministic heuristic when absent). Mirrors the npm
+# `vader-sentiment` optionalDependency.
 vaderSentiment>=3.3.2
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
+# Test dependency.
+pytest>=7.0
