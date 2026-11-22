@@ -1,9 +1,10 @@
 ## Agent Contribution Checklist
 
-**Agent:** [Name / platform]
-**Session:** [Branch / session ID]
-**Governed by:** ORG-DEV-OTOI-1.0.3
-**Working repo:** [Repository name]
+**Agent:** [Name / platform]  
+**Session:** [Branch / session ID]  
+**Governed by:** [ORG-DEV-OTOI-1.0.4 organization minimum](https://github.com/NeuroLift-Technologies/.github/blob/main/governance.yaml) and the [repo-local ORG-DEV-OTOI-1.0.2 contract](../NLT-DEV-OTOI.md)  
+**Working repo:** [Repository name]  
+**PR Type:** [feat | fix | docs | refactor | chore | test | ci]
 
 ---
 
