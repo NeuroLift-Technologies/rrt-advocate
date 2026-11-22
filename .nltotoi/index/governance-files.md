@@ -19,6 +19,6 @@ This file is the canonical index of all governance-required files in this reposi
 | `templates/intent-log.md` | ✅ Required | ✅ Present | Section 4 |
 | `.github/ISSUE_TEMPLATE/agent-escalation.md` | ✅ Required | ✅ Present | Section 8 |
 | `.github/ISSUE_TEMPLATE/governance-proposal.md` | ✅ Required | ✅ Present | Section 9 |
-| `GEMINI_TOPOGRAPHY.py` | ✅ Required | ✅ Present | Org standard |
+| `docs/repository-map.md` | ✅ Required | ✅ Present | Repository navigation |
 | `.nltotoi/index/governance-files.md` | 🟠 Recommended | ✅ Present | Section 4 |
 | `.nltotoi/scripts/validate-governance.sh` | 🟠 Recommended | ✅ Present | Section 4 |

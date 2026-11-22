@@ -128,7 +128,9 @@ User Input
 | `packages/rrt-advocate/README.md` | npm package usage |
 | `packages/rrt-advocate/KNOWN_LIMITATIONS.md` | Known gaps (apostrophe fail-open, VADER optional) |
 | `src/rrt_advocate/README.md` | PyPI package usage (mirror) |
+| [Repository navigation](docs/repository-map.md) | Active package, Worker, and governance paths |
 | `docs/active-threads.md` | Current work threads |
+| [Legacy archive](https://github.com/NeuroLift-Technologies/rrt-advocate/tree/cd484c9aa975cec0c73f676c5f7d598ae717025a/legacy) | Historical Python-era files |
 | `docs/agent-log/` | Governance records |
 
 ---

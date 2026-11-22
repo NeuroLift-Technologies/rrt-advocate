@@ -42,7 +42,7 @@ check_file "docs/active-threads.md"                            "Active work stat
 check_file "docs/agent-log/README.md"                          "Agent log directory"
 check_file "docs/agent-log/registrations"                      "Registrations directory"
 check_file "docs/agent-log/handoffs"                           "Handoffs directory"
-check_file "GEMINI_TOPOGRAPHY.py"                              "Repo navigation guide"
+check_file "docs/repository-map.md"                              "Repo navigation guide"
 
 echo ""
 echo "--- Template Files ---"
