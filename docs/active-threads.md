@@ -12,7 +12,7 @@
 
 | Thread ID | Description | Agent | Branch | Status | Started |
 |---|---|---|---|---|---|
-| THREAD-008 | Retire the historical archive and repair repository navigation validation | Codex | `codex/retire-rrt-archive` | Pending review | 2026-11-22 |
+| THREAD-008 | Retire the historical archive and repair repository navigation validation | Codex | `codex/retire-rrt-archive` | Pending review ([PR #51](https://github.com/NeuroLift-Technologies/rrt-advocate/pull/51)) | 2026-11-22 |
 
 ---
 

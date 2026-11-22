@@ -32,7 +32,7 @@
     "docs/agent-log/handoffs/2026-11-22-codex-rrt-archive.json"
   ],
   "branch": "codex/retire-rrt-archive",
-  "pr_number": null,
+  "pr_number": 51,
   "next_agent_instructions": "Review the archive diff separately from PRs #46 and #48. Python verification was a wheel and sdist payload comparison plus the installed wheel smoke check. The legacy Python tests target the previous implementation.",
   "human_approval_needed": true,
   "human_approval_reason": "Maintainer approval of the cleanup PR."
