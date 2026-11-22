@@ -48,6 +48,13 @@ The principles are public. The operational machinery is in this private reposito
 5. Confirm task scope before beginning
 ```
 
+### Pull Requests and Reviews
+
+Use the [agent contribution template](PULL_REQUEST_TEMPLATE/agent-contribution.md)
+when opening a pull request and follow [REVIEW.md](REVIEW.md) when reviewing one.
+The [ORG-DEV-OTOI-1.0.4 organization contract](https://github.com/NeuroLift-Technologies/.github/blob/main/governance.yaml)
+sets the required minimum.
+
 ### Commit Format
 
 All agent commits must follow:

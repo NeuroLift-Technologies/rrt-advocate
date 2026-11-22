@@ -61,35 +61,8 @@ Use `.github/ISSUE_TEMPLATE/agent-escalation.md` to file escalations as GitHub i
 
 ## REPOSITORY STRUCTURE
 
-```
-rrt-advocate/
-├── src/
-│   └── rrt_advocate.py          # Core crisis intervention engine
-├── config/
-│   └── crisis_thresholds.yaml   # Crisis detection thresholds (safety-critical)
-├── docs/
-│   ├── integration_guide.md     # Integration documentation
-│   ├── active-threads.md        # ⚠️ Active work tracker — READ BEFORE STARTING
-│   └── agent-log/               # Agent session records
-│       ├── registrations/       # Agent self-registration files
-│       └── handoffs/            # Agent handoff records
-├── templates/
-│   ├── agent-registration.json  # Template: agent self-registration
-│   ├── handoff-record.json      # Template: session handoffs
-│   ├── escalation.md            # Template: escalation notices
-│   └── intent-log.md            # Template: intent tracking
-├── .github/
-│   └── ISSUE_TEMPLATE/
-│       ├── agent-escalation.md  # File escalations here
-│       └── governance-proposal.md
-├── .nltotoi/
-│   ├── index/governance-files.md
-│   └── scripts/validate-governance.sh
-├── GEMINI_TOPOGRAPHY.py         # Repo navigation guide (all AI agents read this)
-├── CLAUDE.md                    # This file
-├── AGENTS.md                    # Agent coordination protocol
-└── README.md                    # Project overview
-```
+See [Repository navigation](docs/repository-map.md) for active package, Worker,
+and governance paths.
 
 ---
 

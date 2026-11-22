@@ -1,0 +1,39 @@
+{
+  "$schema": "ORG-DEV-OTOI-1.0.2/handoff-record",
+  "agent_name": "Codex",
+  "platform": "OpenAI Codex",
+  "session_id": "codex-rrt-archive-2026-11-22",
+  "working_repo": "NeuroLift-Technologies/rrt-advocate",
+  "session_started": "2026-11-22T21:38:54+00:00",
+  "session_ended": "2026-11-22T21:40:04+00:00",
+  "otoi_version": "ORG-DEV-OTOI-1.0.2",
+  "task_description": "Retire RRT AIdvocAIte archive and restore current repo navigation validation",
+  "work_completed": [
+    "Retired 25 historical files and pinned their Git revision.",
+    "Restored required navigation validation and documented the active package and Worker surfaces.",
+    "Reconciled merged PR #34 in the thread register.",
+    "Validated npm tests, type check and build, identical package payloads for npm and PyPI, installed imports, and all 15 governance checks."
+  ],
+  "work_remaining": [
+    "Maintainer review"
+  ],
+  "blockers": [],
+  "escalations_filed": [],
+  "files_modified": [
+    "legacy/ (25 deletions)",
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "docs/repository-map.md",
+    "docs/active-threads.md",
+    ".nltotoi/index/governance-files.md",
+    ".nltotoi/scripts/validate-governance.sh",
+    "docs/agent-log/registrations/2026-11-22-codex-rrt-archive.json",
+    "docs/agent-log/handoffs/2026-11-22-codex-rrt-archive.json"
+  ],
+  "branch": "codex/retire-rrt-archive",
+  "pr_number": null,
+  "next_agent_instructions": "Review the archive diff separately from PRs #46 and #48. Python verification was a wheel and sdist payload comparison plus the installed wheel smoke check. The legacy Python tests target the previous implementation.",
+  "human_approval_needed": true,
+  "human_approval_reason": "Maintainer approval of the cleanup PR."
+}
